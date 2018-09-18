@@ -9,16 +9,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         (#{it.user_number},#{it.user_name},#{it.clazz_num},#{it.password},#{it.user_type})
     </foreach>
 </insert>
+
 <insert id="S_Role_Update" parameterType="list" >
     replace into user_role (user_id,role_id) values
     <foreach collection="list" item="it" separator=",">
         (#{it.user_number},"1")
     </foreach>
 </insert>
+
 <insert id="upInfo_t" parameterType="list" >
     replace into teacher (user_number,user_name,ministry_id,password,user_type) values
     <foreach collection="list" item="it" separator=",">
         (#{it.user_number},#{it.user_name},#{it.ministry_id},#{it.password},#{it.user_type})
+    </foreach>
+</insert>
+
+<insert id="Course_Update" parameterType="list" >
+    replace into course (course_name,course_num) values
+    <foreach collection="list" item="it" separator=",">
+        (#{it.course_name},#{it.course_num})
+    </foreach>
+</insert>
+
+<insert id="Clazz_Update" parameterType="list" >
+    replace into clazz (clazz_name,clazz_num,ministry_id) values
+    <foreach collection="list" item="it" separator=",">
+        (#{it.clazz_name},#{it.clazz_num},#{it.ministry_id})
+    </foreach>
+</insert>
+
+<insert id="Clazz_Course_Update" parameterType="list" >
+    replace into clazz_course (course_num,clazz_num) values
+    <foreach collection="list" item="it" separator=",">
+        (#{it.course_num},#{it.clazz_num})
     </foreach>
 </insert>
 

@@ -134,14 +134,12 @@ html, body {
 		$("#upload_sub").on("click", function() {
 			console.log(jsonobj1);
 			var jsonstr = JSON.stringify(jsonobj1);
-			var u_type = $.cookie('insert_type')
 			console.log(jsonstr);
 			$.ajax({
 				type : "POST",
-				url : "/TES/studentinfo",
+				url : "/TES/clazzupload",
 				data : {
 					ListSrt : jsonstr,
-					u_type : u_type
 				},
 				dataType : "json",
 				success : function(data) {
@@ -153,7 +151,7 @@ html, body {
 				error : function(data) {
 				$("#update-success-alert").remove();
 				$("#update-fail-alert").remove();
-				var $updatefail = $("<div class='alert alert-fail' id='update-fail-alert' style='margin:0px 0px 0px 30px;width:25%;display:inline-block'><button type='button' class='close' data-dismiss='alert'>×</button> <h4> 操作成功! </h4> 成功插入"+data+"条数据"+" </div>")
+				var $updatefail = $("<div class='alert alert-fail' id='update-fail-alert' style='margin:0px 0px 0px 30px;width:25%;display:inline-block'><button type='button' class='close' data-dismiss='alert'>×</button> <h4> 操作失败! </h4> 插入失败</div>")
 				$("#box1").after($updatefail);
 				}
 				
@@ -194,7 +192,7 @@ html, body {
 			<div class="span10 column">
 				<fieldset>
 					<legend>
-						信息上传&nbsp;&nbsp;<i class="fa fa-folder-open"></i>
+						班级管理&nbsp;&nbsp;<i class="fa fa-folder-open"></i>
 					</legend>
 
 				</fieldset> 
@@ -238,10 +236,7 @@ html, body {
 					}
 					document.getElementById("demo").innerHTML = JSON.stringify(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]));
 					jsonobj1 = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
-					$.each(jsonobj1, function(i, val) {
-						jsonobj1[i].user_type = parseInt(jsonobj1[i].user_type);
-						jsonobj1[i].password = md5(jsonobj1[i].password);
-					});
+
 				};
 				if (rABS) {
 					reader.readAsArrayBuffer(f);

@@ -93,7 +93,6 @@ public class IndexController {
 	
 	@RequestMapping(value = "/studentinfo", produces = "application/json;charset=UTF-8")
 	@ResponseBody 
-	
 	public String student_info(String ListSrt,String u_type) throws JsonParseException, JsonMappingException, IOException{
 		System.out.println(ListSrt);
 		
