@@ -8,6 +8,10 @@ String user_number;
 String d_type;
 int user_type;
 
+public User() {
+	super();
+	// TODO Auto-generated constructor stub
+}
 public int getId() {
 	return Id;
 }

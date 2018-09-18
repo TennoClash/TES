@@ -7,6 +7,8 @@ public interface UserDao {
 
 	User getUserByName(String i);
 	
+	String getRole_Id(String name);
+	
 	int updateSPassWord(User user);
 	
 	int updateTPassWord(User user);

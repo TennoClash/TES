@@ -5,8 +5,8 @@ public class teacher {
 	String user_name;
 	String password;
 	String user_number;
-	int user_Type;
-	int ministry_id;
+	int user_type;
+	String ministry_id;
 
 	public int getId() {
 		return Id;
@@ -40,19 +40,19 @@ public class teacher {
 		this.user_number = user_number;
 	}
 
-	public int getUser_Type() {
-		return user_Type;
+	public int getUser_type() {
+		return user_type;
 	}
 
-	public void setUser_Type(int user_Type) {
-		this.user_Type = user_Type;
+	public void setUser_type(int user_type) {
+		this.user_type = user_type;
 	}
 
-	public int getMinistry_id() {
+	public String getMinistry_id() {
 		return ministry_id;
 	}
 
-	public void setMinistry_id(int ministry_id) {
+	public void setMinistry_id(String ministry_id) {
 		this.ministry_id = ministry_id;
 	}
 

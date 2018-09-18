@@ -9,6 +9,7 @@
 <script src="/TES/plugin/script/clicktext.js"></script>
 <script src="/TES/plugin/script/bootstrap.min.js"></script>
 <script src="/TES/plugin/script/bootstrap-slider.min.js"></script>
+<script src="/TES/plugin/script/jquery.cookie.js"></script>
 
 <link rel="stylesheet" type="text/css"
 	href="/TES/plugin/css/bootstrap.min.css">
@@ -36,18 +37,20 @@ html, body {
 
 <script>
 	$(document).ready(function() {
-	
+		var menu_json;
 		/*---------------JSP Init----------------*/
 		var user_type = '<%=session.getAttribute("user_type")%>';
+		var role_id = '<%=session.getAttribute("role_id")%>';
 		$.ajax({
 			type : "POST",
 			url : "/TES/welcomeinit",
 			dataType : "json",
 			data : {
-				i : user_type
+				r : role_id
 			},
 			success : function(data) {
 				console.log(data);
+				menu_json = data;
 				var x = 1;
 				var n_id = 0;
 				$li_e = $("<li></li>");
@@ -63,7 +66,7 @@ html, body {
 						nav_id[n_id] = data[k].nav_id;
 
 						if (data[k].context == "首页") {
-							$li[x] = $(" <li class='active'><a href='"+data[k].a_context+"'>首页</a></li>");
+							$li[x] = $(" <li class='active'><a href='" + data[k].a_context + "'>首页</a></li>");
 							$("#l_nav").append($li[x]);
 						} else {
 							$li[x] = $(" <li class='" + data[k].css_class + "'>" + data[k].context + "</li>");
@@ -74,8 +77,15 @@ html, body {
 						if (data[k].css_class == "divider") {
 							$li[x] = $(" <li class=" + data[k].css_class + ">" + data[k].context + "</li>")
 							$($li[x - 1]).after($li[x]);
+						} else if (data[k].context == "学生信息导入") {
+							$li[x] = $(" <li><a id='s_click' href='" + data[k].a_context + "'>" + data[k].context + "</a></li>")
+							$($li[x - 1]).after($li[x]);
+
+						} else if (data[k].context == "教师信息导入") {
+							$li[x] = $(" <li><a id='t_click' href='" + data[k].a_context + "'>" + data[k].context + "</a></li>")
+							$($li[x - 1]).after($li[x]);
 						} else {
-							$li[x] = $(" <li><a href='"+data[k].a_context+"'>" + data[k].context + "</a></li>")
+							$li[x] = $(" <li><a href='" + data[k].a_context + "'>" + data[k].context + "</a></li>")
 							$($li[x - 1]).after($li[x]);
 						}
 					}
@@ -87,28 +97,27 @@ html, body {
 			}
 		});
 		/*---------------jsp-version----------------*/
-		$ver1=$("<small>学生版</small>");
-		$ver2=$("<small>教师版</small>");
-		$ver3=$("<small>院系领导版</small>");
-		$ver4=$("<small>管理员版</small>");
-		switch(user_type)
-		{
+		$ver1 = $("<small>学生版</small>");
+		$ver2 = $("<small>教师版</small>");
+		$ver3 = $("<small>院系领导版</small>");
+		$ver4 = $("<small>管理员版</small>");
+		switch (user_type) {
 		case "0":
-		$("#ver").append($ver1);
-		break;  
+			$("#ver").append($ver1);
+			break;
 		case "1":
-		$("#ver").append($ver2);
-		break;
+			$("#ver").append($ver2);
+			break;
 		case "2":
-		$("#ver").append($ver3);
-		break;
+			$("#ver").append($ver3);
+			break;
 		case "9":
-		$("#ver").append($ver4);
-		break;
+			$("#ver").append($ver4);
+			break;
 		default:
-		break;
+			break;
 		}
- 		/*--------------iMissYou----------------*/
+		/*--------------iMissYou----------------*/
 		$.iMissYou({
 			title : "诶你怎么跑了( ꒪Д꒪)ノ",
 			favicon : {
@@ -117,8 +126,13 @@ html, body {
 			}
 		});
 
-
-
+		$("#l_nav").on("click", "#s_click", function() {
+			$.cookie('insert_type', 's'); 
+		}) 
+ 
+		$("#l_nav").on("click", "#t_click", function() {	
+		$.cookie('insert_type', 't');
+		})
 	})
 </script>
 
@@ -129,30 +143,30 @@ html, body {
 		style="background-color: #333;height:100%;">
 		<div class="row-fluid column">
 			<div class="span12">
-				<h1 id="ver">教师评价系统 &nbsp;</h1>
+				<h1 id="ver">
+					教师评价系统 &nbsp;<i class="fa fa-sign-out"
+						style="font-size:80px; float:right"></i>
+				</h1>
+
 			</div>
 		</div>
 
 		<div class="row-fluid" style="height:100%;">
 			<div class="span2 column" style="height:100%;">
 				<ul class="nav nav-list" id="l_nav">
-				
+
 				</ul>
 
 			</div>
-			
+
 			<div class="span10 column">
-				<div class="hero-unit">
-				<h1>
-					Hello, world!
-				</h1>
-				<p>
-					这是一个可视化布局模板, 你可以点击模板里的文字进行修改, 也可以通过点击弹出的编辑框进行富文本修改. 拖动区块能实现排序.
-				</p>
-				<p>
-					 <a class="btn btn-primary btn-large" href="#">参看更多 »</a>
-				</p>
-			</div>
+				<div class="hero-unit" style="background-color: #ffe2e2;">
+					<h2>欢迎使用教师评价系统</h2>
+					<p></p>
+					<p>
+						<a class="btn btn-primary btn-large" href="#">参看更多 »</a>
+					</p>
+				</div>
 			</div>
 
 

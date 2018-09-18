@@ -1,5 +1,6 @@
 package TES.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -7,11 +8,21 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import TES.entity.Menu;
 import TES.entity.User;
+import TES.entity.student;
+import TES.entity.teacher;
 import TES.service.LoginService;
 import TES.service.MenuService;
 import TES.service.UpDateService;
@@ -27,8 +38,8 @@ public class IndexController {
 
 	@RequestMapping(value = "/welcomeinit", produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public List<Menu> welcomeinit(String i, HttpServletRequest request, HttpSession session) {
-		int menu_type = Integer.parseInt(i);
+	public List<Menu> welcomeinit(String r,HttpServletRequest request, HttpSession session) {
+		int menu_type = Integer.parseInt(r);
 		List<Menu> menu = menuService.getMenu(menu_type);
 		return menu;
 	}
@@ -36,6 +47,10 @@ public class IndexController {
 	@RequestMapping("/passchange")
 	public String passchange() {
 		return "passchange";
+	}
+	@RequestMapping("/sinfo")
+	public String sinfo() {
+		return "sinfo";
 	}
 
 	@RequestMapping(value = "/pass_check", produces = "application/json;charset=UTF-8")
@@ -73,6 +88,28 @@ public class IndexController {
 			}else {
 				return "0";
 			}
+		}
+	}
+	
+	@RequestMapping(value = "/studentinfo", produces = "application/json;charset=UTF-8")
+	@ResponseBody 
+	
+	public String student_info(String ListSrt,String u_type) throws JsonParseException, JsonMappingException, IOException{
+		System.out.println(ListSrt);
+		
+		if(u_type.equals("s")){
+			List<student> students = JSONObject.parseArray(ListSrt, student.class);			
+			int i=upDateService.upInfo(students);
+			int k=upDateService.S_Role_Update(students);
+			System.out.println("学生信息插入:"+i);
+			System.out.println("user_role:"+k);
+			return String.valueOf(students.size());
+		}else{
+			List<teacher> teachers = JSONObject.parseArray(ListSrt, teacher.class);
+			int i=upDateService.upInfo_t(teachers);
+			System.out.println(i);
+			System.out.println(u_type);
+			return String.valueOf(teachers.size());
 		}
 		
 		

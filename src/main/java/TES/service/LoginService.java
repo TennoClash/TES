@@ -34,4 +34,8 @@ public class LoginService {
 	public User getUserByName(String i) {
 		return userDao.getUserByName(i);
 	}
+	
+	public String getRole_Id(String name){
+		return userDao.getRole_Id(name);
+	}
 }

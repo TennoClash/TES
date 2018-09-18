@@ -31,15 +31,19 @@ public class LoginController {
 	public String login_submit(String name, String pass, HttpServletRequest request, HttpSession session) {
 		System.out.println(name + pass);
 		// request.setAttribute("username", username);
+		
 		boolean result = loginService.execute(name, pass);
 		if (result) {
 			User user = loginService.getUserByName(name);
 			int usertype = user.getUser_type();
 			String user_number = user.getUser_number();
+			String role_id=loginService.getRole_Id(name);
+			System.out.println(role_id);
 			if (usertype == 1) {
 				User user2 = loginService.getUser(name, pass);
 				session.setAttribute("user", user2);
 				session.setAttribute("user_type", usertype);
+				session.setAttribute("role_id", role_id);
 				session.setAttribute("user_number", user_number);
 				return "教师登录成功";
 			}
@@ -47,6 +51,7 @@ public class LoginController {
 				User user2 = loginService.getUser(name, pass);
 				session.setAttribute("user", user2);
 				session.setAttribute("user_type", usertype);
+				session.setAttribute("role_id", role_id);
 				session.setAttribute("user_number", user_number);
 				return "学生登录成功";
 			}
@@ -54,12 +59,14 @@ public class LoginController {
 				User user2 = loginService.getUser(name, pass);
 				session.setAttribute("user", user2);
 				session.setAttribute("user_type", usertype);
+				session.setAttribute("role_id", role_id);
 				session.setAttribute("user_number", user_number);
 				return "院系领导登录成功";
 			} else {
 				User user2 = loginService.getUser(name, pass);
 				session.setAttribute("user", user2);
 				session.setAttribute("user_type", usertype);
+				session.setAttribute("role_id", role_id);
 				session.setAttribute("user_number", user_number);
 				return "管理员登录成功";
 			}

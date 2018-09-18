@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TES.dao.UpDateDao">
+<insert id="upInfo" parameterType="list" >
+    replace into student (user_number,user_name,clazz_num,password,user_type) values
+    <foreach collection="list" item="it" separator=",">
+        (#{it.user_number},#{it.user_name},#{it.clazz_num},#{it.password},#{it.user_type})
+    </foreach>
+</insert>
+<insert id="S_Role_Update" parameterType="list" >
+    replace into user_role (user_id,role_id) values
+    <foreach collection="list" item="it" separator=",">
+        (#{it.user_number},"1")
+    </foreach>
+</insert>
+<insert id="upInfo_t" parameterType="list" >
+    replace into teacher (user_number,user_name,ministry_id,password,user_type) values
+    <foreach collection="list" item="it" separator=",">
+        (#{it.user_number},#{it.user_name},#{it.ministry_id},#{it.password},#{it.user_type})
+    </foreach>
+</insert>
+
+</mapper>
