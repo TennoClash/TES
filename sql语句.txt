@@ -1,0 +1,23 @@
+/*已知学生求部门名字*/
+select  academy,ministry,clazz_name
+from department
+inner join clazz on clazz.ministry_id=department.ministry_id
+left join student on student.clazz_num=clazz.clazz_num
+where student.user_name='张三三'
+
+/*查询学生权限 user_role里面de user_id和role_id  user_id=user_num*/
+select role_name
+from role
+inner join user_role on user_role.role_id=role.id
+left join student on student.user_number=user_role.user_id
+where student.user_name='xxx'
+
+/*查询教师等权限*/
+select role_name
+from role
+inner join user_role on user_role.role_id=role.id
+left join teacher on teacher.user_number=user_role.user_id
+where teacher.user_name='王老师'
+
+/*批量添加学生*/
+insert into student(user_name,user_number,clazz_num,user_type,password) VALUES(),VALUES()
