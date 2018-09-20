@@ -8,7 +8,7 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
 
 
 
-	<context:component-scan base-package="TES.controller"></context:component-scan>
+	<context:component-scan base-package="teavs.controller"></context:component-scan>
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/jsp/"></property>
@@ -41,7 +41,7 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
 		</property>
 	</bean>
 
-	<context:component-scan base-package="TES"></context:component-scan>
+	<context:component-scan base-package="teavs"></context:component-scan>
 
 	<!-- 解决静态资源访问404 -->
 	<mvc:annotation-driven>

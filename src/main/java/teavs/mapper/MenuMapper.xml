@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="teavs.dao.MenuDao">
+<select id="getMenu"  parameterType="int" resultType="teavs.entity.Menu">
+select * from menu_view where menu_type=#{menu_type} order by menu_id;
+</select>
+
+<select id="getMenux" resultType="teavs.entity.Menu">
+select Id id,pid pid,context from menutest;
+</select>
+</mapper>

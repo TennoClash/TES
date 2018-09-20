@@ -10,7 +10,7 @@
 <script src="/TES/plugin/script/jquery.cookie.js"></script>
 <script src="/TES/plugin/script/md5.js"></script>
 <script src="/TES/plugin/script/bootstrap.min.js"></script>
-<script src="/TES/plugin/script/bootstrap-slider.min.js"></script>
+<script src="/TES/plugin/script/bootstrap-slider.min.js"></script>0
 <script src="/TES/plugin/script/xlsx.full.min.js"></script>
 <script src="/TES/plugin/script/jasny-bootstrap.min.js"></script>
 

@@ -31,10 +31,10 @@
 <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 	<property name="dataSource" ref="dataSource" />
 	<!-- 自动扫描mapping.xml文件 -->
-	<property name="mapperLocations" value="classpath:TES/mapper/*.xml"></property>
+	<property name="mapperLocations" value="classpath:teavs/mapper/*.xml"></property>
 </bean>
 <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
-        <property name="basePackage" value="TES.dao" />  
+        <property name="basePackage" value="teavs.dao" />  
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>  
     </bean>  
 

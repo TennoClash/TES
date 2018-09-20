@@ -1,0 +1,318 @@
+<%@ page language="java" pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>教室评价系统</title>
+<script src="/TES/plugin/script/jquery-1.11.3.min.js"></script>
+<script src="/TES/plugin/script/imissyou.js"></script>
+<script src="/TES/plugin/script/clicktext.js"></script>
+<script src="/TES/plugin/script/bootstrap.min.js"></script>
+<script src="/TES/plugin/script/bootstrap-slider.min.js">
+<script src="/TES/plugin/script/jquery.cookie.js"></script>
+<script src="/TES/plugin/script/bootstrap-select.js"></script>
+<script src="/TES/plugin/script/bootstrap-treeview.min.js"></script>
+
+
+<link rel="stylesheet" type="text/css"
+	href="/TES/plugin/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css"
+	href="/TES/plugin/css/bootstrap-treeview.min.css">
+<link rel="stylesheet" type="text/css"
+	href="/TES/plugin/css/bootstrap-select.min.css">
+<link rel="stylesheet" type="text/css"
+	href="/TES/plugin/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css"
+	href="/TES/plugin/fonts/iconic/css/material-design-iconic-font.min.css">
+
+<style>
+html, body {
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+}
+
+.column {
+	background-color: #FFFFFF;
+	border: 1px solid #DDDDDD;
+	border-radius: 8px 8px 8px 8px;
+	padding: 10px 19px 24px;
+}
+.list-group-item{
+list-style-type:none;
+}
+</style>
+
+<script>
+	$(document).ready(function() {
+		var menu_json;
+		/*---------------JSP Init----------------*/
+		var user_type = '<%=session.getAttribute("user_type")%>';
+		var role_id = '<%=session.getAttribute("role_id")%>';
+		$.ajax({
+			type : "POST",
+			url : "/TES/welcomeinit",
+			dataType : "json",
+			data : {
+				r : role_id
+			},
+			success : function(data) {
+				console.log(data);
+				menu_json = data;
+				var x = 1;
+				var n_id = 0;
+				$li_e = $("<li></li>");
+				var $li = [];
+				var nav_id = [];
+				var parent_id = [];
+				for (var k = 0; k < data.length; k++) {
+					//eval("var $li" + x + "=" + $li_e);
+					$li[x] = $("<li></li>");
+
+					if (data[k].nav_id != "" && data[k].nav_id != null) {
+						n_id++;
+						nav_id[n_id] = data[k].nav_id;
+
+						if (data[k].context == "首页") {
+							$li[x] = $(" <li class='active'><a href='" + data[k].a_context + "'>首页</a></li>");
+							$("#l_nav").append($li[x]);
+						} else {
+							$li[x] = $(" <li class='" + data[k].css_class + "'>" + data[k].context + "</li>");
+							$("#l_nav").append($li[x]);
+						}
+					}
+					if (data[k].parent_id == nav_id[n_id]) {
+						if (data[k].css_class == "divider") {
+							$li[x] = $(" <li class=" + data[k].css_class + ">" + data[k].context + "</li>")
+							$($li[x - 1]).after($li[x]);
+						} else if (data[k].context == "学生信息导入") {
+							$li[x] = $(" <li><a id='s_click' href='" + data[k].a_context + "'>" + data[k].context + "</a></li>")
+							$($li[x - 1]).after($li[x]);
+
+						} else if (data[k].context == "教师信息导入") {
+							$li[x] = $(" <li><a id='t_click' href='" + data[k].a_context + "'>" + data[k].context + "</a></li>")
+							$($li[x - 1]).after($li[x]);
+						} else {
+							$li[x] = $(" <li><a href='" + data[k].a_context + "'>" + data[k].context + "</a></li>")
+							$($li[x - 1]).after($li[x]);
+						}
+					}
+					x++;
+				}
+			},
+			error : function() {
+				alert("菜单查询失败！");
+			}
+		});
+		/*---------------jsp-version----------------*/
+		$ver1 = $("<small>学生版</small>");
+		$ver2 = $("<small>教师版</small>");
+		$ver3 = $("<small>院系领导版</small>");
+		$ver4 = $("<small>管理员版</small>");
+		switch (user_type) {
+		case "0":
+			$("#ver").append($ver1);
+			break;
+		case "1":
+			$("#ver").append($ver2);
+			break;
+		case "2":
+			$("#ver").append($ver3);
+			break;
+		case "9":
+			$("#ver").append($ver4);
+			break;
+		default:
+			break;
+		}
+		/*--------------iMissYou----------------*/
+		$.iMissYou({
+			title : "诶你怎么跑了( ꒪Д꒪)ノ",
+			favicon : {
+				enabled : false,
+				src : 'iMissYouFavicon.ico'
+			}
+		});
+
+		$("#l_nav").on("click", "#s_click", function() {
+			$.cookie('insert_type', 's');
+		})
+
+		$("#l_nav").on("click", "#t_click", function() {
+			$.cookie('insert_type', 't');
+		})
+
+
+		$("input[name='select_level']").on("click", function() {
+			var menu_level = $("input[name='select_level']:checked").val();
+			if (menu_level == "1") {
+				$("#upper_select").hide();
+				$("#nav_info").show();
+			} else {
+				$("#nav_info").hide();
+				$("#upper_select").show();
+			}
+		})
+
+		$("input[name='m_type']").on("click", function() {
+			var menu_role_m = $("input[name='m_type']:checked").val();
+
+			$.ajax({
+				type : "POST",
+				url : "/TES/welcomeinit",
+				dataType : "json",
+				data : {
+					r : menu_role_m
+				},
+				success : function(data) {
+					console.log(data)
+					var str = "";
+					$.each(data, function(i, v) {
+						if (data[i].nav_id != null && data[i].nav_id != "") {
+							str += '<option value="' + data[i].nav_id + '">' + data[i].context + '</option>'
+						}
+					})
+					$("#select1").html(str);
+					$('#select1').selectpicker('refresh');
+					$("#select2").html(str);
+					$('#select2').selectpicker('refresh');
+				}
+			})
+		})
+
+		$("#xxs").on("click", function() {
+			console.log($("#select1").val())
+		})
+
+
+
+		
+
+
+		$("#menusubxxx").on("click", function() {
+			$.ajax({
+				type : "POST",
+				url : "/TES/menux",
+				data : {
+				},
+				success : function(data) {
+					function getTree() {
+						console.log(tree)
+						return data;
+					}
+					$('#tree').treeview({
+			data : getTree(),
+			levels : 5,
+			backColor : '#cbf9cb'
+		});
+					console.log($.parseJSON(data))
+				}
+			})
+
+
+		});
+		/*-------------------------------------------------------------------------------------------------*/
+
+
+
+	})
+
+	function itemOnclick(target) {
+		var nodeid = $(target).attr('data-nodeid');
+		var tree = $('#tree');
+		var node = tree.treeview('getNode', nodeid);
+		if (node.state.expanded) {
+			tree.treeview('collapseNode', node.nodeId);
+		} else {
+			tree.treeview('expandNode', node.nodeId);
+		}
+	}
+</script>
+
+</head>
+<body>
+
+	<div class="container-fluid"
+		style="background-color: #333;height:100%;">
+		<div class="row-fluid column">
+			<div class="span12">
+				<h1 id="ver">
+					教师评价系统 &nbsp;<i class="fa fa-sign-out"
+						style="font-size:80px; float:right"></i>
+				</h1>
+
+			</div>
+		</div>
+
+		<div class="row-fluid" style="height:100%;">
+			<div class="span2 column" style="height:100%;">
+				<ul class="nav nav-list" id="l_nav">
+
+				</ul>
+
+			</div>
+
+			<div class="span10 column">
+				<fieldset>
+					<legend>
+						菜单管理&nbsp;&nbsp;<i class="fa fa-folder-open"></i>
+					</legend>
+					<strong>选择菜单角色</strong><br> <br> 管理员：<input type="radio"
+						name="m_type" value="4" /> &nbsp; 学生：<input type="radio"
+						name="m_type" value="1" />&nbsp; 教师：<input type="radio"
+						name="m_type" value="2" /> &nbsp; 系院领导：<input type="radio"
+						name="m_type" value="3" /> &nbsp;
+					<legend></legend>
+
+					<strong>菜单操作</strong><br> <br> 添加一级菜单：<input type="radio"
+						name="select_level" value="1" />&nbsp; 添加二级菜单：<input type="radio"
+						name="select_level" value="2" /><br> <br>
+
+					<fieldset id="nav_info" style="display:none">
+						<label><strong>输入一级菜单名</strong></label><input id="nav_input"
+							type="text" /> <label><strong id="xxs">选择本次添加菜单
+								在哪条菜单之后</strong></label>
+
+						<div class="col-sm-6" style="width:200px">
+							<select id="select1" name="select"
+								class="selectpicker show-tick form-control"
+								data-live-search="true" data-actions-box="true">
+
+							</select>
+						</div>
+
+					</fieldset>
+
+					<fieldset id="upper_select" style="display:none">
+						<strong>选择上级菜单</strong><br> <br>
+						<div class="col-sm-6" style="width:200px">
+							<select id="select2" name="select"
+								class="selectpicker show-tick form-control"
+								data-live-search="true" data-actions-box="true">
+
+							</select>
+						</div>
+					</fieldset>
+
+					<div id="tree"></div>
+			
+
+
+
+					<br> <br>
+					<button type="button" id="menusub" class="btn">提交</button>
+					<button type="button" id="menusubxxx" class="btn">提交xxxx</button>
+			</div>
+
+
+			</fieldset>
+		</div>
+
+
+	</div>
+
+
+</body>
+</html>
