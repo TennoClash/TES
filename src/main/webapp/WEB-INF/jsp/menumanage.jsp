@@ -40,8 +40,9 @@ html, body {
 	border-radius: 8px 8px 8px 8px;
 	padding: 10px 19px 24px;
 }
-.list-group-item{
-list-style-type:none;
+
+.list-group-item {
+	list-style-type: none;
 }
 </style>
 
@@ -180,6 +181,25 @@ list-style-type:none;
 					$('#select2').selectpicker('refresh');
 				}
 			})
+			$.ajax({
+				type : "POST",
+				url : "/TES/menux",
+				data : {
+					i : menu_role_m
+				},
+				success : function(data) {
+					function getTree() {
+						console.log(tree)
+						return data;
+					}
+					$('#tree').treeview({
+						data : getTree(),
+						levels : 5,
+						backColor : '#cbf9cb'
+					});
+					console.log($.parseJSON(data))
+				}
+			})
 		})
 
 		$("#xxs").on("click", function() {
@@ -188,7 +208,7 @@ list-style-type:none;
 
 
 
-		
+
 
 
 		$("#menusubxxx").on("click", function() {
@@ -203,10 +223,10 @@ list-style-type:none;
 						return data;
 					}
 					$('#tree').treeview({
-			data : getTree(),
-			levels : 5,
-			backColor : '#cbf9cb'
-		});
+						data : getTree(),
+						levels : 5,
+						backColor : '#eaffea'
+					});
 					console.log($.parseJSON(data))
 				}
 			})
@@ -255,59 +275,70 @@ list-style-type:none;
 			</div>
 
 			<div class="span10 column">
-				<fieldset>
-					<legend>
-						菜单管理&nbsp;&nbsp;<i class="fa fa-folder-open"></i>
-					</legend>
-					<strong>选择菜单角色</strong><br> <br> 管理员：<input type="radio"
-						name="m_type" value="4" /> &nbsp; 学生：<input type="radio"
-						name="m_type" value="1" />&nbsp; 教师：<input type="radio"
-						name="m_type" value="2" /> &nbsp; 系院领导：<input type="radio"
-						name="m_type" value="3" /> &nbsp;
-					<legend></legend>
+				<div class="span6" style="border-right:1px solid #e5e5e5">
+					<fieldset>
+						<legend>
+							菜单管理&nbsp;&nbsp;<i class="fa fa-folder-open"></i>
+						</legend>
+						<strong>选择菜单角色</strong><br> <br> 管理员：<input type="radio"
+							name="m_type" value="4" /> &nbsp; 学生：<input type="radio"
+							name="m_type" value="1" />&nbsp; 教师：<input type="radio"
+							name="m_type" value="2" /> &nbsp; 系院领导：<input type="radio"
+							name="m_type" value="3" /> &nbsp;
+						<legend></legend>
 
-					<strong>菜单操作</strong><br> <br> 添加一级菜单：<input type="radio"
-						name="select_level" value="1" />&nbsp; 添加二级菜单：<input type="radio"
-						name="select_level" value="2" /><br> <br>
+						<strong>菜单操作</strong><br> <br> 添加一级菜单：<input
+							type="radio" name="select_level" value="1" />&nbsp; 添加二级菜单：<input
+							type="radio" name="select_level" value="2" /><br> <br>
 
-					<fieldset id="nav_info" style="display:none">
-						<label><strong>输入一级菜单名</strong></label><input id="nav_input"
-							type="text" /> <label><strong id="xxs">选择本次添加菜单
-								在哪条菜单之后</strong></label>
+						<fieldset id="nav_info" style="display:none">
+							<label><strong>输入一级菜单名</strong></label><input id="nav_input"
+								type="text" /> <label><strong id="xxs">选择本次添加菜单
+									在哪条菜单之后</strong></label>
 
-						<div class="col-sm-6" style="width:200px">
-							<select id="select1" name="select"
-								class="selectpicker show-tick form-control"
-								data-live-search="true" data-actions-box="true">
+							<div class="col-sm-6" style="width:200px">
+								<select id="select1" name="select"
+									class="selectpicker show-tick form-control"
+									data-live-search="true" data-actions-box="true">
 
-							</select>
-						</div>
+								</select>
+							</div>
 
-					</fieldset>
+						</fieldset>
 
-					<fieldset id="upper_select" style="display:none">
-						<strong>选择上级菜单</strong><br> <br>
-						<div class="col-sm-6" style="width:200px">
-							<select id="select2" name="select"
-								class="selectpicker show-tick form-control"
-								data-live-search="true" data-actions-box="true">
+						<fieldset id="upper_select" style="display:none">
+							<strong>选择上级菜单</strong><br> <br>
+							<div class="col-sm-6" style="width:200px">
+								<select id="select2" name="select"
+									class="selectpicker show-tick form-control"
+									data-live-search="true" data-actions-box="true">
 
-							</select>
-						</div>
-					</fieldset>
-
-					<div id="tree"></div>
-			
+								</select>
+							</div>
+						</fieldset>
 
 
 
-					<br> <br>
-					<button type="button" id="menusub" class="btn">提交</button>
-					<button type="button" id="menusubxxx" class="btn">提交xxxx</button>
+
+
+
+						<br> <br>
+						<button type="button" id="menusub" class="btn">提交</button>
+						<button type="button" id="menusubxxx" class="btn">提交xxxx</button>
+				</div>
+				<legend>
+							菜单预览&nbsp;&nbsp;<i class="fa fa-folder-open"></i>
+						</legend>
+				
+				<div class="span6">
+					<div id="tree" style="width:50%;margin-left:auto;margin-right:auto;"></div>
+				</div>
+
+
+				</fieldset>
 			</div>
 
 
-			</fieldset>
 		</div>
 
 

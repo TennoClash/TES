@@ -7,7 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 select * from menu_view where menu_type=#{menu_type} order by menu_id;
 </select>
 
-<select id="getMenux" resultType="teavs.entity.Menu">
-select Id id,pid pid,context from menutest;
+<select id="getMenux" parameterType="int" resultType="teavs.entity.Menu">
+select Id id,pid pid,context from menu where menu_type=#{menu_type};
 </select>
 </mapper>

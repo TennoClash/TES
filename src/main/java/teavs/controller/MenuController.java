@@ -28,8 +28,8 @@ public class MenuController {
 	
 	@RequestMapping(value = "/menux", produces = "text/html;charset=UTF-8")
 	@ResponseBody
-	public String  menux() {
-	     List<Menu> menus =menuService.getMenux("2");
+	public String  menux(String i) {
+	     List<Menu> menus =menuService.getMenux(Integer.parseInt(i));
 
 	        String json = new TreeBuilder().buildTree(menus);
 	       String json1= json.replace("context", "text");

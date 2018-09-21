@@ -19,7 +19,7 @@ public class MenuService {
 		return menu;
 	}
 	
-	public List<Menu> getMenux(String i){
+	public List<Menu> getMenux(int i){
 		List<Menu> menu=menuDao.getMenux(i);
 		return menu;
 	}

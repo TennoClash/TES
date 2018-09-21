@@ -7,5 +7,5 @@ import teavs.entity.Menu;
 public interface MenuDao {
 List<Menu> getMenu(int i);
 
-List<Menu> getMenux(String  i);
+List<Menu> getMenux(int i);
 }
