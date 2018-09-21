@@ -99,7 +99,7 @@
 <body>
 	<div class="limiter">
 		<div class="container-login100"
-			style="background-image: url('/TEva/img/bg-02.jpg');">
+			style="background-image: url('/TES/img/bg-02.jpg');">
 			<div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54"
 				style="display:block;">
 				<form class="login100-form validate-form">

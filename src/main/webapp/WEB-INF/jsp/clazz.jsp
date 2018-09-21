@@ -10,10 +10,12 @@
 <script src="/TES/plugin/script/jquery.cookie.js"></script>
 <script src="/TES/plugin/script/md5.js"></script>
 <script src="/TES/plugin/script/bootstrap.min.js"></script>
-<script src="/TES/plugin/script/bootstrap-slider.min.js"></script>0
+<script src="/TES/plugin/script/bootstrap-slider.min.js"></script>
 <script src="/TES/plugin/script/xlsx.full.min.js"></script>
 <script src="/TES/plugin/script/jasny-bootstrap.min.js"></script>
-
+<script src="/TES/plugin/script/jquery.funnyText.min.js"></script> 
+<link rel="stylesheet" type="text/css"
+	href="/TES/plugin/css/jquery.funnyText.css">
 <link rel="stylesheet" type="text/css"
 	href="/TES/plugin/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css"
@@ -22,6 +24,8 @@
 	href="/TES/plugin/fonts/iconic/css/material-design-iconic-font.min.css">
 <link rel="stylesheet" type="text/css"
 	href="/TES/plugin/css/jasny-bootstrap.min.css">
+	<link rel="stylesheet" type="text/css"
+	href="/TES/plugin/css/jquery.funnyText.css">
 
 <style>
 html, body {
@@ -38,6 +42,9 @@ html, body {
 	border-radius: 8px 8px 8px 8px;
 	padding: 10px 19px 24px;
 }
+.row-fluid{
+position: relative; 
+} 
 </style>
 
 <script>
@@ -122,6 +129,15 @@ html, body {
 		default:
 			break;
 		}
+		$('#ver').funnyText({
+   speed: 1400,
+   borderColor: 'black',
+   activeColor: '#deecff',
+   color: '#fd8383',
+   fontSize: '40px',
+   direction: 'both'
+   });
+   $('#ver').funnyText();
 		/*--------------iMissYou----------------*/
 		$.iMissYou({
 			title : "诶你怎么跑了( ꒪Д꒪)ノ",
@@ -172,12 +188,17 @@ html, body {
 
 </head>
 <body>
-
 	<div class="container-fluid"
 		style="background-color: #333;height:100%;">
+		<div id="particles-js"  style="width: 100%; height: 100%;position: absolute;">	</div>
 		<div class="row-fluid column">
 			<div class="span12">
-				<h1 id="ver">教师评价系统 &nbsp;</h1>
+				<h1 id="ver" style="display:inline-block">
+					教师评价系统 &nbsp;
+				</h1>
+				<i class="fa fa-sign-out"
+						style="font-size:80px;display:inline-block; float:right"></i>
+
 			</div>
 		</div>
 
@@ -254,5 +275,7 @@ html, body {
 				return o;
 			}
 		</script>
+		<script src="/TES/plugin/script/particles.min.js"></script>
+<script src="/TES/plugin/script/app.js"></script> 
 </body>
 </html>

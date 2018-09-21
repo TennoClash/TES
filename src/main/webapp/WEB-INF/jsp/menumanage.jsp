@@ -12,7 +12,9 @@
 <script src="/TES/plugin/script/jquery.cookie.js"></script>
 <script src="/TES/plugin/script/bootstrap-select.js"></script>
 <script src="/TES/plugin/script/bootstrap-treeview.min.js"></script>
-
+<script src="/TES/plugin/script/jquery.funnyText.min.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="/TES/plugin/css/jquery.funnyText.css">
 
 <link rel="stylesheet" type="text/css"
 	href="/TES/plugin/css/bootstrap.min.css">
@@ -43,6 +45,12 @@ html, body {
 
 .list-group-item {
 	list-style-type: none;
+	border: 1px;
+	border-radius: 1em;
+}
+
+.row-fluid {
+	position: relative;
 }
 </style>
 
@@ -107,6 +115,7 @@ html, body {
 				alert("菜单查询失败！");
 			}
 		});
+
 		/*---------------jsp-version----------------*/
 		$ver1 = $("<small>学生版</small>");
 		$ver2 = $("<small>教师版</small>");
@@ -128,6 +137,7 @@ html, body {
 		default:
 			break;
 		}
+		$('#ver').funnyText();
 		/*--------------iMissYou----------------*/
 		$.iMissYou({
 			title : "诶你怎么跑了( ꒪Д꒪)ノ",
@@ -145,18 +155,22 @@ html, body {
 			$.cookie('insert_type', 't');
 		})
 
-
+		var sub_type;
 		$("input[name='select_level']").on("click", function() {
 			var menu_level = $("input[name='select_level']:checked").val();
 			if (menu_level == "1") {
 				$("#upper_select").hide();
 				$("#nav_info").show();
-			} else {
+				sub_type = menu_level;
+			}
+			if (menu_level == "2") {
 				$("#nav_info").hide();
 				$("#upper_select").show();
+				sub_type = menu_level;
 			}
 		})
 
+		var cdata;
 		$("input[name='m_type']").on("click", function() {
 			var menu_role_m = $("input[name='m_type']:checked").val();
 
@@ -168,6 +182,7 @@ html, body {
 					r : menu_role_m
 				},
 				success : function(data) {
+					cdata = data;
 					console.log(data)
 					var str = "";
 					$.each(data, function(i, v) {
@@ -189,50 +204,57 @@ html, body {
 				},
 				success : function(data) {
 					function getTree() {
-						console.log(tree)
 						return data;
 					}
 					$('#tree').treeview({
 						data : getTree(),
 						levels : 5,
-						backColor : '#cbf9cb'
+						backColor : '#daeaff'
 					});
 					console.log($.parseJSON(data))
 				}
 			})
 		})
 
-		$("#xxs").on("click", function() {
-			console.log($("#select1").val())
-		})
-
-
-
-
-
-
-		$("#menusubxxx").on("click", function() {
-			$.ajax({
+		$("#menusub").on("click", function() {
+		if(sub_type==1){
+		var nav_input = $("#nav_input").val();
+			var select1 = $("#select1").val();
+			var max = 0;
+			var maxx=[];
+			$.each(cdata, function(i, v) {
+				if (cdata[i].nav_id == select1) {
+					var nnav_id = cdata[i].nav_id;
+					$.each(cdata, function(ii, vv) {
+					
+						if (cdata[ii].parent_id == nnav_id) {	
+						console.log("第二层")					
+							maxx.push(cdata[ii].mneu_id);
+						}
+					})
+				}
+			})
+			console.log(nav_input)
+			console.log(Math.max.apply(null, maxx))
+		}
+			
+			/*$.ajax({
 				type : "POST",
-				url : "/TES/menux",
+				url : "/TES/menuedir",
 				data : {
+					nav_input : nav_input,
+					ctype : 1,
+					mposition : maxx
 				},
 				success : function(data) {
-					function getTree() {
-						console.log(tree)
-						return data;
-					}
-					$('#tree').treeview({
-						data : getTree(),
-						levels : 5,
-						backColor : '#eaffea'
-					});
-					console.log($.parseJSON(data))
+					
 				}
-			})
+			})*/ 
+		})
 
 
-		});
+
+
 		/*-------------------------------------------------------------------------------------------------*/
 
 
@@ -256,12 +278,13 @@ html, body {
 
 	<div class="container-fluid"
 		style="background-color: #333;height:100%;">
+		<div id="particles-js"
+			style="width: 100%; height: 100%;position: absolute;"></div>
 		<div class="row-fluid column">
 			<div class="span12">
-				<h1 id="ver">
-					教师评价系统 &nbsp;<i class="fa fa-sign-out"
-						style="font-size:80px; float:right"></i>
-				</h1>
+				<h1 id="ver" style="display:inline-block">教师评价系统 &nbsp;</h1>
+				<i class="fa fa-sign-out"
+					style="font-size:80px;display:inline-block; float:right"></i>
 
 			</div>
 		</div>
@@ -324,14 +347,14 @@ html, body {
 
 						<br> <br>
 						<button type="button" id="menusub" class="btn">提交</button>
-						<button type="button" id="menusubxxx" class="btn">提交xxxx</button>
 				</div>
 				<legend>
-							菜单预览&nbsp;&nbsp;<i class="fa fa-folder-open"></i>
-						</legend>
-				
+					菜单预览&nbsp;&nbsp;<i class="fa fa-folder-open"></i>
+				</legend>
+
 				<div class="span6">
-					<div id="tree" style="width:50%;margin-left:auto;margin-right:auto;"></div>
+					<div id="tree"
+						style="width:50%;margin-left:auto;margin-right:auto;"></div>
 				</div>
 
 
@@ -344,6 +367,7 @@ html, body {
 
 	</div>
 
-
+	<script src="/TES/plugin/script/particles.min.js"></script>
+	<script src="/TES/plugin/script/app.js"></script>
 </body>
 </html>

@@ -9,7 +9,8 @@
 <script src="/TES/plugin/script/clicktext.js"></script>
 <script src="/TES/plugin/script/bootstrap.min.js"></script>
 <script src="/TES/plugin/script/bootstrap-slider.min.js"></script>
-<script src="/TES/plugin/script/jquery.cookie.js"></script>
+<script src="/TES/plugin/script/jquery.cookie.js"></script> 
+
 
 <link rel="stylesheet" type="text/css"
 	href="/TES/plugin/css/bootstrap.min.css">
@@ -17,6 +18,8 @@
 	href="/TES/plugin/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css"
 	href="/TES/plugin/fonts/iconic/css/material-design-iconic-font.min.css">
+<link rel="stylesheet" type="text/css"
+	href="/TES/plugin/css/jquery.funnyText.css">
 
 <style>
 html, body {
@@ -33,6 +36,9 @@ html, body {
 	border-radius: 8px 8px 8px 8px;
 	padding: 10px 19px 24px;
 }
+.row-fluid{
+position: relative; 
+} 
 </style>
 
 <script>
@@ -117,6 +123,7 @@ html, body {
 		default:
 			break;
 		}
+		$('#ver').funnyText();
 		/*--------------iMissYou----------------*/
 		$.iMissYou({
 			title : "诶你怎么跑了( ꒪Д꒪)ノ",
@@ -139,14 +146,17 @@ html, body {
 </head>
 <body>
 
-	<div class="container-fluid"
+	<div class="container-fluid" 
 		style="background-color: #333;height:100%;">
-		<div class="row-fluid column">
+		<div id="particles-js"  style="width: 100%; height: 100%;position: absolute;">	</div>
+		<div class="row-fluid column" >
 			<div class="span12">
-				<h1 id="ver">
-					教师评价系统 &nbsp;<i class="fa fa-sign-out"
-						style="font-size:80px; float:right"></i>
+			
+				<h1 id="ver" style="display:inline-block">
+					教师评价系统 &nbsp;
 				</h1>
+				<i class="fa fa-sign-out"
+						style="font-size:80px;display:inline-block; float:right"></i>
 
 			</div>
 		</div>
@@ -167,11 +177,19 @@ html, body {
 						<a class="btn btn-primary btn-large" href="#">参看更多 »</a>
 					</p>
 				</div>
+			
+				
 			</div>
+			
 
 
 		</div>
 	</div>
+
+<script src="/TES/plugin/script/particles.min.js"></script>
+<script src="/TES/plugin/script/app.js"></script> 
+<script src="/TES/plugin/script/jquery.funnyText.min.js"></script> 
+
 
 </body>
 </html>
