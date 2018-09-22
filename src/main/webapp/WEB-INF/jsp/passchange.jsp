@@ -44,8 +44,8 @@ position: relative;
 	$(document).ready(function() {
 
 		/*---------------JSP Init----------------*/
-		//var user_type = '<%=session.getAttribute("user_type")%>';
-		var user_type=${sessionScope.user.user_type}
+		var user_type = '<%=session.getAttribute("user_type")%>';
+		//var user_type=${sessionScope.user.user_type}
 		var role_id='<%=session.getAttribute("role_id")%>';
 		$.ajax({
 			type : "POST",
@@ -106,17 +106,17 @@ position: relative;
 		$ver2 = $("<small>教师版</small>");
 		$ver3 = $("<small>院系领导版</small>");
 		$ver4 = $("<small>管理员版</small>");
-		switch (user_type) {
-		case "0":
+		switch (role_id) {
+		case "1":
 			$("#ver").append($ver1);
 			break;
-		case "1":
+		case "2":
 			$("#ver").append($ver2);
 			break;
-		case "2":
+		case "3":
 			$("#ver").append($ver3);
 			break;
-		case "9":
+		case "4":
 			$("#ver").append($ver4);
 			break;
 		default:
@@ -195,7 +195,7 @@ position: relative;
 					url : "/TES/pw_update",
 					dataType : "json",
 					data : {
-						type : user_type,
+						type : role_id,
 						pass : p_c,
 						num : user_number
 					},

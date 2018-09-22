@@ -10,4 +10,9 @@ select * from menu_view where menu_type=#{menu_type} order by menu_id;
 <select id="getMenux" parameterType="int" resultType="teavs.entity.Menu">
 select Id id,pid pid,context from menu where menu_type=#{menu_type};
 </select>
+
+<update id="orderplus" parameterType="int" >
+    update menutest set menu_id = menu_id+1 where menu_id>#{param1} and menu_type=#{param2};
+</update>
+
 </mapper>

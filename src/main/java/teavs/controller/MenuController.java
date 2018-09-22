@@ -38,5 +38,13 @@ public class MenuController {
 	        return json2;
 	}
 	
+	@RequestMapping(value = "/menuedit", produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String  menuedit(String mposition,String ctype,String nav_input) {	
+		int i = menuService.orderplus(Integer.parseInt(mposition),Integer.parseInt(ctype));
+		
+		return "1";
+	}
+	
 
 }

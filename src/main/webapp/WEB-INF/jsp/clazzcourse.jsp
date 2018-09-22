@@ -111,17 +111,17 @@ position: relative;
 		$ver2 = $("<small>教师版</small>");
 		$ver3 = $("<small>院系领导版</small>");
 		$ver4 = $("<small>管理员版</small>");
-		switch (user_type) {
-		case "0":
+		switch (role_id) {
+		case "1":
 			$("#ver").append($ver1);
 			break;
-		case "1":
+		case "2":
 			$("#ver").append($ver2);
 			break;
-		case "2":
+		case "3":
 			$("#ver").append($ver3);
 			break;
-		case "9":
+		case "4":
 			$("#ver").append($ver4);
 			break;
 		default:

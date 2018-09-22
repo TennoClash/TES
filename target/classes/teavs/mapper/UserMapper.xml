@@ -13,7 +13,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	select role_id from user_role where user_id=#{user_id}
 	</select>
 	
-	<update id="updateavsPassWord" parameterType="teavs.entity.User">
+	<update id="updateSPassWord" parameterType="teavs.entity.User">
 	UPDATE student set password = #{password} where user_number=#{user_number}
 	</update>
 	<update id="updateTPassWord" parameterType="teavs.entity.User">

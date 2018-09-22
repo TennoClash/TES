@@ -1,6 +1,5 @@
 package teavs.service;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,4 +22,8 @@ public class MenuService {
 		List<Menu> menu=menuDao.getMenux(i);
 		return menu;
 	}
+	public int orderplus(int mposition,int ctype){
+		return menuDao.orderplus(mposition,ctype);
+	}
+	
 }

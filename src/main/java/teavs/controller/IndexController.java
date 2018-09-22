@@ -72,7 +72,7 @@ public class IndexController {
 		user.setUser_number(num);
 		user.setPassword(pass);
 		System.out.println(type);
-		if(type.equals("0")){
+		if(type.equals("1")){
 			System.out.println("学生"+pass+"+"+num);
 			int i= upDateService.updateSPassWord(user);
 			if(i>0){
