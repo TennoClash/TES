@@ -159,13 +159,31 @@ html, body {
 		$("input[name='select_level']").on("click", function() {
 			var menu_level = $("input[name='select_level']:checked").val();
 			if (menu_level == "1") {
+				$("#d_lower_select").hide();
 				$("#upper_select").hide();
+				$("#d_upper_select").hide();
 				$("#nav_info").show();
 				sub_type = menu_level;
 			}
 			if (menu_level == "2") {
+				$("#d_lower_select").hide();
 				$("#nav_info").hide();
+				$("#d_upper_select").hide();
 				$("#upper_select").show();
+				sub_type = menu_level;
+			}
+			if (menu_level == "3") {
+				$("#d_lower_select").hide();
+				$("#nav_info").hide();
+				$("#upper_select").hide();
+				$("#d_upper_select").show();
+				sub_type = menu_level;
+			}
+			if (menu_level == "4") {
+				$("#nav_info").hide();
+				$("#upper_select").hide();
+				$("#d_upper_select").hide();
+				$("#d_lower_select").show();
 				sub_type = menu_level;
 			}
 		})
@@ -186,15 +204,23 @@ html, body {
 					cdata = data;
 					console.log(data)
 					var str = "";
+					var str2 = "";
 					$.each(data, function(i, v) {
 						if (data[i].nav_id != null && data[i].nav_id != "") {
 							str += '<option value="' + data[i].nav_id + '">' + data[i].context + '</option>'
+						}
+						if (data[i].parent_id != null && data[i].parent_id != "" && data[i].css_class != "divider") {
+							str2 += '<option value="' + data[i].id + '">' + data[i].context + '</option>'
 						}
 					})
 					$("#select1").html(str);
 					$('#select1').selectpicker('refresh');
 					$("#select2").html(str);
 					$('#select2').selectpicker('refresh');
+					$("#select3").html(str);
+					$('#select3').selectpicker('refresh');
+					$("#select4").html(str2);
+					$('#select4').selectpicker('refresh');
 				}
 			})
 			$.ajax({
@@ -284,6 +310,56 @@ html, body {
 					},
 					success : function(data) {}
 				})
+			}
+			if (sub_type == "3") {
+				var select3 = $("#select3").val();
+				var mposition;
+				var k = 0;
+
+				$.each(cdata, function(i, v) {
+					if (cdata[i].nav_id == select3) {
+						mposition = cdata[i].menu_id - 1;
+						k++
+					}
+					if (cdata[i].parent_id == select3) {
+						k++;
+					}
+				})
+
+				$.ajax({
+					type : "POST",
+					url : "/TES/menudel",
+					data : {
+						mposition : mposition,
+						count : k,
+						ctype : menu_role_m,
+						navid : select3
+					},
+					success : function(data) {}
+				})
+			} 
+			if (sub_type == "4") {
+				var select4 = $("#select4").val();
+				
+				$.each(cdata, function(i, v) {
+					if (cdata[i].id == select4) {
+						mposition = cdata[i].menu_id - 1;
+					}
+				})
+				
+				$.ajax({
+					type : "POST",
+					url : "/TES/menudel_2",
+					data : {
+						mposition : mposition,
+						id : select4,
+						ctype : menu_role_m
+					},
+					success : function(data) {
+					
+					
+					}
+				})
 
 			}
 
@@ -350,7 +426,9 @@ html, body {
 
 						<strong>菜单操作</strong><br> <br> 添加一级菜单：<input
 							type="radio" name="select_level" value="1" />&nbsp; 添加下级菜单：<input
-							type="radio" name="select_level" value="2" /><br> <br>
+							type="radio" name="select_level" value="2" /> &nbsp; 删除一级菜单：<input
+							type="radio" name="select_level" value="3" />&nbsp; 删除下级菜单：<input
+							type="radio" name="select_level" value="4" /><br> <br>
 
 						<fieldset id="nav_info" style="display:none">
 							<label><strong>输入上级菜单名</strong></label><input id="nav_input"
@@ -378,6 +456,31 @@ html, body {
 							<br> <label><strong>输入菜单名</strong></label><input
 								id="nav_input_2" type="text" />
 						</fieldset>
+
+
+						<fieldset id="d_upper_select" style="display:none">
+							<strong>选择一级菜单</strong><br> <br>
+							<div class="col-sm-6" style="width:200px">
+								<select id="select3" name="select"
+									class="selectpicker show-tick form-control"
+									data-live-search="true" data-actions-box="true">
+								</select>
+							</div>
+							<br>
+						</fieldset>
+
+
+						<fieldset id="d_lower_select" style="display:none">
+							<strong>选择下级菜单</strong><br> <br>
+							<div class="col-sm-6" style="width:200px">
+								<select id="select4" name="select"
+									class="selectpicker show-tick form-control"
+									data-live-search="true" data-actions-box="true">
+								</select>
+							</div>
+							<br>
+						</fieldset>
+
 
 
 

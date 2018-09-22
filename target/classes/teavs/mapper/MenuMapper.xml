@@ -12,18 +12,30 @@ select Id id,pid pid,context from menu where menu_type=#{menu_type};
 </select>
 
 <update id="orderplus" parameterType="int" >
-    update menutest set menu_id = menu_id+1 where menu_id>#{param1} and menu_type=#{param2};
+    update menu set menu_id = menu_id+1 where menu_id>#{param1}-1 and menu_type=#{param2};
 </update>
 
 <update id="orderreduce" parameterType="int" >
-    update menutest set menu_id = menu_id-1 where menu_id>#{param1} and menu_type=#{param2};
+    update menu set menu_id = menu_id-1 where menu_id>#{param1} and menu_type=#{param2};
 </update>
 
 <insert id="insert_menu" parameterType="teavs.entity.Menu" >
-   replace into menutest (css_class,context,nav_id,parent_id,menu_type,menu_id,a_context,pid) values("nav-header",#{context},#{nav_id},"",#{menu_type},#{menu_id},"",null);
+   replace into menu (css_class,context,nav_id,parent_id,menu_type,menu_id,a_context,pid) values("nav-header",#{context},#{nav_id},"",#{menu_type},#{menu_id},"",null);
 </insert>
 
 <insert id="insert_menu_2" parameterType="teavs.entity.Menu" >
-   replace into menutest (css_class,context,nav_id,parent_id,menu_type,menu_id,a_context,pid) values(null,#{context},null,#{parent_id},#{menu_type},#{menu_id},"",#{pid});
+   replace into menu (css_class,context,nav_id,parent_id,menu_type,menu_id,a_context,pid) values(null,#{context},null,#{parent_id},#{menu_type},#{menu_id},"",#{pid});
 </insert>
+
+<delete id="delete_menu" parameterType="String" >
+DELETE from menu where nav_id=#{param1} or parent_id=#{param2};
+</delete>
+
+<delete id="delete_menu_2" parameterType="int" >
+DELETE from menu where Id=#{Id};
+</delete>
+
+<update id="orderreduce_2" parameterType="int" >
+    update menu set menu_id = menu_id-#{param1} where menu_id>#{param2} and menu_type=#{param3};
+</update>
 </mapper>

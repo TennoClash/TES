@@ -34,5 +34,14 @@ public class MenuService {
 	public int insert_menu_2(Menu menu){
 		return menuDao.insert_menu_2(menu);
 	}
+	public int delete_menu(String i,String k){
+		return menuDao.delete_menu(i,k);
+	}
+	public int orderreduce_2(int i,int k,int j){
+		return menuDao.orderreduce_2(i,k,j);
+	}
+	public int delete_menu_2(int i){
+		return menuDao.delete_menu_2(i);
+	}
 	
 }
