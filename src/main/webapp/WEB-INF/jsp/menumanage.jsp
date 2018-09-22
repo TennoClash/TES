@@ -218,40 +218,76 @@ html, body {
 		})
 
 		$("#menusub").on("click", function() {
-		if(sub_type==1){
-		var nav_input = $("#nav_input").val();
-			var select1 = $("#select1").val();
-			var max = 0;
-			var maxx=[];
-			$.each(cdata, function(i, v) {
-				if (cdata[i].nav_id == select1) {
-					var nnav_id = cdata[i].nav_id;
-					$.each(cdata, function(ii, vv) {
-					
-						if (cdata[ii].parent_id == nnav_id) {	
-						console.log("第二层")					
-							maxx.push(cdata[ii].mneu_id);
-						}
-					})
-				}
-			})
-			
-			console.log(menu_role_m)
-			console.log(Math.max.apply(null, maxx))
-		}
-			
-			$.ajax({
-				type : "POST",
-				url : "/TES/menuedit",
-				data : {
-					nav_input : nav_input,
-					mposition : Math.max.apply(null, maxx),
-					ctype : menu_role_m
-				},
-				success : function(data) {
-					
-				}
-			})
+			if (sub_type == 1) {
+				var nav_input = $("#nav_input").val();
+				var select1 = $("#select1").val();
+				var max = 0;
+				var maxx = [];
+				var maxnav = [];
+				$.each(cdata, function(i, v) {
+					if (cdata[i].nav_id == select1) {
+						var nnav_id = cdata[i].nav_id;
+						$.each(cdata, function(ii, vv) {
+
+							if (cdata[ii].parent_id == nnav_id) {
+								console.log("第二层")
+								maxx.push(cdata[ii].menu_id);
+							}
+						})
+					}
+				})
+				$.each(cdata, function(i, v) {
+					if (cdata[i].nav_id != null && cdata[i].nav_id != "") {
+						maxnav.push(cdata[i].nav_id);
+					}
+				})
+
+				console.log(menu_role_m)
+				console.log(Math.max.apply(null, maxx))
+				console.log(Math.max.apply(null, maxnav))
+				$.ajax({
+					type : "POST",
+					url : "/TES/menuaddf",
+					data : {
+						nav_input : nav_input,
+						mposition : Math.max.apply(null, maxx),
+						ctype : menu_role_m,
+						navid : Math.max.apply(null, maxnav) + 1
+					},
+					success : function(data) {}
+				})
+			}
+			if (sub_type == "2") {
+				var mmenuid = [];
+				var nav_input_2 = $("#nav_input_2").val();
+				var select2 = $("#select2").val();
+				var pid;
+				$.each(cdata, function(i, v) {
+					if (cdata[i].nav_id == select2) {
+						pid = cdata[i].id;
+					}
+					if (cdata[i].parent_id == select2) {
+						mmenuid.push(cdata[i].menu_id);
+					}
+				})
+				console.log(Math.max.apply(null, mmenuid))
+
+				$.ajax({
+					type : "POST",
+					url : "/TES/menuadds",
+					data : {
+						nav_input : nav_input_2,
+						mposition : Math.max.apply(null, mmenuid),
+						ctype : menu_role_m,
+						navid : select2,
+						pid : pid
+					},
+					success : function(data) {}
+				})
+
+			}
+
+
 		})
 
 
@@ -313,11 +349,11 @@ html, body {
 						<legend></legend>
 
 						<strong>菜单操作</strong><br> <br> 添加一级菜单：<input
-							type="radio" name="select_level" value="1" />&nbsp; 添加二级菜单：<input
+							type="radio" name="select_level" value="1" />&nbsp; 添加下级菜单：<input
 							type="radio" name="select_level" value="2" /><br> <br>
 
 						<fieldset id="nav_info" style="display:none">
-							<label><strong>输入一级菜单名</strong></label><input id="nav_input"
+							<label><strong>输入上级菜单名</strong></label><input id="nav_input"
 								type="text" /> <label><strong id="xxs">选择本次添加菜单
 									在哪条菜单之后</strong></label>
 
@@ -337,9 +373,10 @@ html, body {
 								<select id="select2" name="select"
 									class="selectpicker show-tick form-control"
 									data-live-search="true" data-actions-box="true">
-
 								</select>
 							</div>
+							<br> <label><strong>输入菜单名</strong></label><input
+								id="nav_input_2" type="text" />
 						</fieldset>
 
 
@@ -350,11 +387,12 @@ html, body {
 						<br> <br>
 						<button type="button" id="menusub" class="btn">提交</button>
 				</div>
-				<legend>
-					菜单预览&nbsp;&nbsp;<i class="fa fa-folder-open"></i>
-				</legend>
+
 
 				<div class="span6">
+					<legend>
+						菜单预览&nbsp;&nbsp;<i class="fa fa-folder-open"></i>
+					</legend>
 					<div id="tree"
 						style="width:50%;margin-left:auto;margin-right:auto;"></div>
 				</div>

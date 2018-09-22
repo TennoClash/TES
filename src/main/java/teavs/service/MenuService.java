@@ -25,5 +25,14 @@ public class MenuService {
 	public int orderplus(int mposition,int ctype){
 		return menuDao.orderplus(mposition,ctype);
 	}
+	public int orderreduce(int mposition,int ctype){
+		return menuDao.orderreduce(mposition,ctype);
+	}
+	public int insert_menu(Menu menu){
+		return menuDao.insert_menu(menu);
+	}
+	public int insert_menu_2(Menu menu){
+		return menuDao.insert_menu_2(menu);
+	}
 	
 }

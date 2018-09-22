@@ -8,8 +8,8 @@ public class Menu {
 	String context;
 	String nav_id;
 	String parent_id;
-	String menu_type;
-	String menu_id;
+	int menu_type;
+	int menu_id;
 	String a_context;
 	int pid;
 	private List<Menu> children;
@@ -53,20 +53,22 @@ public class Menu {
 		this.parent_id = parent_id;
 	}
 
-	public String getMenu_type() {
+	
+
+	public int getMenu_type() {
 		return menu_type;
 	}
 
-	public void setMenu_type(String menu_type) {
+	public void setMenu_type(int menu_type) {
 		this.menu_type = menu_type;
 	}
 
-	public String getMneu_id() {
+	public int getMenu_id() {
 		return menu_id;
 	}
 
-	public void setMneu_id(String mneu_id) {
-		this.menu_id = mneu_id;
+	public void setMenu_id(int menu_id) {
+		this.menu_id = menu_id;
 	}
 
 	public String getA_context() {

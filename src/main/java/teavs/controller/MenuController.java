@@ -34,15 +34,37 @@ public class MenuController {
 	        String json = new TreeBuilder().buildTree(menus);
 	       String json1= json.replace("context", "text");
 	       String json2= json1.replace("children", "nodes");
-	        System.out.println(json2);
 	        return json2;
 	}
 	
-	@RequestMapping(value = "/menuedit", produces = "text/html;charset=UTF-8")
+	@RequestMapping(value = "/menuaddf", produces = "text/html;charset=UTF-8")
 	@ResponseBody
-	public String  menuedit(String mposition,String ctype,String nav_input) {	
+	public String  menuaddf(String mposition,String ctype,String nav_input,String navid) {	
 		int i = menuService.orderplus(Integer.parseInt(mposition),Integer.parseInt(ctype));
-		
+		if(i>0){
+			Menu menu=new Menu();
+			menu.setContext(nav_input);
+			menu.setMenu_type(Integer.parseInt(ctype));
+			menu.setMenu_id(Integer.parseInt(mposition)+1);
+			menu.setNav_id(navid);
+			int ii=menuService.insert_menu(menu);		
+		}		
+		return "1";
+	}
+	
+	@RequestMapping(value = "/menuadds", produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String  menuadds(String mposition,String ctype,String nav_input,String navid,String pid) {	
+		int i = menuService.orderplus(Integer.parseInt(mposition),Integer.parseInt(ctype));
+		if(i>0){
+			Menu menu=new Menu();
+			menu.setContext(nav_input);
+			menu.setMenu_type(Integer.parseInt(ctype));
+			menu.setMenu_id(Integer.parseInt(mposition)+1);
+			menu.setParent_id(navid);
+			menu.setPid(Integer.parseInt(pid));
+			int ii=menuService.insert_menu_2(menu);		
+		}		
 		return "1";
 	}
 	

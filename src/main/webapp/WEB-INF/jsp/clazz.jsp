@@ -129,14 +129,7 @@ position: relative;
 		default:
 			break;
 		}
-		$('#ver').funnyText({
-   speed: 1400,
-   borderColor: 'black',
-   activeColor: '#deecff',
-   color: '#fd8383',
-   fontSize: '40px',
-   direction: 'both'
-   });
+		
    $('#ver').funnyText();
 		/*--------------iMissYou----------------*/
 		$.iMissYou({
