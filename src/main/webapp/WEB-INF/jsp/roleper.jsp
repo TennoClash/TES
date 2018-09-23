@@ -54,6 +54,14 @@ html, body {
 	border: 1px solid #ffcccc;
 	border-radius: 1em;
 }
+
+#perul li {
+	margin-bottom: 5px;
+	text-align: center;
+	cursor: pointer;
+	border: 1px solid #ffcccc;
+	border-radius: 1em;
+}
 </style>
 
 <script>
@@ -174,7 +182,7 @@ html, body {
 			},
 			error : function() {}
 		});
-		
+
 		$.ajax({
 			type : "POST",
 			url : "/TES/perx",
@@ -190,14 +198,20 @@ html, body {
 			},
 			error : function() {}
 		});
-		
-		
-		
+
+
+
 
 		$("#roleul").on("mouseover", "li", function() {
 			$(this).css("background-color", "#fe8f8f");
 		})
 		$("#roleul").on("mouseout", "li", function() {
+			$(this).css("background-color", "#ffcccc");
+		})
+		$("#perul").on("mouseover", "li", function() {
+			$(this).css("background-color", "#fe8f8f");
+		})
+		$("#perul").on("mouseout", "li", function() {
 			$(this).css("background-color", "#ffcccc");
 		})
 	})
@@ -232,26 +246,42 @@ html, body {
 						角色权限管理&nbsp;&nbsp;<i class="fa fa-folder-open"></i>
 					</legend>
 				</fieldset>
-				<div style="display:inline-block">
-					<h5>当前角色：</h5>
-					<div
-						style="width:100px;background-color:#ffcccc;border:1px solid #ffcccc;border-radius:1em">
-						<strong>
-							<ul class="nav nav-list" id="roleul">
-							</ul>
-						</strong>
-					</div> 
-				</div>
-				<div style="display:inline-block;margin-left:20px">
-					<h5>当前权限：</h5>
-					<div
-						style="width:100px;background-color:#ffcccc;border:1px solid #ffcccc;border-radius:1em">
-						<strong>
-							<ul class="nav nav-list" id="perul">
-							</ul>
-						</strong>
+
+				<div class="row-fluid">
+					<div class="span3" style="border-right:1px solid #DDDDDD">
+						<center>
+							<div>
+								<h5>当前权限：</h5>
+								<div
+									style="width:100px;background-color:#ffcccc;border:1px solid #ffcccc;border-radius:1em">
+									<strong>
+										<ul class="nav nav-list" id="perul">
+										</ul>
+									</strong>
+								</div>
+							</div> 
 					</div>
+					</center>
+					<div class="span3" style="height:100%;border-right:1px solid #DDDDDD">
+						<center>
+							<div>
+								<h5>当前角色：</h5>
+								<div
+									style="width:100px;background-color:#ffcccc;border:1px solid #ffcccc;border-radius:1em">
+									<strong>
+										<ul class="nav nav-list" id="roleul">
+										</ul>
+									</strong>
+								</div>
+							</div>
+					</div>
+					</center>
+					<div class="span6"></div>
 				</div>
+
+
+
+
 
 			</div>
 		</div>

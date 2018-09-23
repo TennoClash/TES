@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
+import teavs.entity.Permission;
 import teavs.entity.Role;
 import teavs.service.RolePerService;
 
@@ -26,8 +26,8 @@ public class RolePerController {
 	
 	@RequestMapping(value = "/perx", produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public List<Role> perx() {
-		List<Role> roles=rolePerService.getRoles();
-	        return roles;
+	public List<Permission> perx() {
+		List<Permission> permissions=rolePerService.getPermissions();
+	        return permissions;
 	}
 }
