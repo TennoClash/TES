@@ -5,6 +5,7 @@ import java.util.List;
 import teavs.entity.Clazz;
 import teavs.entity.ClazzCourse;
 import teavs.entity.Course;
+import teavs.entity.TeacherCourse;
 import teavs.entity.User;
 import teavs.entity.student;
 import teavs.entity.teacher;
@@ -23,5 +24,7 @@ public interface UpDateDao {
 	int Clazz_Update(List<Clazz> clazzs);
 	
 	int Clazz_Course_Update(List<ClazzCourse> clazzCourses);
+
+	int Teacher_Course_Update(List<TeacherCourse> teacherCourses);
 	
 }

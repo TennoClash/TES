@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import teavs.entity.Clazz;
 import teavs.entity.ClazzCourse;
 import teavs.entity.Course;
+import teavs.entity.TeacherCourse;
 import teavs.entity.student;
 import teavs.entity.teacher;
 import teavs.service.UpDateService;
@@ -35,6 +36,10 @@ public class ClassAffairController {
 	@RequestMapping("/clazzcourse")
 	public String clazzcourse() {
 		return "clazzcourse";
+	}
+	@RequestMapping("/teacherclazz")
+	public String teacherclazz() {
+		return "teacherclazz";
 	}
 	
 	@RequestMapping(value = "/courseupload", produces = "application/json;charset=UTF-8")
@@ -62,5 +67,14 @@ public class ClassAffairController {
 			List<ClazzCourse> clazzCourses = JSONObject.parseArray(ListSrt, ClazzCourse.class);			
 			int i=upDateService.Clazz_Course_Update(clazzCourses);
 			return String.valueOf(clazzCourses.size());		
+	}
+	
+	@RequestMapping(value = "/tcupload", produces = "application/json;charset=UTF-8")
+	@ResponseBody 
+	public String tcupload(String ListSrt) {
+		System.out.println(ListSrt);
+			List<TeacherCourse> teacherCourses = JSONObject.parseArray(ListSrt, TeacherCourse.class);			
+			int i=upDateService.Teacher_Course_Update(teacherCourses);
+			return String.valueOf(teacherCourses.size());		
 	}
 }

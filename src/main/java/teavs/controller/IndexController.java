@@ -52,6 +52,11 @@ public class IndexController {
 	public String sinfo() {
 		return "sinfo";
 	}
+	@RequestMapping("/roleper")
+	public String roleper() {
+		return "roleper";
+	}
+
 
 	@RequestMapping(value = "/pass_check", produces = "application/json;charset=UTF-8")
 	@ResponseBody

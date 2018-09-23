@@ -10,6 +10,7 @@ import teavs.dao.UserDao;
 import teavs.entity.Clazz;
 import teavs.entity.ClazzCourse;
 import teavs.entity.Course;
+import teavs.entity.TeacherCourse;
 import teavs.entity.User;
 import teavs.entity.student;
 import teavs.entity.teacher;
@@ -55,5 +56,9 @@ public class UpDateService {
 	
 	public int Clazz_Course_Update(List<ClazzCourse> clazzCourses){
 		return upDateDao.Clazz_Course_Update(clazzCourses);
+	}
+	
+	public int Teacher_Course_Update(List<TeacherCourse> teacherCourses){
+		return upDateDao.Teacher_Course_Update(teacherCourses);
 	}
 }
