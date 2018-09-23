@@ -19,4 +19,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="updateTPassWord" parameterType="teavs.entity.User">
 	UPDATE teacher set password = #{password} where user_number=#{user_number}
 	</update>
+	
+	<update id="passReset" parameterType="teavs.entity.student">
+	UPDATE student set password = #{password} where Id=#{Id}
+	</update>
+	
+	<update id="passResetT" parameterType="teavs.entity.teacher">
+	UPDATE teacher set password = #{password} where Id=#{Id}
+	</update>
 </mapper>

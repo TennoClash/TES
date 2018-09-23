@@ -112,7 +112,8 @@ html, body {
 				}
 			},
 			error : function() {
-				alert("菜单查询失败！");
+				alert("登录信息过期，请重新登录！");
+				location.href = "/TES/login"
 			}
 		});
 
@@ -280,11 +281,32 @@ html, body {
 						ctype : menu_role_m,
 						navid : Math.max.apply(null, maxnav) + 1
 					},
-					success : function(data) {}
+					success : function(data) {
+						$.ajax({
+							type : "POST",
+							url : "/TES/menux",
+							data : {
+								i : menu_role_m
+							},
+							success : function(data) {
+								function getTree() {
+									return data;
+								}
+								$('#tree').treeview({
+									data : getTree(),
+									levels : 5,
+									backColor : '#daeaff'
+								});
+								console.log($.parseJSON(data))
+							}
+						})
+
+					}
 				})
 			}
 			if (sub_type == "2") {
 				var mmenuid = [];
+				var mmposition;
 				var nav_input_2 = $("#nav_input_2").val();
 				var select2 = $("#select2").val();
 				var pid;
@@ -296,6 +318,17 @@ html, body {
 						mmenuid.push(cdata[i].menu_id);
 					}
 				})
+				mmposition = Math.max.apply(null, mmenuid);
+				if (mmenuid.length == 0) {
+					$.each(cdata, function(i, v) {
+						if (cdata[i].nav_id == select2) {
+							mmposition = cdata[i].menu_id
+						}
+
+					})
+				}
+
+				console.log(mmenuid)
 				console.log(Math.max.apply(null, mmenuid))
 
 				$.ajax({
@@ -303,12 +336,31 @@ html, body {
 					url : "/TES/menuadds",
 					data : {
 						nav_input : nav_input_2,
-						mposition : Math.max.apply(null, mmenuid),
+						mposition : mmposition,
 						ctype : menu_role_m,
 						navid : select2,
 						pid : pid
 					},
-					success : function(data) {}
+					success : function(data) {
+						$.ajax({
+							type : "POST",
+							url : "/TES/menux",
+							data : {
+								i : menu_role_m
+							},
+							success : function(data) {
+								function getTree() {
+									return data;
+								}
+								$('#tree').treeview({
+									data : getTree(),
+									levels : 5,
+									backColor : '#daeaff'
+								});
+								console.log($.parseJSON(data))
+							}
+						})
+					}
 				})
 			}
 			if (sub_type == "3") {
@@ -335,18 +387,37 @@ html, body {
 						ctype : menu_role_m,
 						navid : select3
 					},
-					success : function(data) {}
+					success : function(data) {
+						$.ajax({
+							type : "POST",
+							url : "/TES/menux",
+							data : {
+								i : menu_role_m
+							},
+							success : function(data) {
+								function getTree() {
+									return data;
+								}
+								$('#tree').treeview({
+									data : getTree(),
+									levels : 5,
+									backColor : '#daeaff'
+								});
+								console.log($.parseJSON(data))
+							}
+						})
+					}
 				})
-			} 
+			}
 			if (sub_type == "4") {
 				var select4 = $("#select4").val();
-				
+
 				$.each(cdata, function(i, v) {
 					if (cdata[i].id == select4) {
 						mposition = cdata[i].menu_id - 1;
 					}
 				})
-				
+
 				$.ajax({
 					type : "POST",
 					url : "/TES/menudel_2",
@@ -356,8 +427,24 @@ html, body {
 						ctype : menu_role_m
 					},
 					success : function(data) {
-					
-					
+						$.ajax({
+							type : "POST",
+							url : "/TES/menux",
+							data : {
+								i : menu_role_m
+							},
+							success : function(data) {
+								function getTree() {
+									return data;
+								}
+								$('#tree').treeview({
+									data : getTree(),
+									levels : 5,
+									backColor : '#daeaff'
+								});
+								console.log($.parseJSON(data))
+							}
+						})
 					}
 				})
 
@@ -455,7 +542,7 @@ html, body {
 							</div>
 							<br> <label><strong>输入菜单名</strong></label><input
 								id="nav_input_2" type="text" />
-						</fieldset>
+						</fieldset> 
 
 
 						<fieldset id="d_upper_select" style="display:none">

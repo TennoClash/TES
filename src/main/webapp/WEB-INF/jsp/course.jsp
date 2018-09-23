@@ -13,7 +13,7 @@
 <script src="/TES/plugin/script/bootstrap-slider.min.js"></script>
 <script src="/TES/plugin/script/xlsx.full.min.js"></script>
 <script src="/TES/plugin/script/jasny-bootstrap.min.js"></script>
-<script src="/TES/plugin/script/jquery.funnyText.min.js"></script> 
+<script src="/TES/plugin/script/jquery.funnyText.min.js"></script>
 <link rel="stylesheet" type="text/css"
 	href="/TES/plugin/css/jquery.funnyText.css">
 <link rel="stylesheet" type="text/css"
@@ -40,9 +40,10 @@ html, body {
 	border-radius: 8px 8px 8px 8px;
 	padding: 10px 19px 24px;
 }
-.row-fluid{
-position: relative; 
-} 
+
+.row-fluid {
+	position: relative;
+}
 </style>
 
 <script>
@@ -103,7 +104,8 @@ position: relative;
 				}
 			},
 			error : function() {
-				alert("菜单查询失败！");
+				alert("登录信息过期，请重新登录！");
+				location.href = "/TES/login"
 			}
 		});
 		/*---------------jsp-version----------------*/
@@ -149,18 +151,17 @@ position: relative;
 				},
 				dataType : "json",
 				success : function(data) {
-				$("#update-success-alert").remove();
-				$("#update-fail-alert").remove();
-				var $updatesuc = $("<div class='alert alert-success' id='update-success-alert' style='margin:0px 0px 0px 30px;width:25%;display:inline-block'><button type='button' class='close' data-dismiss='alert'>×</button> <h4> 操作成功! </h4> 成功插入"+data+"条数据"+" </div>")
-				$("#box1").after($updatesuc);
+					$("#update-success-alert").remove();
+					$("#update-fail-alert").remove();
+					var $updatesuc = $("<div class='alert alert-success' id='update-success-alert' style='margin:0px 0px 0px 30px;width:25%;display:inline-block'><button type='button' class='close' data-dismiss='alert'>×</button> <h4> 操作成功! </h4> 成功插入" + data + "条数据" + " </div>")
+					$("#box1").after($updatesuc);
 				},
 				error : function(data) {
-				$("#update-success-alert").remove();
-				$("#update-fail-alert").remove();
-				var $updatefail = $("<div class='alert alert-fail' id='update-fail-alert' style='margin:0px 0px 0px 30px;width:25%;display:inline-block'><button type='button' class='close' data-dismiss='alert'>×</button> <h4> 操作失败! </h4> 插入失败</div>")
-				$("#box1").after($updatefail);
+					$("#update-success-alert").remove();
+					$("#update-fail-alert").remove();
+					var $updatefail = $("<div class='alert alert-fail' id='update-fail-alert' style='margin:0px 0px 0px 30px;width:25%;display:inline-block'><button type='button' class='close' data-dismiss='alert'>×</button> <h4> 操作失败! </h4> 插入失败</div>")
+					$("#box1").after($updatefail);
 				}
-				
 			});
 
 		})
@@ -181,14 +182,13 @@ position: relative;
 
 	<div class="container-fluid"
 		style="background-color: #333;height:100%;">
-		<div id="particles-js"  style="width: 100%; height: 100%;position: absolute;">	</div>
+		<div id="particles-js"
+			style="width: 100%; height: 100%;position: absolute;"></div>
 		<div class="row-fluid column">
 			<div class="span12">
-				<h1 id="ver" style="display:inline-block">
-					教师评价系统 &nbsp;
-				</h1>
+				<h1 id="ver" style="display:inline-block">教师评价系统 &nbsp;</h1>
 				<i class="fa fa-sign-out"
-						style="font-size:80px;display:inline-block; float:right"></i>
+					style="font-size:80px;display:inline-block; float:right"></i>
 
 			</div>
 		</div>
@@ -207,65 +207,66 @@ position: relative;
 						课程管理&nbsp;&nbsp;<i class="fa fa-folder-open"></i>
 					</legend>
 
-				</fieldset> 
+				</fieldset>
 				<div id="demo"></div>
-			<div id="box1" style="margin-top:25px;display:inline-block">选择excel文件
-				<div class="fileinput fileinput-new" data-provides="fileinput">
-					<span class="btn btn-default btn-file"><span
-						class="fileinput-new">Select file</span><span
-						class="fileinput-exists">Change</span><input type="file"
-						onchange="importf(this)" name="..."></span> <span
-						class="fileinput-filename"></span> <a href="#"
-						class="close fileinput-exists" data-dismiss="fileinput"
-						style="float: none">&times;</a>
-				</div>
-				<button type="button" id="upload_sub" class="btn">上传</button>
+				<div id="box1" style="margin-top:25px;display:inline-block">
+					选择excel文件
+					<div class="fileinput fileinput-new" data-provides="fileinput">
+						<span class="btn btn-default btn-file"><span
+							class="fileinput-new">Select file</span><span
+							class="fileinput-exists">Change</span><input type="file"
+							onchange="importf(this)" name="..."></span> <span
+							class="fileinput-filename"></span> <a href="#"
+							class="close fileinput-exists" data-dismiss="fileinput"
+							style="float: none">&times;</a>
+					</div>
+					<button type="button" id="upload_sub" class="btn">上传</button>
 				</div>
 
-</div>
 			</div>
 		</div>
-		<script>
-			var wb;
-			var rABS = false;
-			var jsonobj1;
-			function importf(obj) {
-				if (!obj.files) {
-					return;
-				}
-				var f = obj.files[0];
-				var reader = new FileReader();
-				reader.onload = function(e) {
-					var data = e.target.result;
-					if (rABS) {
-						wb = XLSX.read(btoa(fixdata(data)), {
-							type : 'base64'
-						});
-					} else {
-						wb = XLSX.read(data, {
-							type : 'binary'
-						});
-					}
-					document.getElementById("demo").innerHTML = JSON.stringify(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]));
-					jsonobj1 = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
-				};
+	</div>
+	<script>
+		var wb;
+		var rABS = false;
+		var jsonobj1;
+		function importf(obj) {
+			if (!obj.files) {
+				return;
+			}
+			var f = obj.files[0];
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				var data = e.target.result;
 				if (rABS) {
-					reader.readAsArrayBuffer(f);
+					wb = XLSX.read(btoa(fixdata(data)), {
+						type : 'base64'
+					});
 				} else {
-					reader.readAsBinaryString(f);
+					wb = XLSX.read(data, {
+						type : 'binary'
+					});
 				}
+				document.getElementById("demo").innerHTML = JSON.stringify(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]));
+				jsonobj1 = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
+			};
+			if (rABS) {
+				reader.readAsArrayBuffer(f);
+			} else {
+				reader.readAsBinaryString(f);
 			}
-		
-			function fixdata(data) {
-				var o = "",
-					l = 0,
-					w = 10240;
-				for (; l < data.byteLength / w; ++l) o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w, l * w + w)));
-				o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w)));
-				return o;
-			}
-		</script>
-		<script src="/TES/plugin/script/particles.min.js"></script>
-<script src="/TES/plugin/script/app.js"></script> 
+		}
+	
+		function fixdata(data) {
+			var o = "",
+				l = 0,
+				w = 10240;
+			for (; l < data.byteLength / w; ++l) o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w, l * w + w)));
+			o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w)));
+			return o;
+		}
+	</script>
+	<script src="/TES/plugin/script/particles.min.js"></script>
+	<script src="/TES/plugin/script/app.js"></script>
 </body>
 </html>

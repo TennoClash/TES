@@ -24,6 +24,14 @@ public class MenuController {
 	public String menumanage() {
 		return "menumanage";
 	}
+	@RequestMapping("/spassmanage")
+	public String spassmanage() {
+		return "spassmanage";
+	}
+	@RequestMapping("/tpassmanage")
+	public String tpassmanage() {
+		return "tpassmanage";
+	}
 	
 	
 	@RequestMapping(value = "/menux", produces = "text/html;charset=UTF-8")

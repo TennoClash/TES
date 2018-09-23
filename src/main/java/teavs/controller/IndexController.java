@@ -73,7 +73,6 @@ public class IndexController {
 		user.setPassword(pass);
 		System.out.println(type);
 		if(type.equals("1")){
-			System.out.println("学生"+pass+"+"+num);
 			int i= upDateService.updateSPassWord(user);
 			if(i>0){
 				return "1";
@@ -100,14 +99,11 @@ public class IndexController {
 			List<student> students = JSONObject.parseArray(ListSrt, student.class);			
 			int i=upDateService.upInfo(students);
 			int k=upDateService.S_Role_Update(students);
-			System.out.println("学生信息插入:"+i);
-			System.out.println("user_role:"+k);
 			return String.valueOf(students.size());
 		}else{
 			List<teacher> teachers = JSONObject.parseArray(ListSrt, teacher.class);
 			int i=upDateService.upInfo_t(teachers);
-			System.out.println(i);
-			System.out.println(u_type);
+			int k=upDateService.T_Role_Update(teachers);
 			return String.valueOf(teachers.size());
 		}
 		

@@ -3,6 +3,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>教室评价系统</title>
 <script src="/TES/plugin/script/jquery-1.11.3.min.js"></script>
 <script src="/TES/plugin/script/imissyou.js"></script>
@@ -99,7 +100,8 @@ position: relative;
 				}
 			},
 			error : function() {
-				alert("菜单查询失败！");
+				alert("登录信息过期，请重新登录！");
+				location.href = "/TES/login"
 			}
 		});
 		/*---------------jsp-version----------------*/

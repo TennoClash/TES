@@ -103,7 +103,8 @@ position: relative;
 				}
 			},
 			error : function() {
-				alert("菜单查询失败！");
+				alert("登录信息过期，请重新登录！");
+				location.href = "/TES/login"
 			}
 		});
 		/*---------------jsp-version----------------*/

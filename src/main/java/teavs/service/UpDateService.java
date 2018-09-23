@@ -41,6 +41,10 @@ public class UpDateService {
 		return upDateDao.S_Role_Update(students);
 	}
 	
+	public int T_Role_Update(List<teacher> teachers) {
+		return upDateDao.T_Role_Update(teachers);
+	}
+	
 	public int Course_Update(List<Course> courses){
 		return upDateDao.Course_Update(courses);
 	}

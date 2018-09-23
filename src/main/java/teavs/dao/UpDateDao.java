@@ -16,6 +16,8 @@ public interface UpDateDao {
 	
 	int S_Role_Update(List<student> students);
 	
+	int T_Role_Update(List<teacher> teachers);
+	
 	int Course_Update(List<Course> courses);
 	
 	int Clazz_Update(List<Clazz> clazzs);

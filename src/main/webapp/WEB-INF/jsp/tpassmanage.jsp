@@ -1,21 +1,19 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>教室评价系统</title>
 <script src="/TES/plugin/script/jquery-1.11.3.min.js"></script>
 <script src="/TES/plugin/script/imissyou.js"></script>
 <script src="/TES/plugin/script/clicktext.js"></script>
-<script src="/TES/plugin/script/jquery.cookie.js"></script>
-<script src="/TES/plugin/script/md5.js"></script>
 <script src="/TES/plugin/script/bootstrap.min.js"></script>
 <script src="/TES/plugin/script/bootstrap-slider.min.js"></script>
-<script src="/TES/plugin/script/xlsx.full.min.js"></script>
-<script src="/TES/plugin/script/jasny-bootstrap.min.js"></script>
-<script src="/TES/plugin/script/jquery.funnyText.min.js"></script> 
-<link rel="stylesheet" type="text/css"
-	href="/TES/plugin/css/jquery.funnyText.css">
+<script src="/TES/plugin/script/jquery.cookie.js"></script>
+
+
 <link rel="stylesheet" type="text/css"
 	href="/TES/plugin/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css"
@@ -23,9 +21,7 @@
 <link rel="stylesheet" type="text/css"
 	href="/TES/plugin/fonts/iconic/css/material-design-iconic-font.min.css">
 <link rel="stylesheet" type="text/css"
-	href="/TES/plugin/css/jasny-bootstrap.min.css">
-	<link rel="stylesheet" type="text/css"
-	href="/TES/plugin/css/jquery.funnyText.css">
+	href="/TES/plugin/css/jquery.funnyText.css"> 
 
 <style>
 html, body {
@@ -42,9 +38,10 @@ html, body {
 	border-radius: 8px 8px 8px 8px;
 	padding: 10px 19px 24px;
 }
-.row-fluid{
-position: relative; 
-} 
+
+.row-fluid {
+	position: relative;
+}
 </style>
 
 <script>
@@ -130,8 +127,7 @@ position: relative;
 		default:
 			break;
 		}
-		
-   $('#ver').funnyText();
+		$('#ver').funnyText();
 		/*--------------iMissYou----------------*/
 		$.iMissYou({
 			title : "诶你怎么跑了( ꒪Д꒪)ノ",
@@ -141,57 +137,29 @@ position: relative;
 			}
 		});
 
-		$("#upload_sub").on("click", function() {
-			console.log(jsonobj1);
-			var jsonstr = JSON.stringify(jsonobj1);
-			console.log(jsonstr);
-			$.ajax({
-				type : "POST",
-				url : "/TES/clazzupload",
-				data : {
-					ListSrt : jsonstr,
-				},
-				dataType : "json",
-				success : function(data) {
-				$("#update-success-alert").remove();
-				$("#update-fail-alert").remove();
-				var $updatesuc = $("<div class='alert alert-success' id='update-success-alert' style='margin:0px 0px 0px 30px;width:25%;display:inline-block'><button type='button' class='close' data-dismiss='alert'>×</button> <h4> 操作成功! </h4> 成功插入"+data+"条数据"+" </div>")
-				$("#box1").after($updatesuc);
-				},
-				error : function(data) {
-				$("#update-success-alert").remove();
-				$("#update-fail-alert").remove();
-				var $updatefail = $("<div class='alert alert-fail' id='update-fail-alert' style='margin:0px 0px 0px 30px;width:25%;display:inline-block'><button type='button' class='close' data-dismiss='alert'>×</button> <h4> 操作失败! </h4> 插入失败</div>")
-				$("#box1").after($updatefail);
-				}
-				
-			});
-
-		})
 		$("#l_nav").on("click", "#s_click", function() {
 			$.cookie('insert_type', 's');
 		})
 
 		$("#l_nav").on("click", "#t_click", function() {
-
 			$.cookie('insert_type', 't');
 		})
-
 	})
 </script>
 
 </head>
 <body>
+
 	<div class="container-fluid"
 		style="background-color: #333;height:100%;">
-		<div id="particles-js"  style="width: 100%; height: 100%;position: absolute;">	</div>
+		<div id="particles-js"
+			style="width: 100%; height: 100%;position: absolute;"></div>
 		<div class="row-fluid column">
 			<div class="span12">
-				<h1 id="ver" style="display:inline-block">
-					教师评价系统 &nbsp;
-				</h1>
+
+				<h1 id="ver" style="display:inline-block">教师评价系统 &nbsp;</h1>
 				<i class="fa fa-sign-out"
-						style="font-size:80px;display:inline-block; float:right"></i>
+					style="font-size:80px;display:inline-block; float:right"></i>
 
 			</div>
 		</div>
@@ -205,71 +173,113 @@ position: relative;
 			</div>
 
 			<div class="span10 column">
-				<fieldset>
-					<legend>
-						班级管理&nbsp;&nbsp;<i class="fa fa-folder-open"></i>
-					</legend>
 
-				</fieldset> 
-				<div id="demo"></div>
-			<div id="box1" style="margin-top:25px;display:inline-block">选择excel文件
-				<div class="fileinput fileinput-new" data-provides="fileinput">
-					<span class="btn btn-default btn-file"><span
-						class="fileinput-new">Select file</span><span
-						class="fileinput-exists">Change</span><input type="file"
-						onchange="importf(this)" name="..."></span> <span
-						class="fileinput-filename"></span> <a href="#"
-						class="close fileinput-exists" data-dismiss="fileinput"
-						style="float: none">&times;</a>
+				<center>
+					<table border="1" style="text-align:center;">
+					<strong>按工号搜索：</strong>
+						<form action="initt.do" method="get" class="form-search"> 
+							<input class="input-medium search-query" name="queryCondition"
+								value="${page.queryCondition}" id="condition" type="text">
+							<button class="btn" type="submit">查询</button>
+						</form>
+					
+					</table> 
+ 
+				</center>
+
+
+
+<div style="max-height:280px;overflow:scroll;overflow-x: hidden;overflow-y:auto;">
+				<table class="table table-hover" >
+					<thead>
+						<tr>
+							<th>编号</th>
+							<th>姓名</th>
+							<th>工号</th>
+							<th>院系</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach items="${teachers}" var="t">
+							<tr>
+								<td>${t.id}</td>
+								<td>${t.user_name}</td>
+								<td>${t.user_number}</td>
+								<td>${t.ministry_id}</td>
+								<td><a
+									href="passresett?id=${t.id}&user_number=${t.user_number}">重置密码</a></td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table> 
 				</div>
-				<button type="button" id="upload_sub" class="btn">上传</button>
+				<div class="pagination pagination-centered">
+					<center>  
+						<label>第${page.currentPage}/${page.totalPage}页
+							共${page.totalRows}条</label> <a href="initt.do?currentPage=0">首页</a> <a
+							href="initt.do?currentPage=${page.currentPage-1}" 
+							onclick="return checkFirst()">上一页</a> <a 
+							href="initt.do?currentPage=${page.currentPage+1}"
+							onclick="return checkNext()">下一页</a> <a
+							href="initt.do?currentPage=${page.totalPage}">尾页</a> 跳转到: <input
+							type="text" style="width:30px" id="turnPage" />页 <button
+							class="btn"  onclick="startTurn()">跳转</button>
+					</center>
 				</div>
 
-</div>
 			</div>
 		</div>
-		<script>
-			var wb;
-			var rABS = false;
-			var jsonobj1;
-			function importf(obj) {
-				if (!obj.files) {
-					return;
-				}
-				var f = obj.files[0];
-				var reader = new FileReader();
-				reader.onload = function(e) {
-					var data = e.target.result;
-					if (rABS) {
-						wb = XLSX.read(btoa(fixdata(data)), {
-							type : 'base64'
-						});
-					} else {
-						wb = XLSX.read(data, {
-							type : 'binary'
-						});
-					}
-					document.getElementById("demo").innerHTML = JSON.stringify(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]));
-					jsonobj1 = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
+	</div> 
 
-				};
-				if (rABS) {
-					reader.readAsArrayBuffer(f);
-				} else {
-					reader.readAsBinaryString(f);
-				}
-			}
-		
-			function fixdata(data) {
-				var o = "",
-					l = 0,
-					w = 10240;
-				for (; l < data.byteLength / w; ++l) o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w, l * w + w)));
-				o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w)));
-				return o;
-			}
-		</script>
-		<script src="/TES/plugin/script/particles.min.js"></script>
-<script src="/TES/plugin/script/app.js"></script> 
+
+
+	<script src="/TES/plugin/script/particles.min.js"></script>
+	<script src="/TES/plugin/script/app.js"></script>
+	<script src="/TES/plugin/script/jquery.funnyText.min.js"></script>
+	<script type="text/javascript">
+    
+    function checkFirst(){
+         if(${page.currentPage>1}){
+         
+           return true;
+         
+         }
+         alert("已到页首,无法加载更多");
+        
+       return false;
+    }
+    
+    function checkNext(){
+    
+    if(${page.currentPage<page.totalPage}){
+    
+      return true;
+    
+    }
+    alert("已到页尾，无法加载更多页");
+    return false;
+    
+    }
+     
+    
+    function startTurn(){
+    
+    var turnPage=document.getElementById("turnPage").value;
+    
+    if(turnPage>${page.totalPage}){
+    
+      alert("对不起已超过最大页数");
+     
+      return false;
+    
+    }
+    
+    var shref="initt.do?currentPage="+turnPage;
+    
+    window.location.href=shref;
+}
+</script>
+
 </body>
 </html>

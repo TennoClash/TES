@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="teavs.dao.PagingDao">
+	<select id="searchInvList" parameterType="teavs.entity.Page" resultType="teavs.entity.student">
+		select * from student limit #{startRow},#{pageSize}
+	</select>
+
+ <select id="searchTotalCount" parameterType="teavs.entity.Page"
+        resultType="java.lang.Integer">
+        select count(id) from student <where>
+            <if test="queryCondition!=null">
+                and user_number like CONCAT('%',#{queryCondition},'%')
+            </if>
+        </where>
+    </select>
+    
+    <select id="getInvBycondtion" parameterType="teavs.entity.Page" resultType="teavs.entity.student">
+        select * from student
+         <where>
+            <if test="queryCondition!=null">
+                 user_number like CONCAT('%',#{queryCondition},'%')
+            </if>
+        </where>
+      </select>
+      
+      
+      
+      <select id="searchInvListT" parameterType="teavs.entity.Page" resultType="teavs.entity.teacher">
+		select * from teacher limit #{startRow},#{pageSize}
+	</select>
+
+ <select id="searchTotalCountT" parameterType="teavs.entity.Page"
+        resultType="java.lang.Integer">
+        select count(id) from teacher <where>
+            <if test="queryCondition!=null">
+                and user_number like CONCAT('%',#{queryCondition},'%')
+            </if>
+        </where>
+    </select>
+    
+    <select id="getInvBycondtionT" parameterType="teavs.entity.Page" resultType="teavs.entity.teacher">
+        select * from teacher
+         <where>
+            <if test="queryCondition!=null">
+                 user_number like CONCAT('%',#{queryCondition},'%')
+            </if>
+        </where>
+      </select>
+</mapper>
