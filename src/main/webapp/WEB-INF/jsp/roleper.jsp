@@ -167,7 +167,7 @@ html, body {
 
 			$.cookie('insert_type', 't');
 		})
-
+		var arrrid=[];
 		$.ajax({
 			type : "POST",
 			url : "/TES/rolex",
@@ -177,21 +177,23 @@ html, body {
 			success : function(data) {
 				$.each(data, function(i, v) {
 					var $lirole = $("<li>" + data[i].role_name + "</li>");
+					arrrid.push(data[i].id);
 					$("#roleul").append($lirole);
 				})
 			},
 			error : function() {}
-		});
-
+		}); 
+		var arrpid=[];
 		$.ajax({
 			type : "POST",
-			url : "/TES/perx",
+			url : "/TES/perx", 
 			dataType : "json",
 			data : {
 			},
 			success : function(data) {
 				$.each(data, function(i, v) {
 					var $liper = $("<li>" + data[i].per_name + "</li>");
+					arrpid.push(data[i].id);
 					$("#perul").append($liper);
 				})
 			},
@@ -206,86 +208,113 @@ html, body {
 		})
 		$("#roleul").on("mouseout", "li", function() {
 			$(this).css("background-color", "#ffcccc");
-		})
+		}) 
 		$("#perul").on("mouseover", "li", function() {
-			$(this).css("background-color", "#fe8f8f"); 
+			$(this).css("background-color", "#fe8f8f");
+			console.log($("#hidpid").val())
 		})
 		$("#perul").on("mouseout", "li", function() {
 			$(this).css("background-color", "#ffcccc");
 		})
-		
-		
+ 
+
 		$("#perul").on("click", "li", function() {
-			$("#nav_input").val($(this).text())
-		}) 
-		$("#roleul").on("click", "li", function() { 
-			$("#nav_input_2").val($(this).text())
-		}) 
-		
-		$("#newpersub").on("click",function(){
-		var newper=$("#newper").val();		
-		$.ajax({
-			type : "POST",
-			url : "/TES/newpera",
-			dataType : "json",
-			data : {
-			newper : newper
-			},
-			success : function(data) {
-			$("#perul").children().remove(); 
+			$("#nav_input").val($(this).text());
+			$("#pername").text($(this).text());
+			$("#hidpid").val(arrpid[$(this).index()])
+		})
+		$("#roleul").on("click", "li", function() {
+			$("#nav_input_2").val($(this).text());
+			$("#rolename").text($(this).text());
+			$("#hidrid").val(arrrid[$(this).index()])
 			
-				$.ajax({
-			type : "POST",
-			url : "/TES/perx",
-			dataType : "json",
-			data : {
-			},
-			success : function(data) {
-				$.each(data, function(i, v) {
-					var $liper = $("<li>" + data[i].per_name + "</li>");
-					$("#perul").append($liper);
-				})
-			},
-			error : function() {}
-		});
-			},
-			error : function() {}
-		});
-		$("#newper").val("");
+		}) 
+
+		$("#newpersub").on("click", function() {
+			var newper = $("#newper").val();
+			$.ajax({
+				type : "POST",
+				url : "/TES/newpera",
+				dataType : "json",
+				data : {
+					newper : newper
+				},
+				success : function(data) {
+					$("#perul").children().remove();
+
+					$.ajax({
+						type : "POST",
+						url : "/TES/perx",
+						dataType : "json",
+						data : {
+						},
+						success : function(data) {
+							$.each(data, function(i, v) {
+								var $liper = $("<li>" + data[i].per_name + "</li>");
+								$("#perul").append($liper);
+							})
+						},
+						error : function() {}
+					});
+				},
+				error : function() {}
+			});
+			$("#newper").val("");
 		})
-/************************************************************************************/
-		$("#delpersub").on("click",function(){
-		var nav_input=$("#nav_input").val();
+		/************************************************************************************/
+		$("#delpersub").on("click", function() {
+			var nav_input = $("#nav_input").val();
+			$.ajax({
+				type : "POST",
+				url : "/TES/delper",
+				dataType : "json",
+				data : {
+					per : nav_input
+				},
+				success : function(data) {
+					$("#perul").children().remove();
+					$.ajax({
+						type : "POST",
+						url : "/TES/perx",
+						dataType : "json",
+						data : {
+						},
+						success : function(data) {
+							$.each(data, function(i, v) {
+								var $liper = $("<li>" + data[i].per_name + "</li>");
+								$("#perul").append($liper);
+							})
+						},
+						error : function() {}
+					});
+				},
+				error : function() {}
+			});
+			$("#nav_input").val("");
+		})
+		
+		$("#newrolepersub").on("click",function(){
+		
+		var pername=$("#pername").text();
+		var rolename=$("#rolename").text();
+		
 		$.ajax({
-			type : "POST",
-			url : "/TES/delper",
-			dataType : "json",
-			data : {
-			per : nav_input
-			},
-			success : function(data) {
-			$("#perul").children().remove(); 
-				$.ajax({
-			type : "POST",
-			url : "/TES/perx",
-			dataType : "json",
-			data : {
-			},
-			success : function(data) {
-				$.each(data, function(i, v) {
-					var $liper = $("<li>" + data[i].per_name + "</li>");
-					$("#perul").append($liper);
-				})
-			},
-			error : function() {}
-		});
-			},
-			error : function() {}
-		});
-		$("#nav_input").val("");
+				type : "POST",
+				url : "/TES/newroleper",
+				dataType : "json",
+				data : {
+					pername : pername,
+					rolename : rolename
+				},
+				success : function(data) {
+
+				},
+				error : function() {}
+			});
 		})
 		
-		
+
+
 	})
 </script>
 
@@ -320,7 +349,8 @@ html, body {
 				</fieldset>
 
 				<div class="row-fluid">
-					<div class="span3" style="border-right:1px solid #DDDDDD;min-height:400px;">
+					<div class="span3"
+						style="border-right:1px solid #DDDDDD;min-height:400px;">
 						<center>
 							<div>
 								<h5>当前权限：</h5>
@@ -331,20 +361,24 @@ html, body {
 										</ul>
 									</strong>
 								</div>
-							</div> 
+							</div>
 							<h5 style="margin-top:20px">选择权限：</h5>
-							<input id="nav_input" type="text" style="width:100px;margin-right:10px"><button id="delpersub" class="btn">删除权限</button>
-							
+							<input id="nav_input" type="text"
+								style="width:100px;margin-right:10px">
+							<button id="delpersub" class="btn">删除权限</button>
+
 							<h5>新增权限：</h5>
-							<input id="newper" type="text" style="width:100px;margin-right:10px"><button id="newpersub" class="btn">新增</button>
-					</div> 
-					
+							<input id="newper" type="text"
+								style="width:100px;margin-right:10px">
+							<button id="newpersub" class="btn">新增</button>
+					</div>
+
 					</center>
 					<div class="span3"
 						style="height:100%;border-right:1px solid #DDDDDD;min-height:400px;">
-						<center>
-							<div> 
-								<h5>当前角色：</h5> 
+						<center style="margin-right:20px">
+							<div>
+								<h5>当前角色：</h5>
 								<div
 									style="width:100px;background-color:#ffcccc;border:1px solid #ffcccc;border-radius:1em">
 									<strong>
@@ -352,12 +386,25 @@ html, body {
 										</ul>
 									</strong>
 								</div>
-							</div>
+							</div> 
 							<h5 style="margin-top:20px">选择角色：</h5>
 							<input id="nav_input_2" class="input-mini" type="text">
-							<div style="border-top:1px solid #DDDDDD"></div>
-							
-					</div>	
+							<div style="border-top:1px solid #DDDDDD;padding-top:10px;margin-bottom:10px;">
+						
+								<div style="display:nonse">
+								<h4>角色赋权：<h5>(点击权限和角色开始选择)</h5></h4>  
+									<h4 style="margin-top:10px">  
+										为&nbsp;<strong><span id="rolename" style="color:#ff4e4e">XX</span>
+										<input type="hidden" id="hidrid" value="" />
+										</strong>&nbsp;添加&nbsp;<strong><span
+											id="pername" style="color:#ff4e4e">??</span>
+											<input type="hidden" id="hidpid" value="" />
+											</strong>&nbsp;权限
+									</h4>
+									<button id="newrolepersub" class="btn">确定</button>
+								</div>
+							</div>
+					</div>
 					</center>
 					<div class="span6">
 
@@ -395,8 +442,7 @@ html, body {
 											<td>${r.per_name}</td>
 											<td>${r.pid}</td>
 											<td>${r.role_name}</td>
-											<td><a
-												href="deleterl?pid=${r.pid}&rid=${r.rid}">删除角色权限</a></td>
+											<td><a href="deleterl?pid=${r.pid}&rid=${r.rid}">删除角色权限</a></td>
 										</tr>
 									</c:forEach>
 								</tbody>
