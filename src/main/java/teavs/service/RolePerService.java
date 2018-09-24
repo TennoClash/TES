@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import teavs.dao.RolePerDao;
+import teavs.entity.ORolePer;
 import teavs.entity.Permission;
 import teavs.entity.Role;
 import teavs.entity.RolePer;
@@ -33,6 +34,9 @@ public class RolePerService {
 	
 	public int delectP(String p){
 		return rolePerDao.delectP(p);
+	}
+	public int addRolePer(ORolePer oRolePer){
+		return rolePerDao.addRolePer(oRolePer);
 	}
 }
 

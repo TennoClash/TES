@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import teavs.entity.Menu;
+import teavs.entity.ORolePer;
 import teavs.entity.Page;
 import teavs.entity.Permission;
 import teavs.entity.Role;
@@ -131,6 +132,17 @@ public class RolePerController {
 	@ResponseBody
 	public String  delper(String per) {	
 	int i = rolePerService.delectP(per);
+	return "1";
+	}
+	
+	@RequestMapping(value = "/newroleper", produces = "text/html;charset=UTF-8")
+	@ResponseBody 
+	public String  newroleper(String hidrid,String hidpid) {	
+	System.out.println(hidrid+"---"+hidpid);
+	ORolePer oRolePer=new ORolePer();
+	oRolePer.setPer_id(hidpid);
+	oRolePer.setRole_id(hidrid);
+	int i = rolePerService.addRolePer(oRolePer);
 	return "1";
 	}
 	

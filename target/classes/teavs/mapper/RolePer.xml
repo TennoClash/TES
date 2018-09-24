@@ -23,4 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert into permission (per_name) values(#{per_name});
 	</insert>
 
+	<insert id="addRolePer" parameterType="teavs.entity.ORolePer">
+		insert into role_per (role_id,per_id) values(#{role_id},#{per_id});
+	</insert>
 </mapper>

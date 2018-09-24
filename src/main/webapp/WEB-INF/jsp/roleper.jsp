@@ -295,20 +295,21 @@ html, body {
 		
 		$("#newrolepersub").on("click",function(){
 		
-		var pername=$("#pername").text();
-		var rolename=$("#rolename").text();
-		
-		$.ajax({
+		var hidrid=$("#hidrid").val();
+		var hidpid=$("#hidpid").val(); 
+		 
+		$.ajax({ 
 				type : "POST",
 				url : "/TES/newroleper",
 				dataType : "json",
 				data : {
-					pername : pername,
-					rolename : rolename
+					hidrid : hidrid,
+					hidpid : hidpid
 				},
 				success : function(data) {
-
-				},
+				alert("操作成功");
+				window.location.reload();
+				}, 
 				error : function() {}
 			});
 		})
