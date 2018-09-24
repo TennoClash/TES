@@ -21,9 +21,9 @@ public class TableInitTController {
 	@Autowired
 	private LoginService loginService;
 	
-	@RequestMapping("/jump")
-	public String jump() {
-		return "jump";
+	@RequestMapping("/jump/jumptp")
+	public String jumptp() {
+		return "jump/jumptp";
 	}
 	
 	@RequestMapping("initt.do")
@@ -85,6 +85,6 @@ public class TableInitTController {
 		teachers.setId(id);
 		teachers.setPassword(user_number);
 		loginService.passResetT(teachers);
-		return "jump";
+		return "jump/jumptp";
 	}
 }

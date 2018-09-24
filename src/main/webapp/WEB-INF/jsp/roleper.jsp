@@ -208,11 +208,84 @@ html, body {
 			$(this).css("background-color", "#ffcccc");
 		})
 		$("#perul").on("mouseover", "li", function() {
-			$(this).css("background-color", "#fe8f8f");
+			$(this).css("background-color", "#fe8f8f"); 
 		})
 		$("#perul").on("mouseout", "li", function() {
 			$(this).css("background-color", "#ffcccc");
 		})
+		
+		
+		$("#perul").on("click", "li", function() {
+			$("#nav_input").val($(this).text())
+		}) 
+		$("#roleul").on("click", "li", function() { 
+			$("#nav_input_2").val($(this).text())
+		}) 
+		
+		$("#newpersub").on("click",function(){
+		var newper=$("#newper").val();		
+		$.ajax({
+			type : "POST",
+			url : "/TES/newpera",
+			dataType : "json",
+			data : {
+			newper : newper
+			},
+			success : function(data) {
+			$("#perul").children().remove(); 
+			
+				$.ajax({
+			type : "POST",
+			url : "/TES/perx",
+			dataType : "json",
+			data : {
+			},
+			success : function(data) {
+				$.each(data, function(i, v) {
+					var $liper = $("<li>" + data[i].per_name + "</li>");
+					$("#perul").append($liper);
+				})
+			},
+			error : function() {}
+		});
+			},
+			error : function() {}
+		});
+		$("#newper").val("");
+		})
+/************************************************************************************/
+		$("#delpersub").on("click",function(){
+		var nav_input=$("#nav_input").val();
+		$.ajax({
+			type : "POST",
+			url : "/TES/delper",
+			dataType : "json",
+			data : {
+			per : nav_input
+			},
+			success : function(data) {
+			$("#perul").children().remove(); 
+				$.ajax({
+			type : "POST",
+			url : "/TES/perx",
+			dataType : "json",
+			data : {
+			},
+			success : function(data) {
+				$.each(data, function(i, v) {
+					var $liper = $("<li>" + data[i].per_name + "</li>");
+					$("#perul").append($liper);
+				})
+			},
+			error : function() {}
+		});
+			},
+			error : function() {}
+		});
+		$("#nav_input").val("");
+		})
+		
+		
 	})
 </script>
 
@@ -247,7 +320,7 @@ html, body {
 				</fieldset>
 
 				<div class="row-fluid">
-					<div class="span3" style="border-right:1px solid #DDDDDD;height:400px;">
+					<div class="span3" style="border-right:1px solid #DDDDDD;min-height:400px;">
 						<center>
 							<div>
 								<h5>当前权限：</h5>
@@ -258,14 +331,20 @@ html, body {
 										</ul>
 									</strong>
 								</div>
-							</div>
-					</div>
+							</div> 
+							<h5 style="margin-top:20px">选择权限：</h5>
+							<input id="nav_input" type="text" style="width:100px;margin-right:10px"><button id="delpersub" class="btn">删除权限</button>
+							
+							<h5>新增权限：</h5>
+							<input id="newper" type="text" style="width:100px;margin-right:10px"><button id="newpersub" class="btn">新增</button>
+					</div> 
+					
 					</center>
 					<div class="span3"
-						style="height:100%;border-right:1px solid #DDDDDD;height:400px;">
+						style="height:100%;border-right:1px solid #DDDDDD;min-height:400px;">
 						<center>
-							<div>
-								<h5>当前角色：</h5>
+							<div> 
+								<h5>当前角色：</h5> 
 								<div
 									style="width:100px;background-color:#ffcccc;border:1px solid #ffcccc;border-radius:1em">
 									<strong>
@@ -274,7 +353,11 @@ html, body {
 									</strong>
 								</div>
 							</div>
-					</div>
+							<h5 style="margin-top:20px">选择角色：</h5>
+							<input id="nav_input_2" class="input-mini" type="text">
+							<div style="border-top:1px solid #DDDDDD"></div>
+							
+					</div>	
 					</center>
 					<div class="span6">
 
@@ -313,7 +396,7 @@ html, body {
 											<td>${r.pid}</td>
 											<td>${r.role_name}</td>
 											<td><a
-												href="passreset?id=${r.pid}&user_number=${r.pid}">重置密码</a></td>
+												href="deleterl?pid=${r.pid}&rid=${r.rid}">删除角色权限</a></td>
 										</tr>
 									</c:forEach>
 								</tbody>

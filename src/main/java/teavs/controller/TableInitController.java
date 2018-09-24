@@ -20,6 +20,11 @@ public class TableInitController {
 	private PagingService pagingService;
 	@Autowired
 	private LoginService loginService;
+	
+	@RequestMapping("/jump/jumpsp")
+	public String jumpsp() {
+		return "jump/jumpsp";
+	}
 
 	@RequestMapping("init.do")
 	public String searchInvList(Page page, HttpServletRequest request) throws UnsupportedEncodingException {
@@ -92,7 +97,7 @@ public class TableInitController {
 		students.setId(id);
 		students.setPassword(user_number);
 		loginService.passReset(students);
-		return "welcome";
+		return "jump/jumpsp";
 	}
 
 }

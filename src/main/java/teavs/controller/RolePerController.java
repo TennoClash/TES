@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import teavs.entity.Menu;
 import teavs.entity.Page;
 import teavs.entity.Permission;
 import teavs.entity.Role;
@@ -27,6 +28,10 @@ public class RolePerController {
 	@Autowired
 	private PagingService pagingService;
 	
+	@RequestMapping("/jump/jumprpdel")
+	public String jumprpdel() {
+		return "jump/jumprpdel";
+	}
 	
 	@RequestMapping(value = "/rolex", produces = "application/json;charset=UTF-8")
 	@ResponseBody
@@ -107,11 +112,26 @@ public class RolePerController {
 	
 
 	@RequestMapping("deleterl")
-	public String deleteInvition(int id,String user_number) {
-		System.out.println(id+"+++++"+user_number);
-		teacher teachers=new teacher();
-		teachers.setId(id);
-		teachers.setPassword(user_number);
-		return "welcome";
+	public String deleteInvition(int pid,int rid) {	
+		RolePer rolePer=new RolePer();
+		rolePer.setPid(pid);
+		rolePer.setRid(rid);
+		int i=rolePerService.delectrp(rolePer);
+		return "jump/jumprpdel";
 	}
+	
+	@RequestMapping(value = "/newpera", produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String  newpera(String newper) {	
+	int i = rolePerService.addPer(newper);
+	return "1";
+	}
+	
+	@RequestMapping(value = "/delper", produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String  delper(String per) {	
+	int i = rolePerService.delectP(per);
+	return "1";
+	}
+	
 }

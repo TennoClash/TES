@@ -10,5 +10,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getPermissions" resultType="teavs.entity.Permission">
 		select * from permission;
 	</select>
+	
+	<delete id="delectrp" parameterType="teavs.entity.RolePer">
+	DELETE from role_per where role_id=#{rid} and  per_id=#{pid};
+	</delete>
+	
+	<delete id="delectP" parameterType="String">
+	DELETE from permission where per_name=#{per_name};
+	</delete>
+	
+	<insert id="addPer" parameterType="String">
+		insert into permission (per_name) values(#{per_name});
+	</insert>
 
 </mapper>
