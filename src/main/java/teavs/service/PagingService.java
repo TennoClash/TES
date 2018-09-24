@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import teavs.dao.PagingDao;
 import teavs.entity.Page;
+import teavs.entity.RolePer;
 import teavs.entity.student;
 import teavs.entity.teacher;
 
@@ -35,4 +36,13 @@ public class PagingService {
 		return pagingDao.searchTotalCountT(page);
 	}
 	
+	public List<RolePer> searchInvListRP(Page page){
+		return pagingDao.searchInvListRP(page);
+	}
+	public List<RolePer> getInvBycondtionRP(Page page){
+		return pagingDao.getInvBycondtionRP(page);
+	}
+	public Integer searchTotalCountRP(Page page){
+		return pagingDao.searchTotalCountRP(page);
+	}
 }

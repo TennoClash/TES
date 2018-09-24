@@ -48,4 +48,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </if>
         </where>
       </select>
+      
+      
+      
+      
+       <select id="searchInvListRP" parameterType="teavs.entity.Page" resultType="teavs.entity.RolePer">
+		select * from per_role_name_view limit #{startRow},#{pageSize}
+	</select>
+
+ <select id="searchTotalCountRP" parameterType="teavs.entity.Page"
+        resultType="java.lang.Integer">
+        select count(rid) from per_role_name_view <where>
+            <if test="queryCondition!=null">
+                and per_name like CONCAT('%',#{queryCondition},'%')
+            </if>
+        </where>
+    </select>
+    
+    <select id="getInvBycondtionRP" parameterType="teavs.entity.Page" resultType="teavs.entity.RolePer">
+        select * from per_role_name_view
+         <where>
+            <if test="queryCondition!=null">
+                 per_name like CONCAT('%',#{queryCondition},'%')
+            </if>
+        </where>
+      </select>
 </mapper>

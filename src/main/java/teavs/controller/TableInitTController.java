@@ -21,6 +21,11 @@ public class TableInitTController {
 	@Autowired
 	private LoginService loginService;
 	
+	@RequestMapping("/jump")
+	public String jump() {
+		return "jump";
+	}
+	
 	@RequestMapping("initt.do")
 	public String searchInvList(Page page, HttpServletRequest request) throws UnsupportedEncodingException {
 		Page p = page;
@@ -80,6 +85,6 @@ public class TableInitTController {
 		teachers.setId(id);
 		teachers.setPassword(user_number);
 		loginService.passResetT(teachers);
-		return "tpassmanage";
+		return "jump";
 	}
 }

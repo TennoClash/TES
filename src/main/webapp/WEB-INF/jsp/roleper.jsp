@@ -1,4 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -178,7 +179,6 @@ html, body {
 					var $lirole = $("<li>" + data[i].role_name + "</li>");
 					$("#roleul").append($lirole);
 				})
-				console.log(data);
 			},
 			error : function() {}
 		});
@@ -194,7 +194,6 @@ html, body {
 					var $liper = $("<li>" + data[i].per_name + "</li>");
 					$("#perul").append($liper);
 				})
-				console.log(data);
 			},
 			error : function() {}
 		});
@@ -248,7 +247,7 @@ html, body {
 				</fieldset>
 
 				<div class="row-fluid">
-					<div class="span3" style="border-right:1px solid #DDDDDD">
+					<div class="span3" style="border-right:1px solid #DDDDDD;height:400px;">
 						<center>
 							<div>
 								<h5>当前权限：</h5>
@@ -259,10 +258,11 @@ html, body {
 										</ul>
 									</strong>
 								</div>
-							</div> 
+							</div>
 					</div>
 					</center>
-					<div class="span3" style="height:100%;border-right:1px solid #DDDDDD">
+					<div class="span3"
+						style="height:100%;border-right:1px solid #DDDDDD;height:400px;">
 						<center>
 							<div>
 								<h5>当前角色：</h5>
@@ -276,7 +276,70 @@ html, body {
 							</div>
 					</div>
 					</center>
-					<div class="span6"></div>
+					<div class="span6">
+
+						<center>
+							<table border="1" style="text-align:center;">
+								<strong>按权限名搜索：</strong>
+								<form action="role_Per_Table" method="get" class="form-search">
+									<input class="input-medium search-query" name="queryCondition"
+										value="${page.queryCondition}" id="condition" type="text">
+									<button class="btn" type="submit">查询</button>
+								</form>
+
+							</table>
+
+						</center>
+
+
+
+						<div
+							style="max-height:280px;overflow:scroll;overflow-x: hidden;overflow-y:auto;">
+							<table class="table table-hover">
+								<thead>
+									<tr>
+										<th>权限编号</th>
+										<th>权限名</th>
+										<th>角色编号</th>
+										<th>角色名</th>
+										<th>操作</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach items="${rolePers}" var="r">
+										<tr>
+											<td>${r.rid}</td>
+											<td>${r.per_name}</td>
+											<td>${r.pid}</td>
+											<td>${r.role_name}</td>
+											<td><a
+												href="passreset?id=${r.pid}&user_number=${r.pid}">重置密码</a></td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+						</div>
+						<div class="pagination pagination-centered">
+							<center>
+								<label>第${page.currentPage}/${page.totalPage}页
+									共${page.totalRows}条</label> <a href="role_Per_Table?currentPage=0">首页</a>
+								<a href="role_Per_Table?currentPage=${page.currentPage-1}"
+									onclick="return checkFirst()">上一页</a> <a
+									href="role_Per_Table?currentPage=${page.currentPage+1}"
+									onclick="return checkNext()">下一页</a> <a
+									href="role_Per_Table?currentPage=${page.totalPage}">尾页</a> 跳转到:
+								<input type="text" style="width:30px" id="turnPage" />页
+								<button class="btn" onclick="startTurn()">跳转</button>
+							</center>
+						</div>
+
+
+
+
+
+
+
+					</div>
 				</div>
 
 
@@ -288,5 +351,49 @@ html, body {
 	</div>
 	<script src="/TES/plugin/script/particles.min.js"></script>
 	<script src="/TES/plugin/script/app.js"></script>
+	<script type="text/javascript">
+    
+    function checkFirst(){
+         if(${page.currentPage>1}){
+         
+           return true;
+         
+         }
+         alert("已到页首,无法加载更多");
+        
+       return false;
+    }
+    
+    function checkNext(){
+    
+    if(${page.currentPage<page.totalPage}){
+    
+      return true;
+    
+    }
+    alert("已到页尾，无法加载更多页");
+    return false;
+    
+    }
+     
+    
+    function startTurn(){
+    
+    var turnPage=document.getElementById("turnPage").value;
+    
+    if(turnPage>${page.totalPage}){
+    
+      alert("对不起已超过最大页数");
+     
+      return false;
+    
+    }
+    
+    var shref="init.do?currentPage="+turnPage;
+    
+    window.location.href=shref;
+}
+</script>
+
 </body>
 </html>

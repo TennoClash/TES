@@ -92,7 +92,7 @@ public class TableInitController {
 		students.setId(id);
 		students.setPassword(user_number);
 		loginService.passReset(students);
-		return "spassmanage";
+		return "welcome";
 	}
 
 }
