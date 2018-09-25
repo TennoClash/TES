@@ -13,7 +13,10 @@
 <script src="/TES/plugin/script/bootstrap-slider.min.js"></script>
 <script src="/TES/plugin/script/xlsx.full.min.js"></script>
 <script src="/TES/plugin/script/jasny-bootstrap.min.js"></script>
+<script src="/TES/plugin/script/bootstrap-treeview.min.js"></script>
 <script src="/TES/plugin/script/jquery.funnyText.min.js"></script>
+
+
 <link rel="stylesheet" type="text/css"
 	href="/TES/plugin/css/jquery.funnyText.css">
 <link rel="stylesheet" type="text/css"
@@ -173,8 +176,39 @@ html, body {
 
 			$.cookie('insert_type', 't');
 		})
+		
+		/***********************************************************************/
+		$.ajax({
+							type : "POST",
+							url : "/TES/departmentx",
+							data : {
+							},
+							success : function(data) {
+								function getTree() {
+									return data;
+								}
+								$('#tree').treeview({
+									data : getTree(),
+									levels : 5,
+									backColor : '#daeaff'
+								});
+								console.log($.parseJSON(data))
+							}
+						})
+		
 
 	})
+	
+	function itemOnclick(target) {
+		var nodeid = $(target).attr('data-nodeid');
+		var tree = $('#tree');
+		var node = tree.treeview('getNode', nodeid);
+		if (node.state.expanded) {
+			tree.treeview('collapseNode', node.nodeId);
+		} else {
+			tree.treeview('expandNode', node.nodeId);
+		}
+	}
 </script>
 
 </head>
@@ -208,6 +242,10 @@ html, body {
 					</legend>
 
 				</fieldset>
+			
+			<div id="tree"
+						style="width:50%;margin-left:auto;margin-right:auto;"></div>
+			
 			
 
 			</div>
