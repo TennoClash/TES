@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import teavs.dao.PagingDao;
+import teavs.entity.CTTTable;
 import teavs.entity.Page;
 import teavs.entity.RolePer;
 import teavs.entity.student;
@@ -44,5 +45,15 @@ public class PagingService {
 	}
 	public Integer searchTotalCountRP(Page page){
 		return pagingDao.searchTotalCountRP(page);
+	}
+	
+	public List<CTTTable> searchInvListCT(Page page){
+		return pagingDao.searchInvListCT(page);
+	}
+	public List<CTTTable> getInvBycondtionCT(Page page){
+		return pagingDao.getInvBycondtionCT(page);
+	}
+	public Integer searchTotalCountCT(Page page){
+		return pagingDao.searchTotalCountCT(page);
 	}
 }

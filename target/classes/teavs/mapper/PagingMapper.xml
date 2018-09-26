@@ -73,4 +73,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </if>
         </where>
       </select>
+      
+      
+      
+      
+        <select id="searchInvListCT" parameterType="teavs.entity.Page" resultType="teavs.entity.CTTTable">
+		select * from clazz_course_teacher_view limit #{startRow},#{pageSize}
+	</select>
+
+ <select id="searchTotalCountCT" parameterType="teavs.entity.Page"
+        resultType="java.lang.Integer">
+        select count(course_num) from clazz_course_teacher_view <where>
+            <if test="queryCondition!=null">
+                and user_name like CONCAT('%',#{queryCondition},'%')
+            </if>
+        </where>
+    </select>
+    
+    <select id="getInvBycondtionCT" parameterType="teavs.entity.Page" resultType="teavs.entity.CTTTable">
+        select * from clazz_course_teacher_view
+         <where>
+            <if test="queryCondition!=null">
+                 user_name like CONCAT('%',#{queryCondition},'%')
+            </if>
+        </where>
+      </select>
 </mapper>

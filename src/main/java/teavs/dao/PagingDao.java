@@ -2,6 +2,7 @@ package teavs.dao;
 
 import java.util.List;
 
+import teavs.entity.CTTTable;
 import teavs.entity.Page;
 import teavs.entity.RolePer;
 import teavs.entity.student;
@@ -25,4 +26,10 @@ public interface PagingDao {
 	public List<RolePer> getInvBycondtionRP(Page page);
 
 	public Integer searchTotalCountRP(Page page);
+	
+	public List<CTTTable> searchInvListCT(Page page);
+
+	public List<CTTTable> getInvBycondtionCT(Page page);
+
+	public Integer searchTotalCountCT(Page page);
 }
