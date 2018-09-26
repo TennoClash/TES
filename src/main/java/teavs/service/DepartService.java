@@ -36,5 +36,7 @@ public class DepartService {
 	public int addDepartment_2(String name,int i){
 		return departDao.addDepartment_2(name,i);
 	}
+	
+
 
 }

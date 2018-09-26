@@ -61,4 +61,12 @@ public class UpDateService {
 	public int Teacher_Course_Update(List<TeacherCourse> teacherCourses){
 		return upDateDao.Teacher_Course_Update(teacherCourses);
 	}
+	
+	public int deleteStudent(int id){
+		return userDao.deleteStudent(id);
+	}
+	
+	public int deleteTeacher(int id){
+		return userDao.deleteTeacher(id);
+	}
 }

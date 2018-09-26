@@ -18,4 +18,6 @@ public interface DepartDao {
 	public int addDepartment(String name);
 	
 	public int addDepartment_2(@Param("name")String name,@Param("pid")int pid);
+	
+
 }

@@ -19,4 +19,8 @@ public interface UserDao {
 	
 	int passResetT(teacher teachers);
 	
+	public int deleteStudent(int id);
+	
+	public int deleteTeacher(int id);
+	
 }

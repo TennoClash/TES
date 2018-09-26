@@ -207,8 +207,8 @@ html, body {
 								<td>${s.user_name}</td>
 								<td>${s.user_number}</td>
 								<td>${s.clazz_num}</td>
-								<td><a
-									href="passreset?id=${s.id}&user_number=${s.user_number}">重置密码</a></td>
+								<td><a href="passreset?id=${s.id}&user_number=${s.user_number}">重置密码</a>/
+								<a href="deleteStu?id=${s.id}">删除学生</a></td>
 							</tr>
 						</c:forEach>
 					</tbody>

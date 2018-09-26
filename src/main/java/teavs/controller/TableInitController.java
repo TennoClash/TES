@@ -13,6 +13,7 @@ import teavs.entity.Page;
 import teavs.entity.student;
 import teavs.service.LoginService;
 import teavs.service.PagingService;
+import teavs.service.UpDateService;
 
 @Controller
 public class TableInitController {
@@ -20,6 +21,8 @@ public class TableInitController {
 	private PagingService pagingService;
 	@Autowired
 	private LoginService loginService;
+	@Autowired
+	private UpDateService upDateService;
 	
 	@RequestMapping("/jump/jumpsp")
 	public String jumpsp() {
@@ -97,6 +100,12 @@ public class TableInitController {
 		students.setId(id);
 		students.setPassword(user_number);
 		loginService.passReset(students);
+		return "jump/jumpsp";
+	}
+	
+	@RequestMapping("deleteStu")
+	public String deleteStu(int id) {
+		upDateService.deleteStudent(id);
 		return "jump/jumpsp";
 	}
 

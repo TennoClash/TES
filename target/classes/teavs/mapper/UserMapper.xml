@@ -27,4 +27,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="passResetT" parameterType="teavs.entity.teacher">
 	UPDATE teacher set password = #{password} where Id=#{Id}
 	</update>
+	
+	<delete id="deleteStudent" parameterType="int">
+	delete from student where Id=#{id};
+	</delete>
+	
+	<delete id="deleteTeacher" parameterType="int">
+	delete from teacher where Id=#{id};
+	</delete>
 </mapper>
