@@ -20,6 +20,8 @@
 <link rel="stylesheet" type="text/css"
 	href="/TES/plugin/css/jquery.funnyText.css">
 <link rel="stylesheet" type="text/css"
+	href="/TES/plugin/css/bootstrap-treeview.min.css">
+<link rel="stylesheet" type="text/css"
 	href="/TES/plugin/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css"
 	href="/TES/plugin/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
@@ -47,9 +49,14 @@ html, body {
 .row-fluid {
 	position: relative;
 }
+
+.list-group {
+	list-style-type: none;
+}
 </style>
 
 <script>
+
 	$(document).ready(function() {
 		var menu_json;
 		/*---------------JSP Init----------------*/
@@ -176,33 +183,147 @@ html, body {
 
 			$.cookie('insert_type', 't');
 		})
-		
+
 		/***********************************************************************/
 		$.ajax({
-							type : "POST",
-							url : "/TES/departmentx",
-							data : {
-							},
-							success : function(data) {
-								function getTree() {
-									return data;
-								}
-								$('#tree').treeview({
-									data : getTree(),
-									levels : 5,
-									backColor : '#daeaff'
-								});
-								console.log($.parseJSON(data))
+			type : "POST",
+			url : "/TES/departmentx",
+			data : {
+			},
+			success : function(data) {
+				function getTree() {
+					return data;
+				}
+				$('#tree').treeview({
+					data : getTree(),
+					levels : 5,
+					backColor : '#daeaff',
+					collapseIcon : "fa fa-institution",
+					highlightSelected : true,
+					selectedIcon : "fa fa-eye",
+				});
+				console.log($.parseJSON(data))
+			}
+		})
+
+
+		$("#deletedep").on("click", function() {
+			console.log($("#selectdep").val());
+			console.log($("#selectid").val());
+			var i = $("#selectid").val();
+			$.ajax({
+				type : "POST",
+				url : "/TES/deletede",
+				data : {
+					i : i
+				},
+				success : function(data) {
+					$.ajax({
+						type : "POST",
+						url : "/TES/departmentx",
+						data : {
+						},
+						success : function(data) {
+							function getTree() {
+								return data;
 							}
-						})
-		
+							$('#tree').treeview({
+								data : getTree(),
+								levels : 5,
+								backColor : '#daeaff',
+								collapseIcon : "fa fa-institution",
+								highlightSelected : true,
+								selectedIcon : "fa fa-eye",
+							});
+							console.log($.parseJSON(data))
+						}
+					})
+				}
+			})
+		})
+
+		$("#adddep").on("click", function() {
+			var i = $("#name_input").val();
+			$.ajax({
+				type : "POST",
+				url : "/TES/addpartment",
+				data : {
+					i : i
+				},
+				success : function(data) {
+					$.ajax({
+						type : "POST",
+						url : "/TES/departmentx",
+						data : {
+						},
+						success : function(data) {
+							function getTree() {
+								return data;
+							}
+							$('#tree').treeview({
+								data : getTree(),
+								levels : 5,
+								backColor : '#daeaff',
+								collapseIcon : "fa fa-institution",
+								highlightSelected : true,
+								selectedIcon : "fa fa-eye",
+							});
+							console.log($.parseJSON(data))
+						}
+					})
+				}
+			})
+		})
+		$("#adddep_2").on("click", function() {
+			var name = $("#name_input").val();
+			var i = $("#selectid").val();
+			var pid = $("#selectpid").val();
+			$.ajax({
+				type : "POST",
+				url : "/TES/addpartment_2",
+				data : {
+					i : i,
+					name : name,
+					pid : pid
+				},
+				success : function(data) {
+					$.ajax({
+						type : "POST",
+						url : "/TES/departmentx",
+						data : {
+						},
+						success : function(data) {
+							function getTree() {
+								return data;
+							}
+							$('#tree').treeview({
+								data : getTree(),
+								levels : 5,
+								backColor : '#daeaff',
+								collapseIcon : "fa fa-institution",
+								highlightSelected : true,
+								selectedIcon : "fa fa-eye",
+							});
+							console.log($.parseJSON(data))
+						}
+					})
+				}
+			})
+		})
+
+
 
 	})
-	
+
+
 	function itemOnclick(target) {
 		var nodeid = $(target).attr('data-nodeid');
 		var tree = $('#tree');
 		var node = tree.treeview('getNode', nodeid);
+		console.log(node.text + "+" + node.id)
+		$("#selectdep").val(node.text);
+		$("#selectid").val(node.id);
+		$("#selectpid").val(node.pid);
 		if (node.state.expanded) {
 			tree.treeview('collapseNode', node.nodeId);
 		} else {
@@ -242,16 +363,26 @@ html, body {
 					</legend>
 
 				</fieldset>
-			
-			<div id="tree"
-						style="width:50%;margin-left:auto;margin-right:auto;"></div>
-			
-			
 
+				<div id="tree"
+					style="float:left;max-width:200px;list-style-type:none;width:50%;margin-left:auto;margin-right:auto;"></div>
+				<button type="button" id="deletedep" style="margin-bottom:10px"
+					class="btn">删除该部门</button>
+				<br> <input id="name_input" style="width:100px"
+					placeholder="输入名称：" type="text" /><br>
+				<button style="display:inline-bolck" type="button" id="adddep"
+					class="btn">新增学院</button>
+				<button style="display:inline-bolck" type="button" id="adddep_2"
+					class="btn">在该学院下新增系</button>
+
+
+				<input type="hidden" id="selectdep" value="" /> <input
+					type="hidden" id="selectid" value="" /> <input type="hidden"
+					id="selectpid" value="" />
 			</div>
 		</div>
 	</div>
-	
+
 	<script src="/TES/plugin/script/particles.min.js"></script>
 	<script src="/TES/plugin/script/app.js"></script>
 </body>

@@ -6,4 +6,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getDepartX" resultType="teavs.entity.Depart">
 		select Id id,pid pid,institute from department;
 	</select>
+	
+	<delete id="deletepart" parameterType="int">
+		delete from department where Id=#{id};
+	</delete>
+	
+	<select id="isFatherNode" resultType="int">
+		select count(id) from department where pid=#{id};
+	</select>
+	
+	<delete id="deleteAllTree" parameterType="int">
+		delete from department where Id=#{id} or pid=#{id};
+	</delete>
+	
+	<insert id="addDepartment" parameterType="String">
+		insert into department (institute) values(#{institute});
+	</insert>
+	
+	<insert id="addDepartment_2">
+		insert into department (institute,pid) values(#{name},#{pid});
+	</insert>
 </mapper>

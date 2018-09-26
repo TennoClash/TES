@@ -16,5 +16,25 @@ public class DepartService {
 	public List<Depart>  getDepartX(){
 		return departDao.getDepartX();
 	}
+	
+	public int deletepart(int id){
+		return departDao.deletepart(id);
+	}
+	
+	public int isFatherNode(int id){
+		return departDao.isFatherNode(id);
+	}
+	
+	public int deleteAllTree(int id){
+		return departDao.deleteAllTree(id);
+	}
+	
+	public int addDepartment(String name){
+		return departDao.addDepartment(name);
+	}
+	
+	public int addDepartment_2(String name,int i){
+		return departDao.addDepartment_2(name,i);
+	}
 
 }
