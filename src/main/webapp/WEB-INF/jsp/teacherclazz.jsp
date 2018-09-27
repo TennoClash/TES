@@ -247,7 +247,6 @@ html, body {
 							<th>课程名</th>
 							<th>班级名</th>
 							<th>教师</th>
-							<th>操作</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -256,7 +255,6 @@ html, body {
 								<td>${c.course_name}</td>
 								<td>${c.clazz_name}</td>
 								<td>${c.user_name}</td>
-								<td>
 							</tr>
 						</c:forEach>
 					</tbody>
