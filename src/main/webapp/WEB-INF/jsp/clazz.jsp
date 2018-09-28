@@ -1,4 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -224,6 +225,59 @@ position: relative;
 				</div>
 				<button type="button" id="upload_sub" class="btn">上传</button>
 				</div>
+				
+				
+				<center>
+					<table border="1" style="text-align:center;">
+					<strong>按班级号搜索：</strong>
+						<form action="clazztable" method="get" class="form-search"> 
+							<input class="input-medium search-query" name="queryCondition"
+								value="${page.queryCondition}" id="condition" type="text">
+							<button class="btn" type="submit">查询</button>
+						</form>
+					
+					</table> 
+ 
+				</center>
+
+
+
+<div style="max-height:280px;overflow:scroll;overflow-x: hidden;overflow-y:auto;">
+				<table class="table table-hover" >
+					<thead>
+						<tr>
+							
+							<th>班级名</th>
+							<th>班级编号</th>
+						<th>院系名称</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach items="${clazzs}" var="s">
+							<tr>
+								
+								<td>${s.clazz_name}</td>
+								<td>${s.clazz_num}</td>
+								<td>${s.institute}</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table> 
+				</div>
+				<div class="pagination pagination-centered">
+					<center>  
+						<label>第${page.currentPage}/${page.totalPage}页
+							共${page.totalRows}条</label> <a href="clazztable?currentPage=0">首页</a> <a
+							href="clazztable?currentPage=${page.currentPage-1}" 
+							onclick="return checkFirst()">上一页</a> <a 
+							href="clazztable?currentPage=${page.currentPage+1}"
+							onclick="return checkNext()">下一页</a> <a
+							href="clazztable?currentPage=${page.totalPage}">尾页</a> 跳转到: <input
+							type="text" style="width:30px" id="turnPage" />页 <button
+							class="btn"  onclick="startTurn()">跳转</button>
+					</center>
+				</div>
+				
 
 </div>
 			</div>
@@ -269,7 +323,89 @@ position: relative;
 				return o;
 			}
 		</script>
+			<script>
+		var wb;
+		var rABS = false;
+		var jsonobj1;
+		function importf(obj) {
+			if (!obj.files) {
+				return;
+			}
+			var f = obj.files[0];
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				var data = e.target.result;
+				if (rABS) {
+					wb = XLSX.read(btoa(fixdata(data)), {
+						type : 'base64'
+					});
+				} else {
+					wb = XLSX.read(data, {
+						type : 'binary'
+					});
+				}
+				document.getElementById("demo").innerHTML = JSON.stringify(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]));
+				jsonobj1 = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
+			};
+			if (rABS) {
+				reader.readAsArrayBuffer(f);
+			} else {
+				reader.readAsBinaryString(f);
+			}
+		}
+	
+		function fixdata(data) {
+			var o = "",
+				l = 0,
+				w = 10240;
+			for (; l < data.byteLength / w; ++l) o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w, l * w + w)));
+			o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w)));
+			return o;
+		}
+		    
+    function checkFirst(){
+         if(${page.currentPage>1}){
+         
+           return true;
+         
+         }
+         alert("已到页首,无法加载更多");
+        
+       return false;
+    }
+    
+    function checkNext(){
+    
+    if(${page.currentPage<page.totalPage}){
+    
+      return true;
+    
+    }
+    alert("已到页尾，无法加载更多页");
+    return false;
+    
+    }
+     
+    
+    function startTurn(){
+    
+    var turnPage=document.getElementById("turnPage").value;
+    
+    if(turnPage>${page.totalPage}){
+    
+      alert("对不起已超过最大页数");
+     
+      return false;
+    
+    }
+    
+    var shref="init.do?currentPage="+turnPage;
+    
+    window.location.href=shref;
+}
+	</script>
 		<script src="/TES/plugin/script/particles.min.js"></script>
 <script src="/TES/plugin/script/app.js"></script> 
+
 </body>
 </html>

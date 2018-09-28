@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import teavs.dao.PagingDao;
 import teavs.entity.CTTTable;
+import teavs.entity.Clazz;
+import teavs.entity.ClazzDepartment;
 import teavs.entity.Page;
 import teavs.entity.RolePer;
 import teavs.entity.student;
@@ -56,4 +58,19 @@ public class PagingService {
 	public Integer searchTotalCountCT(Page page){
 		return pagingDao.searchTotalCountCT(page);
 	}
+	
+	
+	public List<ClazzDepartment> searchInvListClazz(Page page){
+		return pagingDao.searchInvListClazz(page);
+	}
+	public List<ClazzDepartment> getInvBycondtionClazz(Page page){
+		return pagingDao.getInvBycondtionClazz(page);
+	}
+	public Integer searchTotalCountClazz(Page page){
+		return pagingDao.searchTotalCountClazz(page);
+	}
+	
+	
+	
+	
 }

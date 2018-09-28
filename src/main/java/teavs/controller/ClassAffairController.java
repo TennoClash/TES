@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import teavs.entity.CTTTable;
 import teavs.entity.Clazz;
 import teavs.entity.ClazzCourse;
+import teavs.entity.ClazzDepartment;
 import teavs.entity.Course;
 import teavs.entity.Page;
 import teavs.entity.TeacherCourse;
@@ -150,4 +151,67 @@ public class ClassAffairController {
 		startRow = (currentPage - 1) * pageSize;
 		return startRow;
 	}
+	
+	
+	/*班级分页*/
+	
+	@RequestMapping("clazztable")
+	public String searchInvList2(Page page, HttpServletRequest request) throws UnsupportedEncodingException {
+		Page p = page;
+		int pageSize = 5; 
+		p.setPageSize(pageSize);
+		int curPage = p.getCurrentPage();
+
+		if (curPage == 0) {
+			curPage = 1;
+			p.setCurrentPage(curPage);
+		}
+		int startRow = page.getStartRow();
+
+		if (!(p.getCurrentPage() == 0)) {
+			startRow = getStartRowBycurrentPage2(curPage, pageSize);
+		}
+		p.setStartRow(startRow);
+
+		String queryCondition = null;
+		if (page.getQueryCondition() != null) {
+			queryCondition = page.getQueryCondition();
+		}
+		List<ClazzDepartment> clazzs = getInvListByCondition2(page);
+		Integer totalCounts = pagingService.searchTotalCountClazz(page);
+		int totalPages = (totalCounts % pageSize == 0) ? (totalCounts / pageSize) : (totalCounts / pageSize + 1);
+		p.setTotalPage(totalPages);
+		page.setTotalRows(totalCounts);
+		request.setAttribute("clazzs", clazzs);
+		request.setAttribute("page", page);
+		return "clazz";
+	}
+
+	private List<ClazzDepartment> getInvListByCondition2(Page page) {
+		List<ClazzDepartment> clazzs = null;
+		if (page.getQueryCondition() == null) {
+			clazzs = pagingService.searchInvListClazz(page);
+			return clazzs;
+		}
+		clazzs = pagingService.getInvBycondtionClazz(page);
+		return clazzs;
+	}
+
+
+	public int getStartRowBycurrentPage2(int currentPage, int pageSize) {
+		int startRow = 0;
+		if (currentPage == 1) {
+			return startRow = 0;
+		}
+		startRow = (currentPage - 1) * pageSize;
+		return startRow;
+	}
+
+	
+	
+	
+	
+	
+	
+	
 }
