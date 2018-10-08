@@ -328,7 +328,7 @@ html, body {
 					})
 				}
 
-				console.log(mmenuid)
+				console.log(mmenuid) 
 				console.log(Math.max.apply(null, mmenuid))
 
 				$.ajax({

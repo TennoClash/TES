@@ -56,7 +56,6 @@ position: relative;
 				r : role_id
 			},
 			success : function(data) {
-				console.log(data);
 				menu_json = data;
 				var x = 1;
 				var n_id = 0;

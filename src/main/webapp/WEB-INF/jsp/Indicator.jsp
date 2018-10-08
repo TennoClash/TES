@@ -10,7 +10,8 @@
 <script src="/TES/plugin/script/clicktext.js"></script>
 <script src="/TES/plugin/script/bootstrap.min.js"></script>
 <script src="/TES/plugin/script/bootstrap-slider.min.js"></script>
-<script src="/TES/plugin/script/jquery.cookie.js"></script> 
+<script src="/TES/plugin/script/bootstrap-treeview.min.js"></script>
+<script src="/TES/plugin/script/jquery.cookie.js"></script>
 
 
 <link rel="stylesheet" type="text/css"
@@ -37,9 +38,10 @@ html, body {
 	border-radius: 8px 8px 8px 8px;
 	padding: 10px 19px 24px;
 }
-.row-fluid{
-position: relative; 
-} 
+
+.row-fluid {
+	position: relative;
+}
 </style>
 
 <script>
@@ -136,29 +138,129 @@ position: relative;
 		});
 
 		$("#l_nav").on("click", "#s_click", function() {
-			$.cookie('insert_type', 's'); 
-		}) 
- 
-		$("#l_nav").on("click", "#t_click", function() {	
-		$.cookie('insert_type', 't');
+			$.cookie('insert_type', 's');
 		})
+
+		$("#l_nav").on("click", "#t_click", function() {
+			$.cookie('insert_type', 't');
+		})
+
+		
+		var in_type;
+		$("input[name='m_type']").on("click",function(){
+		in_type= $("input[name='m_type']:checked").val();
+		$.ajax({
+			type : "POST",
+			url : "/TES/evaluatex",
+			data : {
+				i : in_type
+			},
+			success : function(data) {
+				function getTree() {
+					return data;
+				}
+				$('#tree').treeview({
+					data : getTree(),
+					levels : 5,
+					backColor : '#daeaff',
+					selectable : false,
+					highlightSelected : false,
+				});
+				$('#tree2').treeview({
+					data : getTree(),
+					levels : 5,
+					backColor : '#daeaff',
+					highlightSelected : true,
+					selectedIcon : "fa fa-eye",
+				});
+			}
+		})
+		
+		})
+
+		$(".btn-primary").on("click", function() {
+			var dname = $("#dname").val();
+			var dweight = $("#dweight").val();
+			var hidden_ind_id = $("#hidden_ind_id").val();
+			$.ajax({
+			type : "POST",
+			url : "/TES/addindi",
+			data : {
+				pid:hidden_ind_id,
+				weight:dweight,
+				i_type:in_type,
+				i_title:dname
+			},
+			success : function(data) {
+			if(data=="1"){
+			$.ajax({
+			type : "POST",
+			url : "/TES/evaluatex",
+			data : {
+				i : in_type
+			},
+			success : function(data) {
+				function getTree() {
+					return data;
+				}
+				$('#tree').treeview({
+					data : getTree(),
+					levels : 5,
+					backColor : '#daeaff',
+					selectable : false,
+					highlightSelected : false,
+				});
+				$('#tree2').treeview({
+					data : getTree(),
+					levels : 5,
+					backColor : '#daeaff',
+					highlightSelected : true,
+					selectedIcon : "fa fa-eye",
+				});
+			}
+		})
+			}
+			}
+		})
+		})
+
+
 	})
+	function itemOnclick(target) {
+		var nodeid = $(target).attr('data-nodeid');
+		var tree = $('#tree');
+		var node = tree.treeview('getNode', nodeid);
+		console.log(node.text + "+" + node.id);
+		$("#select_show").html("");
+		var real_text = node.text.split(".");
+		if(node.pid==0){
+		$("#select_show").html("当前选择的上级指标是:" + "<span style='color:#ff2626'>" + node.text + "</span>");
+		}else{
+		$("#select_show").html("当前选择的上级指标是:" + "<span style='color:#ff2626'>" + real_text[1] + "</span>");
+		}
+		
+		$("#hidden_ind_id").val(node.id);
+		if (node.state.expanded) {
+
+		} else {
+			tree.treeview('expandNode', node.nodeId);
+		}
+	}
 </script>
 
 </head>
 <body>
 
-	<div class="container-fluid" 
+	<div class="container-fluid"
 		style="background-color: #333;height:100%;">
-		<div id="particles-js"  style="width: 100%; height: 100%;position: absolute;">	</div>
-		<div class="row-fluid column" >
+		<div id="particles-js"
+			style="width: 100%; height: 100%;position: absolute;"></div>
+		<div class="row-fluid column">
 			<div class="span12">
-			
-				<h1 id="ver" style="display:inline-block">
-					教师评价系统 &nbsp;
-				</h1>
+
+				<h1 id="ver" style="display:inline-block">教师评价系统 &nbsp;</h1>
 				<i class="fa fa-sign-out"
-						style="font-size:80px;display:inline-block; float:right"></i>
+					style="font-size:80px;display:inline-block; float:right"></i>
 
 			</div>
 		</div>
@@ -172,19 +274,54 @@ position: relative;
 			</div>
 
 			<div class="span10 column">
-				
-			
-				
+				<div style="max-width:500px;list-style-type:none;margin-left:auto;margin-right:auto;">
+				<strong>选择指标类型</strong><br> <br> 学生方面：<input type="radio"
+					name="m_type" value="1" /> &nbsp; 系部方面：<input type="radio"
+					name="m_type" value="2" />&nbsp; 教研室方面：<input type="radio"
+					name="m_type" value="3" /> &nbsp; 同行方面：<input type="radio"
+					name="m_type" value="4" /> &nbsp; 教师自我评价：<input type="radio"
+					name="m_type" value="5" /> &nbsp;</div>
+				<div id="tree"
+					style="max-width:500px;list-style-type:none;margin-left:auto;margin-right:auto;"></div>
+
+
+				<a id="modal-891721" href="#modal-container-891721" role="button"
+					class="btn" data-toggle="modal">添加指标</a>
+				<div id="modal-container-891721" class="modal hide fade"
+					role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">×</button>
+						<h3 id="myModalLabel">添加指标</h3>
+					</div>
+					<div class="modal-body">
+						<h2>请选择上级指标：</h2>
+						<div id="tree2"
+							style="max-width:500px;list-style-type:none;margin-left:auto;margin-right:auto;"></div>
+						<h4 id="select_show">当前选择的上级指标是:</h4>
+						<input type="hidden" value="" id="hidden_ind_id" /> <label>请输入指标名</label>
+						<input type="text" id="dname" /> <label>请输入指标权重</label> <input
+							type="text" id="dweight" />
+
+					</div>
+					<div class="modal-footer">
+						<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+						<button class="btn btn-primary" data-dismiss="modal"
+							aria-hidden="true">确定</button>
+					</div>
+				</div>
+
+
 			</div>
-			
+
 
 
 		</div>
 	</div>
 
-<script src="/TES/plugin/script/particles.min.js"></script>
-<script src="/TES/plugin/script/app.js"></script> 
-<script src="/TES/plugin/script/jquery.funnyText.min.js"></script> 
+	<script src="/TES/plugin/script/particles.min.js"></script>
+	<script src="/TES/plugin/script/app.js"></script>
+	<script src="/TES/plugin/script/jquery.funnyText.min.js"></script>
 
 
 </body>

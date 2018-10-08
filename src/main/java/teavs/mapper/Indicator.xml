@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="teavs.dao.IndicatorDao">
+
+<select id="getIndicator" parameterType="int" resultType="teavs.entity.Indicator">
+select Id id,pid,i_title from indicator where i_type=#{i_type};
+</select>
+
+<select id="getIndicatorOR" parameterType="int" resultType="teavs.entity.Indicator">
+select * from indicator where i_type=#{i_type};
+</select>
+
+<insert id="addIndicator" parameterType="teavs.entity.Indicator">
+insert into indicator (pid,weight,i_type,i_title) values(#{pid},#{weight},#{i_type},#{i_title});
+</insert>
+
+</mapper>

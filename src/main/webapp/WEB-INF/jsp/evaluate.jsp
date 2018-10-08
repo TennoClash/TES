@@ -10,11 +10,14 @@
 <script src="/TES/plugin/script/clicktext.js"></script>
 <script src="/TES/plugin/script/bootstrap.min.js"></script>
 <script src="/TES/plugin/script/bootstrap-slider.min.js"></script>
-<script src="/TES/plugin/script/jquery.cookie.js"></script> 
+<script src="/TES/plugin/script/bootstrap-treeview.min2.js"></script>
+<script src="/TES/plugin/script/jquery.cookie.js"></script>
 
 
 <link rel="stylesheet" type="text/css"
 	href="/TES/plugin/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css"
+	href="/TES/plugin/css/bootstrap-treeview.min.css">
 <link rel="stylesheet" type="text/css"
 	href="/TES/plugin/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css"
@@ -37,9 +40,18 @@ html, body {
 	border-radius: 8px 8px 8px 8px;
 	padding: 10px 19px 24px;
 }
-.row-fluid{
-position: relative; 
-} 
+
+li {
+	list-style-type: none;
+}
+
+.row-fluid {
+	position: relative;
+}
+
+.radiocss {
+	margin-bottom: 100px;
+}
 </style>
 
 <script>
@@ -136,29 +148,169 @@ position: relative;
 		});
 
 		$("#l_nav").on("click", "#s_click", function() {
-			$.cookie('insert_type', 's'); 
-		}) 
- 
-		$("#l_nav").on("click", "#t_click", function() {	
-		$.cookie('insert_type', 't');
+			$.cookie('insert_type', 's');
 		})
+
+		$("#l_nav").on("click", "#t_click", function() {
+			$.cookie('insert_type', 't');
+		})
+
+		var expanded_json;
+		var exjson;
+		$.ajax({
+			type : "POST",
+			url : "/TES/evaluatex",
+			data : {
+				i : 2
+			},
+			success : function(data) {
+				function getTree() {
+					return data;
+				}
+				$('#tree').treeview({
+					data : getTree(),
+					levels : 5,
+					backColor : '#daeaff',
+					collapseIcon : "fa fa-institution",
+					selectable : false,
+					highlightSelected : false,
+				});
+				console.log($.parseJSON(data))
+				var tree = $('#tree');
+				var node = tree.treeview('getExpanded', 1);
+				exjson = [];
+
+				expanded_json = node;
+
+				for (var i = 0; i < expanded_json.length; i++) {
+					var arr2 = {
+						pid : expanded_json[i].pid,
+						id : expanded_json[i].id,
+						text : expanded_json[i].text
+					}
+					exjson.push(arr2);
+				}
+				console.log(exjson);
+
+				$.each($("#tree .list-group li"), function(i, v) {
+
+					for (var i = 0; i < node.length; i++) {
+						if ($(this).text() == node[i].text) {
+							$(this).css("font-size", "20px");
+							$(this).css("font-weight", "bold");
+						}
+					}
+				})
+				json($.parseJSON(data))
+				/*$(".list-group-item").attr('class', "tree22")
+				$(".list-group").attr('class', "tree222")
+				$("#tree").attr('id', "tree222")
+				$(".treeview").attr('class', "tree222")
+				$(".tree22").removeAttr('data-nodeid')*/
+				var newtree = $("#tree").clone();
+				$("#tree").remove();
+				$("#iooi").before(newtree);
+			}
+		})
+		/*****************************************************/
+
+		var json_origin;
+		$.ajax({
+			type : "POST",
+			url : "/TES/evaluateOrigin",
+			data : {
+				i : 2
+			},
+			success : function(data) {
+				json_origin = data;
+				console.log(data);
+			}
+		})
+
+		$("#iooi").on("click", function() {
+			var total = 0;
+			$("input[type=radio]").each(function() {
+				if (this.checked) {
+					var namecc = $(this).attr("name").split("e");
+					var conut = $(this).val();
+					$.each(json_origin, function(i, v) {
+						if (namecc[1] == v.id) {
+							total = total + v.weight * conut;
+							$.each(exjson, function(ii, vv) {
+								if (v.pid == vv.id) {
+									console.log(v.pid + "!!!" + vv.id)
+								}
+							})
+						}
+
+
+					})
+
+				}
+			});
+
+			console.log(total);
+
+
+		})
+
+
 	})
+
+
+
+	function json(jsontree) {
+		if ((typeof jsontree == 'object') && (jsontree.constructor == Object.prototype.constructor)) {
+			var arrey = [];
+			arrey.push(jsontree);
+				
+		} else
+			arrey = jsontree;
+				var iii=0;
+		for (var i = 0; i < arrey.length; i++) {
+
+			var jn = arrey[i];
+			if (jn.nodes && jn.nodes.length > 0) {
+				json(jn.nodes);
+			} else {
+				$.each($("#tree .list-group li"), function(i, v) {
+					if (jn.text == $(this).text()) {
+						//$(this).after("<br><input type='radio' value='8' name='count'>非常满意(8分)<input type='radio'  value='6' name='count'>满意(6分)<input type='radio' value='4' name='count'>不满意(4分) <input type='radio' value='2' name='count'>极不满意(2分)")
+
+						var cid = $(this).attr("data-nodeid");
+						var ccid = "'name'+" + jn.id + "";
+						var cname = eval(ccid);
+						
+						var htmlstr=$(this).html();
+						var htmlstrleft=htmlstr.substring(htmlstr.lastIndexOf(">") + 1, htmlstr .length);
+						var htmlstrright=htmlstr.substring(0,htmlstr.lastIndexOf(">")+1);
+						$(this).html(""); 
+						var con=[1,0.85,0.65,0.45];
+						$(this).html(htmlstrright+"<input type='radio' value="+con[iii]+" name="+cname+">"+htmlstrleft);
+						$(this).css("display","inline-block");
+						iii++
+						console.log(iii)
+						//$(this).html($(this).html() + "<br><input type='radio' value='8' name=" + cname + ">非常满意(8分)<input type='radio' style='margin-left:20px;' value='6' name=" + cname + ">满意(6分)<input type='radio' style='margin-left:20px;' value='4' name=" + cname + ">不满意(4分) <input type='radio' style='margin-left:20px;' value='2' name=" + cname + ">极不满意(2分)")
+					}
+				})
+			}
+		}
+	}
 </script>
 
 </head>
 <body>
 
-	<div class="container-fluid" 
+	<div class="container-fluid"
 		style="background-color: #333;height:100%;">
-		<div id="particles-js"  style="width: 100%; height: 100%;position: absolute;">	</div>
-		<div class="row-fluid column" >
+		<div id="particles-js"
+			style="width: 100%; height: 100%;position: absolute;"></div>
+		<div class="row-fluid column">
 			<div class="span12">
-			
-				<h1 id="ver" style="display:inline-block">
-					教师评价系统 &nbsp;
-				</h1>
+
+				<h1 id="ver" style="display:inline-block">教师评价系统 &nbsp;</h1>
 				<i class="fa fa-sign-out"
-						style="font-size:80px;display:inline-block; float:right"></i>
+					style="font-size:80px;display:inline-block; float:right"></i>
 
 			</div>
 		</div>
@@ -171,21 +323,29 @@ position: relative;
 
 			</div>
 
-			<div class="span10 column">
-				<div>
+			<div class="span10 column"
+				style="max-height:600px;overflow:scroll;overflow-x: hidden;overflow-y:auto;"
+				id="box2">
+				<div id="box1"
+					style="max-width:500px;list-style-type:none;width:70%;margin-left:auto;margin-right:auto;">
+					<div id="tree"
+						style="max-width:500px;list-style-type:none;margin-left:auto;margin-right:auto;"></div>
+					<button id="iooi" style="width:50px;margin-left:220px">提交</button>
+
 				</div>
-			
-				
+
+
+
 			</div>
-			
+
 
 
 		</div>
 	</div>
 
-<script src="/TES/plugin/script/particles.min.js"></script>
-<script src="/TES/plugin/script/app.js"></script> 
-<script src="/TES/plugin/script/jquery.funnyText.min.js"></script> 
+	<script src="/TES/plugin/script/particles.min.js"></script>
+	<script src="/TES/plugin/script/app.js"></script>
+	<script src="/TES/plugin/script/jquery.funnyText.min.js"></script>
 
 
 </body>
