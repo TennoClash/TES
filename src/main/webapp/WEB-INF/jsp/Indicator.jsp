@@ -161,14 +161,14 @@ html, body {
 				}
 				$('#tree').treeview({
 					data : getTree(),
-					levels : 5,
+					levels : 10,
 					backColor : '#daeaff',
 					selectable : false,
 					highlightSelected : false,
 				});
 				$('#tree2').treeview({
 					data : getTree(),
-					levels : 5,
+					levels : 10,
 					backColor : '#daeaff',
 					highlightSelected : true,
 					selectedIcon : "fa fa-eye",
@@ -205,14 +205,14 @@ html, body {
 				}
 				$('#tree').treeview({
 					data : getTree(),
-					levels : 5,
+					levels : 10,
 					backColor : '#daeaff',
 					selectable : false,
 					highlightSelected : false,
 				});
 				$('#tree2').treeview({
 					data : getTree(),
-					levels : 5,
+					levels : 10,
 					backColor : '#daeaff',
 					highlightSelected : true,
 					selectedIcon : "fa fa-eye",
@@ -273,7 +273,7 @@ html, body {
 
 			</div>
 
-			<div class="span10 column">
+			<div class="span10 column" style="max-height:600px;overflow:scroll;overflow-x: hidden;overflow-y:auto;">
 				<div style="max-width:500px;list-style-type:none;margin-left:auto;margin-right:auto;">
 				<strong>选择指标类型</strong><br> <br> 学生方面：<input type="radio"
 					name="m_type" value="1" /> &nbsp; 系部方面：<input type="radio"
@@ -281,7 +281,7 @@ html, body {
 					name="m_type" value="3" /> &nbsp; 同行方面：<input type="radio"
 					name="m_type" value="4" /> &nbsp; 教师自我评价：<input type="radio"
 					name="m_type" value="5" /> &nbsp;</div>
-				<div id="tree"
+				<div id="tree" 
 					style="max-width:500px;list-style-type:none;margin-left:auto;margin-right:auto;"></div>
 
 

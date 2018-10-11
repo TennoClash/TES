@@ -5,6 +5,8 @@ import java.util.List;
 import teavs.entity.CTTTable;
 import teavs.entity.Clazz;
 import teavs.entity.ClazzDepartment;
+import teavs.entity.EvaCheck;
+import teavs.entity.EvaManage;
 import teavs.entity.Page;
 import teavs.entity.RolePer;
 import teavs.entity.student;
@@ -35,11 +37,17 @@ public interface PagingDao {
 
 	public Integer searchTotalCountCT(Page page);
 	
-	
-	
 	public List<ClazzDepartment> searchInvListClazz(Page page);
 
 	public List<ClazzDepartment> getInvBycondtionClazz(Page page);
 
 	public Integer searchTotalCountClazz(Page page);
+	
+	public List<EvaManage> searchInvListEvaManages(Page page);
+
+	public List<EvaManage> getInvBycondtionEvaManages(Page page);
+
+	public Integer searchTotalCountEvaManages(Page page);
+	
+
 }

@@ -1,4 +1,5 @@
 ﻿<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -157,11 +158,21 @@ li {
 
 		var expanded_json;
 		var exjson;
+		var iix;
+		if (role_id == 1) {
+			iix = 1;
+		}
+		if (role_id == 2) {
+			iix = 4;
+		}
+		if (role_id == 3) {
+			iix = 2;
+		}
 		$.ajax({
 			type : "POST",
 			url : "/TES/evaluatex",
 			data : {
-				i : 2
+				i : iix
 			},
 			success : function(data) {
 				function getTree() {
@@ -169,7 +180,7 @@ li {
 				}
 				$('#tree').treeview({
 					data : getTree(),
-					levels : 5,
+					levels : 10,
 					backColor : '#daeaff',
 					collapseIcon : "fa fa-institution",
 					selectable : false,
@@ -215,11 +226,12 @@ li {
 		/*****************************************************/
 
 		var json_origin;
+
 		$.ajax({
 			type : "POST",
 			url : "/TES/evaluateOrigin",
 			data : {
-				i : 2
+				i : iix
 			},
 			success : function(data) {
 				json_origin = data;
@@ -242,16 +254,37 @@ li {
 								}
 							})
 						}
-
-
 					})
-
 				}
 			});
-
 			console.log(total);
-
-
+			
+			var teacher_id = $("#teacher_id").val();
+			var semester = $("#semester").val();
+			var course_id = $("#course_id").val();
+			var eva_type = $("#eva_type").val();
+			var eva_user = $("#eva_user").val();
+			var eid = $("#eid").val();
+			
+			$.ajax({
+				type : "POST",
+				url : "/TES/eva_sub",
+				data : {
+					teacher_id : teacher_id,
+					semester : semester,
+					course_id:course_id,
+					eva_type : eva_type,
+					eva_user : eva_user,
+					score : total*10,
+					eid : eid
+				},
+				success : function(data) {
+					
+				}
+			})
+			
+			
+			
 		})
 
 
@@ -263,10 +296,10 @@ li {
 		if ((typeof jsontree == 'object') && (jsontree.constructor == Object.prototype.constructor)) {
 			var arrey = [];
 			arrey.push(jsontree);
-				
+
 		} else
 			arrey = jsontree;
-				var iii=0;
+		var iii = 0;
 		for (var i = 0; i < arrey.length; i++) {
 
 			var jn = arrey[i];
@@ -278,19 +311,19 @@ li {
 						//$(this).after("<br><input type='radio' value='8' name='count'>非常满意(8分)<input type='radio'  value='6' name='count'>满意(6分)<input type='radio' value='4' name='count'>不满意(4分) <input type='radio' value='2' name='count'>极不满意(2分)")
 
 						var cid = $(this).attr("data-nodeid");
-						var ccid = "'name'+" + jn.id + "";
+						var ccid = "'name'+" + jn.pid + "";
 						var cname = eval(ccid);
-						
-						var htmlstr=$(this).html();
-						var htmlstrleft=htmlstr.substring(htmlstr.lastIndexOf(">") + 1, htmlstr .length);
-						var htmlstrright=htmlstr.substring(0,htmlstr.lastIndexOf(">")+1);
-						$(this).html(""); 
-						var con=[1,0.85,0.65,0.45];
-						$(this).html(htmlstrright+"<input type='radio' value="+con[iii]+" name="+cname+">"+htmlstrleft);
-						$(this).css("display","inline-block");
+
+						var htmlstr = $(this).html();
+						var htmlstrleft = htmlstr.substring(htmlstr.lastIndexOf(">") + 1, htmlstr.length);
+						var htmlstrright = htmlstr.substring(0, htmlstr.lastIndexOf(">") + 1);
+						$(this).html("");
+						var con = [ 1, 0.85, 0.65, 0.45 ];
+						$(this).html(htmlstrright + "<input type='radio' value=" + con[iii] + " name=" + cname + ">" + htmlstrleft);
+						$(this).css("display", "inline-block");
+						$(this).css("background-color", "#fff")
 						iii++
-						console.log(iii)
-						//$(this).html($(this).html() + "<br><input type='radio' value='8' name=" + cname + ">非常满意(8分)<input type='radio' style='margin-left:20px;' value='6' name=" + cname + ">满意(6分)<input type='radio' style='margin-left:20px;' value='4' name=" + cname + ">不满意(4分) <input type='radio' style='margin-left:20px;' value='2' name=" + cname + ">极不满意(2分)")
+					//$(this).html($(this).html() + "<br><input type='radio' value='8' name=" + cname + ">非常满意(8分)<input type='radio' style='margin-left:20px;' value='6' name=" + cname + ">满意(6分)<input type='radio' style='margin-left:20px;' value='4' name=" + cname + ">不满意(4分) <input type='radio' style='margin-left:20px;' value='2' name=" + cname + ">极不满意(2分)")
 					}
 				})
 			}
@@ -322,14 +355,21 @@ li {
 				</ul>
 
 			</div>
+			<input type="hidden" id="teacher_id" value="${teacher_id}">
+			<input type="hidden" id="semester" value="${semester}">
+			<input type="hidden" id="course_id" value="${course_id}">
+			<input type="hidden" id="eva_user" value="${eva_user}">
+			<input type="hidden" id="eva_type" value="${eva_type}">
+			<input type="hidden" id="eid" value="${eid}">
+			
 
 			<div class="span10 column"
 				style="max-height:600px;overflow:scroll;overflow-x: hidden;overflow-y:auto;"
 				id="box2">
 				<div id="box1"
-					style="max-width:500px;list-style-type:none;width:70%;margin-left:auto;margin-right:auto;">
+					style="max-width:600px;list-style-type:none;width:70%;margin-left:auto;margin-right:auto;">
 					<div id="tree"
-						style="max-width:500px;list-style-type:none;margin-left:auto;margin-right:auto;"></div>
+						style="max-width:600px;list-style-type:none;margin-left:auto;margin-right:auto;"></div>
 					<button id="iooi" style="width:50px;margin-left:220px">提交</button>
 
 				</div>

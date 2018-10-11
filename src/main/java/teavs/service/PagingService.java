@@ -9,6 +9,8 @@ import teavs.dao.PagingDao;
 import teavs.entity.CTTTable;
 import teavs.entity.Clazz;
 import teavs.entity.ClazzDepartment;
+import teavs.entity.EvaCheck;
+import teavs.entity.EvaManage;
 import teavs.entity.Page;
 import teavs.entity.RolePer;
 import teavs.entity.student;
@@ -69,6 +71,18 @@ public class PagingService {
 	public Integer searchTotalCountClazz(Page page){
 		return pagingDao.searchTotalCountClazz(page);
 	}
+	
+	
+	public List<EvaManage> searchInvListEvaManages(Page page){
+		return pagingDao.searchInvListEvaManages(page);
+	}
+	public List<EvaManage> getInvBycondtionEvaManages(Page page){
+		return pagingDao.getInvBycondtionEvaManages(page);
+	}
+	public Integer searchTotalCountEvaManages(Page page){
+		return pagingDao.searchTotalCountEvaManages(page);
+	}
+	
 	
 	
 	

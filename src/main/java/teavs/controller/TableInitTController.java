@@ -83,7 +83,6 @@ public class TableInitTController {
 
 	@RequestMapping("passresett")
 	public String deleteInvition(int id,String user_number) {
-		System.out.println(id+"+++++"+user_number);
 		teacher teachers=new teacher();
 		teachers.setId(id);
 		teachers.setPassword(user_number);

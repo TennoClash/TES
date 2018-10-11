@@ -12,7 +12,7 @@
 <script src="/TES/plugin/script/bootstrap.min.js"></script>
 <script src="/TES/plugin/script/bootstrap-slider.min.js"></script>
 <script src="/TES/plugin/script/jquery.cookie.js"></script>
-
+<script src="/TES/plugin/script/calendar5.js"></script>
 
 <link rel="stylesheet" type="text/css"
 	href="/TES/plugin/css/bootstrap.min.css">
@@ -21,7 +21,7 @@
 <link rel="stylesheet" type="text/css"
 	href="/TES/plugin/fonts/iconic/css/material-design-iconic-font.min.css">
 <link rel="stylesheet" type="text/css"
-	href="/TES/plugin/css/jquery.funnyText.css"> 
+	href="/TES/plugin/css/jquery.funnyText.css">
 
 <style>
 html, body {
@@ -45,11 +45,14 @@ html, body {
 </style>
 
 <script>
+	var c = new Calendar("c");
+	document.write(c);
 	$(document).ready(function() {
 		var menu_json;
 		/*---------------JSP Init----------------*/
 		var user_type = '<%=session.getAttribute("user_type")%>';
 		var role_id = '<%=session.getAttribute("role_id")%>';
+		
 		$.ajax({
 			type : "POST",
 			url : "/TES/welcomeinit",
@@ -93,11 +96,7 @@ html, body {
 						} else if (data[k].context == "教师信息导入") {
 							$li[x] = $(" <li><a id='t_click' href='" + data[k].a_context + "'>" + data[k].context + "</a></li>")
 							$($li[x - 1]).after($li[x]);
-						}else if (data[k].context == "参与评价") {
-							$li[x] = $(" <li><a href='" + data[k].a_context+'<%=session.getAttribute("d_type")%>'+ "'>" + data[k].context + "</a></li>")
-							$($li[x - 1]).after($li[x]);
-						}  
-						 else {
+						} else {
 							$li[x] = $(" <li><a href='" + data[k].a_context + "'>" + data[k].context + "</a></li>")
 							$($li[x - 1]).after($li[x]);
 						}
@@ -148,6 +147,9 @@ html, body {
 		$("#l_nav").on("click", "#t_click", function() {
 			$.cookie('insert_type', 't');
 		})
+
+
+
 	})
 </script>
 
@@ -177,70 +179,77 @@ html, body {
 			</div>
 
 			<div class="span10 column">
-
-				<center>
-					<table border="1" style="text-align:center;">
-					<strong>按学号搜索：</strong>
-						<form action="init.do" method="get" class="form-search"> 
-							<input class="input-medium search-query" name="queryCondition"
-								value="${page.queryCondition}" id="condition" type="text">
-							<button class="btn" type="submit">查询</button>
-						</form>
-					
-					</table> 
- 
-				</center>
-
-
-
-<div style="max-height:280px;overflow:scroll;overflow-x: hidden;overflow-y:auto;">
-				<table class="table table-hover" >
-					<thead>
-						<tr>
-							<th>编号</th>
-							<th>姓名</th>
-							<th>学号</th>
-							<th>班级编号</th>
-							<th>操作</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach items="${students}" var="s">
+				<fieldset>
+					<legend>
+						评教状态&nbsp;&nbsp;<i class="fa fa-folder-open"></i>
+					</legend>
+				</fieldset>
+				<div></div>
+				<div>
+					<table class="table">
+						<thead>
 							<tr>
-								<td>${s.id}</td>
-								<td>${s.user_name}</td>
-								<td>${s.user_number}</td>
-								<td>${s.clazz_num}</td>
-								<td><a href="passreset?id=${s.id}&user_number=${s.user_number}">重置密码</a>/
-								<a href="deleteStu?id=${s.id}">删除学生</a></td>
+								<th>序号</th>
+								<th>学期</th>
+								<th>评价类型</th>
+								<th>开始时间</th>
+								<th>结束时间</th>
+								<th>状态</th>
+								<th>操作</th>
 							</tr>
-						</c:forEach>
-					</tbody>
-				</table> 
+						</thead>
+						<tbody>
+							<c:forEach items="${evaManages}" var="e">
+								<tr>
+									<td>${e.id}</td>
+									<td>${e.semester}</td>
+									<td>${e.eva_type}</td>
+									<td>${e.start_time}</td>
+									<td>${e.end_time}</td>
+										<c:if test="${e.state == 0 }">
+											<td>关闭中</td>
+										</c:if>
+										<c:if test="${e.state == 1 }">
+											<td>开启中</td>
+										</c:if>
+										<c:if test="${e.state == 2 }">
+											<td>延期中</td>
+										</c:if>
+
+									<td><a
+										href="add_ma_open?id=${e.id}">开启</a>/
+										<a href="add_ma_close?id=${e.id}">关闭</a>/<a
+										href="add_ma_delay?id=${e.id}">延期</a></td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
 				</div>
 				<div class="pagination pagination-centered">
-					<center>  
+					<center>
 						<label>第${page.currentPage}/${page.totalPage}页
-							共${page.totalRows}条</label> <a href="init.do?currentPage=0">首页</a> <a
-							href="init.do?currentPage=${page.currentPage-1}" 
-							onclick="return checkFirst()">上一页</a> <a 
-							href="init.do?currentPage=${page.currentPage+1}"
+							共${page.totalRows}条</label> <a href="eva_M_table?currentPage=0">首页</a> <a
+							href="eva_M_table?currentPage=${page.currentPage-1}"
+							onclick="return checkFirst()">上一页</a> <a
+							href="eva_M_table?currentPage=${page.currentPage+1}"
 							onclick="return checkNext()">下一页</a> <a
-							href="init.do?currentPage=${page.totalPage}">尾页</a> 跳转到: <input
-							type="text" style="width:30px" id="turnPage" />页 <button
-							class="btn"  onclick="startTurn()">跳转</button>
+							href="eva_M_table?currentPage=${page.totalPage}">尾页</a> 跳转到: <input
+							type="text" style="width:30px" id="turnPage" />页
+						<button class="btn" onclick="startTurn()">跳转</button>
 					</center>
 				</div>
-
 			</div>
+
 		</div>
-	</div> 
 
 
+
+	</div>
 
 	<script src="/TES/plugin/script/particles.min.js"></script>
 	<script src="/TES/plugin/script/app.js"></script>
 	<script src="/TES/plugin/script/jquery.funnyText.min.js"></script>
+
 	<script type="text/javascript">
     
     function checkFirst(){
@@ -284,6 +293,5 @@ html, body {
     window.location.href=shref;
 }
 </script>
-
 </body>
 </html>

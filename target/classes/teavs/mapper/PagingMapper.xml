@@ -127,7 +127,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       
       
       
+       <select id="searchInvListEvaManages" parameterType="teavs.entity.Page" resultType="teavs.entity.EvaManage">
+		select * from eva_manage limit #{startRow},#{pageSize}
+	</select>
+
+ <select id="searchTotalCountEvaManages" parameterType="teavs.entity.Page"
+        resultType="java.lang.Integer">
+        select count(Id) from eva_manage 
+        <where>
+            <if test="queryCondition!=null">
+                and Id like CONCAT('%',#{queryCondition},'%')
+            </if>
+        </where>
+    </select>
+    
+    <select id="getInvBycondtionEvaManages" parameterType="teavs.entity.Page" resultType="teavs.entity.EvaManage">
+        select * from eva_manage
+         <where>
+            <if test="queryCondition!=null">
+                 semester like CONCAT('%',#{queryCondition},'%')
+            </if>
+        </where>
+      </select>
       
+      
+  
+
       
       
       

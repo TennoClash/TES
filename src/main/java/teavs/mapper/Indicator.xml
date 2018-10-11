@@ -16,4 +16,38 @@ select * from indicator where i_type=#{i_type};
 insert into indicator (pid,weight,i_type,i_title) values(#{pid},#{weight},#{i_type},#{i_title});
 </insert>
 
+<insert id="add_Eva_Manage" parameterType="teavs.entity.EvaManage">
+insert into eva_manage (semester,eva_type,start_time,end_time,state) values(#{semester},#{eva_type},#{start_time},#{end_time},#{state});
+</insert>
+
+<update id="ma_Open" parameterType="int">
+update eva_manage set state=1 where Id=#{id};
+</update>
+<update id="ma_Close" parameterType="int">
+update eva_manage set state=0 where Id=#{id};
+</update>
+<update id="ma_Delay" parameterType="int">
+update eva_manage set state=2 where Id=#{id};
+</update>
+
+<select id="getEveChecks" parameterType="int" resultType="teavs.entity.EvaCheck">
+select distinct cctv.course_num,cctv.course_name,cctv.user_name,em.Id,cctv.teacher_num teacher_id,em.semester from clazz_course_teacher_view cctv,student s,eva_manage em,eva_detailed ed where s.clazz_num=cctv.clazz_num and s.clazz_num=#{clazz_num} and em.eva_type=1 and em.state=1
+</select>
+
+<select id="getIsEva" resultType="int">
+select count(Id) from eva_state where task_id=#{arg0} and teacher_id=#{arg1} and student_id=#{arg2}
+</select>
+
+<insert id="eva_Sub" parameterType="teavs.entity.EvaDetail">
+insert into eva_detailed (teacher_id,semester,course_id,eva_type,eva_user,score,eva_time) values(#{teacher_id},#{semester},#{course_id},#{eva_type},#{eva_user},#{score},#{eva_time});
+</insert>
+
+<insert id="add_Eva_State" parameterType="teavs.entity.EvaDetail">
+insert into eva_state (task_id,teacher_id,student_id) values(#{arg0},#{arg1},#{arg2});
+</insert>
+
+<select id="getTEva" parameterType="String" resultType="teavs.entity.EvaDetail">
+select * from eva_detailed where teacher_id=#{teacher_id};
+</select>
+
 </mapper>

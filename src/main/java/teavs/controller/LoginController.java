@@ -38,6 +38,7 @@ public class LoginController {
 			int usertype = user.getUser_type();
 			String user_number = user.getUser_number();
 			String role_id=loginService.getRole_Id(name);
+			String d_type=user.getD_type();
 			System.out.println(role_id);
 			if (usertype == 1) {
 				User user2 = loginService.getUser(name, pass);
@@ -53,6 +54,7 @@ public class LoginController {
 				session.setAttribute("user_type", usertype);
 				session.setAttribute("role_id", role_id);
 				session.setAttribute("user_number", user_number);
+				session.setAttribute("d_type", d_type);
 				return "学生登录成功";
 			}
 			if (usertype == 2) {

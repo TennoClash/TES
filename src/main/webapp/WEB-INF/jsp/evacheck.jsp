@@ -11,8 +11,8 @@
 <script src="/TES/plugin/script/clicktext.js"></script>
 <script src="/TES/plugin/script/bootstrap.min.js"></script>
 <script src="/TES/plugin/script/bootstrap-slider.min.js"></script>
-<script src="/TES/plugin/script/jquery.cookie.js"></script>
-
+<script src="/TES/plugin/script/jquery.cookie.js"></script> 
+<script src="/TES/plugin/script/calendar5.js"></script> 
 
 <link rel="stylesheet" type="text/css"
 	href="/TES/plugin/css/bootstrap.min.css">
@@ -21,7 +21,7 @@
 <link rel="stylesheet" type="text/css"
 	href="/TES/plugin/fonts/iconic/css/material-design-iconic-font.min.css">
 <link rel="stylesheet" type="text/css"
-	href="/TES/plugin/css/jquery.funnyText.css"> 
+	href="/TES/plugin/css/jquery.funnyText.css">
 
 <style>
 html, body {
@@ -38,13 +38,14 @@ html, body {
 	border-radius: 8px 8px 8px 8px;
 	padding: 10px 19px 24px;
 }
-
-.row-fluid {
-	position: relative;
-}
+.row-fluid{
+position: relative; 
+} 
 </style>
 
 <script>
+var c = new Calendar("c");                     
+    document.write(c);
 	$(document).ready(function() {
 		var menu_json;
 		/*---------------JSP Init----------------*/
@@ -93,11 +94,7 @@ html, body {
 						} else if (data[k].context == "教师信息导入") {
 							$li[x] = $(" <li><a id='t_click' href='" + data[k].a_context + "'>" + data[k].context + "</a></li>")
 							$($li[x - 1]).after($li[x]);
-						}else if (data[k].context == "参与评价") {
-							$li[x] = $(" <li><a href='" + data[k].a_context+'<%=session.getAttribute("d_type")%>'+ "'>" + data[k].context + "</a></li>")
-							$($li[x - 1]).after($li[x]);
-						}  
-						 else {
+						} else {
 							$li[x] = $(" <li><a href='" + data[k].a_context + "'>" + data[k].context + "</a></li>")
 							$($li[x - 1]).after($li[x]);
 						}
@@ -142,11 +139,33 @@ html, body {
 		});
 
 		$("#l_nav").on("click", "#s_click", function() {
-			$.cookie('insert_type', 's');
+			$.cookie('insert_type', 's'); 
+		}) 
+ 
+		$("#l_nav").on("click", "#t_click", function() {	
+		$.cookie('insert_type', 't');
 		})
-
-		$("#l_nav").on("click", "#t_click", function() {
-			$.cookie('insert_type', 't');
+		
+		$("#sub").on("click",function(){
+		var sem=$("#semester").val();
+		var in_type= $("input[name='m_type']:checked").val();
+		var start=$("#statr_time").val();
+		var end=$("#end_time").val();
+		$.ajax({
+			type : "POST",
+			url : "/TES/add_task",
+			data : {
+				sem:sem,
+				in_type:in_type,
+				start:start,
+				end:end
+			},
+			success : function(data) {
+			window.location.href="/TES/jump/jumpevama"
+			
+			}
+		})
+		
 		})
 	})
 </script>
@@ -154,16 +173,17 @@ html, body {
 </head>
 <body>
 
-	<div class="container-fluid"
+	<div class="container-fluid" 
 		style="background-color: #333;height:100%;">
-		<div id="particles-js"
-			style="width: 100%; height: 100%;position: absolute;"></div>
-		<div class="row-fluid column">
+		<div id="particles-js"  style="width: 100%; height: 100%;position: absolute;">	</div>
+		<div class="row-fluid column" >
 			<div class="span12">
-
-				<h1 id="ver" style="display:inline-block">教师评价系统 &nbsp;</h1>
+			
+				<h1 id="ver" style="display:inline-block">
+					教师评价系统 &nbsp;
+				</h1>
 				<i class="fa fa-sign-out"
-					style="font-size:80px;display:inline-block; float:right"></i>
+						style="font-size:80px;display:inline-block; float:right"></i>
 
 			</div>
 		</div>
@@ -177,113 +197,48 @@ html, body {
 			</div>
 
 			<div class="span10 column">
-
-				<center>
-					<table border="1" style="text-align:center;">
-					<strong>按学号搜索：</strong>
-						<form action="init.do" method="get" class="form-search"> 
-							<input class="input-medium search-query" name="queryCondition"
-								value="${page.queryCondition}" id="condition" type="text">
-							<button class="btn" type="submit">查询</button>
-						</form>
-					
-					</table> 
- 
-				</center>
-
-
-
-<div style="max-height:280px;overflow:scroll;overflow-x: hidden;overflow-y:auto;">
-				<table class="table table-hover" >
-					<thead>
-						<tr>
-							<th>编号</th>
-							<th>姓名</th>
-							<th>学号</th>
-							<th>班级编号</th>
-							<th>操作</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach items="${students}" var="s">
+			<fieldset>
+					<legend>
+						查看评教&nbsp;&nbsp;<i class="fa fa-folder-open"></i>
+					</legend>
+				</fieldset>
+				<div>
+					<table class="table">
+						<thead>
 							<tr>
-								<td>${s.id}</td>
-								<td>${s.user_name}</td>
-								<td>${s.user_number}</td>
-								<td>${s.clazz_num}</td>
-								<td><a href="passreset?id=${s.id}&user_number=${s.user_number}">重置密码</a>/
-								<a href="deleteStu?id=${s.id}">删除学生</a></td>
+								<th>课程名</th>
+								<th>教师名</th>
+								<th>状态</th>
 							</tr>
-						</c:forEach>
-					</tbody>
-				</table> 
+						</thead>
+						<tbody>
+							<c:forEach items="${evaChecks}" var="ec">
+								<tr>
+									<td>${ec.course_name}</td>
+									<td>${ec.user_name}</td>
+										<c:if test="${ec.eva_state == 0 }">
+											<td>已评</td>
+										</c:if>
+										<c:if test="${ec.eva_state == 1 }">
+											<td><a href="eva_check.do?teacher_id=${ec.teacher_id}&semester=${ec.semester}&course_id=${ec.course_num}&eva_type=${role_id}&eva_user=${user_number}&id=${ec.id}">未评</a></td>
+										</c:if> 
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
 				</div>
-				<div class="pagination pagination-centered">
-					<center>  
-						<label>第${page.currentPage}/${page.totalPage}页
-							共${page.totalRows}条</label> <a href="init.do?currentPage=0">首页</a> <a
-							href="init.do?currentPage=${page.currentPage-1}" 
-							onclick="return checkFirst()">上一页</a> <a 
-							href="init.do?currentPage=${page.currentPage+1}"
-							onclick="return checkNext()">下一页</a> <a
-							href="init.do?currentPage=${page.totalPage}">尾页</a> 跳转到: <input
-							type="text" style="width:30px" id="turnPage" />页 <button
-							class="btn"  onclick="startTurn()">跳转</button>
-					</center>
-				</div>
-
+				
 			</div>
+			
+
+
 		</div>
-	</div> 
+	</div>
 
+<script src="/TES/plugin/script/particles.min.js"></script>
+<script src="/TES/plugin/script/app.js"></script> 
+<script src="/TES/plugin/script/jquery.funnyText.min.js"></script> 
 
-
-	<script src="/TES/plugin/script/particles.min.js"></script>
-	<script src="/TES/plugin/script/app.js"></script>
-	<script src="/TES/plugin/script/jquery.funnyText.min.js"></script>
-	<script type="text/javascript">
-    
-    function checkFirst(){
-         if(${page.currentPage>1}){
-         
-           return true;
-         
-         }
-         alert("已到页首,无法加载更多");
-        
-       return false;
-    }
-    
-    function checkNext(){
-    
-    if(${page.currentPage<page.totalPage}){
-    
-      return true;
-    
-    }
-    alert("已到页尾，无法加载更多页");
-    return false;
-    
-    }
-     
-    
-    function startTurn(){
-    
-    var turnPage=document.getElementById("turnPage").value;
-    
-    if(turnPage>${page.totalPage}){
-    
-      alert("对不起已超过最大页数");
-     
-      return false;
-    
-    }
-    
-    var shref="init.do?currentPage="+turnPage;
-    
-    window.location.href=shref;
-}
-</script>
 
 </body>
 </html>

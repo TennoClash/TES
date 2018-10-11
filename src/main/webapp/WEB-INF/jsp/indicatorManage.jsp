@@ -11,7 +11,7 @@
 <script src="/TES/plugin/script/bootstrap.min.js"></script>
 <script src="/TES/plugin/script/bootstrap-slider.min.js"></script>
 <script src="/TES/plugin/script/jquery.cookie.js"></script> 
-
+<script src="/TES/plugin/script/calendar5.js"></script> 
 
 <link rel="stylesheet" type="text/css"
 	href="/TES/plugin/css/bootstrap.min.css">
@@ -43,6 +43,8 @@ position: relative;
 </style>
 
 <script>
+var c = new Calendar("c");                     
+    document.write(c);
 	$(document).ready(function() {
 		var menu_json;
 		/*---------------JSP Init----------------*/
@@ -142,6 +144,28 @@ position: relative;
 		$("#l_nav").on("click", "#t_click", function() {	
 		$.cookie('insert_type', 't');
 		})
+		
+		$("#sub").on("click",function(){
+		var sem=$("#semester").val();
+		var in_type= $("input[name='m_type']:checked").val();
+		var start=$("#statr_time").val();
+		var end=$("#end_time").val();
+		$.ajax({
+			type : "POST",
+			url : "/TES/add_task",
+			data : {
+				sem:sem,
+				in_type:in_type,
+				start:start,
+				end:end
+			},
+			success : function(data) {
+			window.location.href="/TES/jump/jumpevama"
+			
+			}
+		})
+		
+		})
 	})
 </script>
 
@@ -172,9 +196,25 @@ position: relative;
 			</div>
 
 			<div class="span10 column">
-				
-				
-			
+			<fieldset>
+					<legend>
+						新增评教&nbsp;&nbsp;<i class="fa fa-folder-open"></i>
+					</legend>
+				</fieldset>
+				<h4>输入学期</h4>
+						<input type="text" id="semester" /> 
+						<h4>请选择评价类型</h4>
+						学生方面：<input type="radio"
+					name="m_type" value="1" /> &nbsp; 系部方面：<input type="radio"
+					name="m_type" value="2" />&nbsp; 教研室方面：<input type="radio"
+					name="m_type" value="3" /> &nbsp; 同行方面：<input type="radio"
+					name="m_type" value="4" /> &nbsp; 教师自我评价：<input type="radio"
+					name="m_type" value="5" /> &nbsp;
+						<h4>请选择开始时间</h4>
+						<input readonly  autocomplete="off" type='text' name='name' onclick='c.show(this);' placeholder="请选择开始时间" id='statr_time' />
+						<h4>请选择结束时间</h4>
+						<input readonly  autocomplete="off" type='text' name='name' onclick='c.show(this);' placeholder="请选择结束时间" id='end_time' />
+						<br><button class="btn" id="sub">提交</button>  
 				
 			</div>
 			

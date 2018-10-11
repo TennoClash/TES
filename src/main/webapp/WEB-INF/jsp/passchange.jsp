@@ -89,7 +89,11 @@ position: relative;
 						} else if (data[k].context == "教师信息导入") {
 							$li[x] = $(" <li><a id='t_click' href='" + data[k].a_context + "'>" + data[k].context + "</a></li>")
 							$($li[x - 1]).after($li[x]);
-						} else {
+						} else if (data[k].context == "参与评价") {
+							$li[x] = $(" <li><a href='" + data[k].a_context+'<%=session.getAttribute("d_type")%>'+ "'>" + data[k].context + "</a></li>")
+							$($li[x - 1]).after($li[x]);
+						}  
+						else {
 							$li[x] = $(" <li><a href='" + data[k].a_context + "'>" + data[k].context + "</a></li>")
 							$($li[x - 1]).after($li[x]);
 						}
