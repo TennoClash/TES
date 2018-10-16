@@ -31,13 +31,13 @@ update eva_manage set state=2 where Id=#{id};
 </update>
 
 <select id="getEveChecks" parameterType="int" resultType="teavs.entity.EvaCheck">
-select distinct cctv.course_num,cctv.course_name,cctv.user_name,em.Id,cctv.teacher_num teacher_id,em.semester from clazz_course_teacher_view cctv,student s,eva_manage em,eva_detailed ed where s.clazz_num=cctv.clazz_num and s.clazz_num=#{clazz_num} and em.eva_type=1 and em.state=1
+select distinct cctv.course_num,cctv.course_name,cctv.user_name,em.Id,cctv.teacher_num teacher_id,em.semester from clazz_course_teacher_view cctv,student s,eva_manage em,eva_detailed ed where s.clazz_num=cctv.clazz_num and s.clazz_num=#{clazz_num} and em.eva_type=1 and em.eva_type=1 and em.state=1
 </select>
 
 <select id="getIsEva" resultType="int">
 select count(Id) from eva_state where task_id=#{arg0} and teacher_id=#{arg1} and student_id=#{arg2}
 </select>
-
+	
 <insert id="eva_Sub" parameterType="teavs.entity.EvaDetail">
 insert into eva_detailed (teacher_id,semester,course_id,eva_type,eva_user,score,eva_time) values(#{teacher_id},#{semester},#{course_id},#{eva_type},#{eva_user},#{score},#{eva_time});
 </insert>
@@ -50,4 +50,19 @@ insert into eva_state (task_id,teacher_id,student_id) values(#{arg0},#{arg1},#{a
 select * from eva_detailed where teacher_id=#{teacher_id};
 </select>
 
+<select id="getTM" parameterType="String" resultType="teavs.entity.teacher">
+select t.*,em.semester from teacher t,eva_manage em where ministry_id=#{ministry} and user_type=1 and em.state=1 and em.eva_type=2
+</select>
+
+<select id="getSCount" resultType="int">
+select count(user_number) from student;
+</select>
+
+<select id="getEvaCount" resultType="int">
+select count(distinct es.student_id)  from eva_state es,student s where s.user_number=es.student_id;
+</select>
+
+<select id="getLeaderChecks" resultType="teavs.entity.LeaderCheck">
+select t.user_name,ed.teacher_id,AVG(ed.score) as avg from eva_detailed ed,teacher t where ed.teacher_id=t.user_number and ed.score is not null group by ed.teacher_id order by AVG(ed.score)
+</select>
 </mapper>

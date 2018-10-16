@@ -7,6 +7,17 @@ public class teacher {
 	String user_number;
 	int user_type;
 	String ministry_id;
+	String semester;
+	
+	
+
+	public String getSemester() {
+		return semester;
+	}
+
+	public void setSemester(String semester) {
+		this.semester = semester;
+	}
 
 	public int getId() {
 		return Id;

@@ -1,4 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -95,9 +96,8 @@ var c = new Calendar("c");
 							$($li[x - 1]).after($li[x]);
 						} else if (data[k].context == "同行评价") {
 							$li[x] = $(" <li><a href='" + data[k].a_context+'<%=session.getAttribute("d_type")%>'+"'>" + data[k].context + "</a></li>")
-							$($li[x - 1]).after($li[x]); 
-						}
-						 else if (data[k].context == "教师信息导入") {
+							$($li[x - 1]).after($li[x]);
+						} else if (data[k].context == "教师信息导入") {
 							$li[x] = $(" <li><a id='t_click' href='" + data[k].a_context + "'>" + data[k].context + "</a></li>")
 							$($li[x - 1]).after($li[x]);
 						} else {
@@ -152,30 +152,27 @@ var c = new Calendar("c");
 		$.cookie('insert_type', 't');
 		})
 		
+		$("#sub").on("click",function(){
+		var sem=$("#semester").val();
+		var in_type= $("input[name='m_type']:checked").val();
+		var start=$("#statr_time").val();
+		var end=$("#end_time").val();
 		$.ajax({
 			type : "POST",
-			url : "/TES/getTeva",
+			url : "/TES/add_task",
 			data : {
-				teacher_id : '<%=session.getAttribute("user_number")%>'
+				sem:sem,
+				in_type:in_type,
+				start:start,
+				end:end
 			},
 			success : function(data) {
-			console.log(data)
-			$.each(data,function(i,v){
-			if(data[i].eva_type==2){
-			var eva_type="同行评价";
-			}if(data[i].eva_type==1){
-			var eva_type="学生评价";
-			}if(data[i].course_id==null){
-			var course_id="无";
-			}if(data[i].course_id!=null){
-			var course_id=data[i].course_id;
-			}
-			$("#show").append("<tr><td>"+eva_type+"</td><td>"+data[i].semester+"</td><td>"+course_id+"</td><td>"+data[i].eva_time+"</td><td>"+data[i].eva_user+"</td><td>"+data[i].score+"</td></tr>")
-			})
+			window.location.href="/TES/jump/jumpevama"
 			
 			}
 		})
 		
+		})
 	})
 </script>
 
@@ -208,27 +205,32 @@ var c = new Calendar("c");
 			<div class="span10 column">
 			<fieldset>
 					<legend>
-						评教结果&nbsp;&nbsp;<i class="fa fa-folder-open"></i>
+						新增评教&nbsp;&nbsp;<i class="fa fa-folder-open"></i>
 					</legend>
 				</fieldset>
-				
-				<table class="table">
-				<thead>
+					<div>
+					<table class="table">
+						<thead>
 							<tr>
-								<th>评价类型</th>
-								<th>学期</th>
-								<th>课程编号</th>
-								<th>评价时间</th>
-								<th>评价人</th>
-								<th>分数</th>
+								<th>工号</th>
+								<th>教师名</th>
+								<th>状态</th>
 							</tr>
 						</thead>
-						<tbody id="show">
-						
+						<tbody>
+							<c:forEach items="${teachers}" var="t">
+								<tr>
+									<td>${t.user_number}</td>
+									<td>${t.user_name}</td>
+									<td><a href="eva_check_t.do?teacher_id=${t.user_number}&semester=${t.semester}&eva_type=2&eva_user=${user_number}">评价</a></td>
+								</tr>
+							</c:forEach>
 						</tbody>
-				</table>
-				
+					</table>
+				</div>
 			</div>
+			
+
 
 		</div>
 	</div>

@@ -91,7 +91,13 @@ var c = new Calendar("c");
 							$li[x] = $(" <li><a id='s_click' href='" + data[k].a_context + "'>" + data[k].context + "</a></li>")
 							$($li[x - 1]).after($li[x]);
 
-						} else if (data[k].context == "教师信息导入") {
+						} else if (data[k].context == "参与评价") {
+							$li[x] = $(" <li><a href='" + data[k].a_context+'<%=session.getAttribute("d_type")%>'+ "&eva_user="+'<%=session.getAttribute("user_number")%>'+"'>" + data[k].context + "</a></li>")
+							$($li[x - 1]).after($li[x]);
+						} else if (data[k].context == "同行评价") {
+							$li[x] = $(" <li><a href='" + data[k].a_context+'<%=session.getAttribute("d_type")%>'+"'>" + data[k].context + "</a></li>")
+							$($li[x - 1]).after($li[x]);
+						}else if (data[k].context == "教师信息导入") {
 							$li[x] = $(" <li><a id='t_click' href='" + data[k].a_context + "'>" + data[k].context + "</a></li>")
 							$($li[x - 1]).after($li[x]);
 						} else {

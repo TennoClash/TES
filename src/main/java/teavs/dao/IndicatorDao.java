@@ -8,6 +8,8 @@ import teavs.entity.EvaCheck;
 import teavs.entity.EvaDetail;
 import teavs.entity.EvaManage;
 import teavs.entity.Indicator;
+import teavs.entity.LeaderCheck;
+import teavs.entity.teacher;
 
 public interface IndicatorDao {
 	List<Indicator> getIndicator(int i);
@@ -22,4 +24,8 @@ public interface IndicatorDao {
 	int eva_Sub(EvaDetail evaDetail);
 	int add_Eva_State(@Param("arg0")int eid,@Param("arg1")String teacher_id,@Param("arg2")String student_id);
 	List<EvaDetail> getTEva(String teacher_id);
+	List<teacher> getTM(String ministry);
+	int getSCount();
+	int getEvaCount();
+	List<LeaderCheck> getLeaderChecks();
 }

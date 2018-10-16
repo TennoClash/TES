@@ -4,16 +4,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>教室评价系统</title>
 <script src="/TES/plugin/script/jquery-1.11.3.min.js"></script>
 <script src="/TES/plugin/script/imissyou.js"></script>
 <script src="/TES/plugin/script/clicktext.js"></script>
+<script src="/TES/plugin/script/jquery.cookie.js"></script>
+<script src="/TES/plugin/script/md5.js"></script>
 <script src="/TES/plugin/script/bootstrap.min.js"></script>
 <script src="/TES/plugin/script/bootstrap-slider.min.js"></script>
-<script src="/TES/plugin/script/jquery.cookie.js"></script>
-
-
+<script src="/TES/plugin/script/xlsx.full.min.js"></script>
+<script src="/TES/plugin/script/jasny-bootstrap.min.js"></script>
+<script src="/TES/plugin/script/jquery.funnyText.min.js"></script>
+<script src="/TES/plugin/script/echarts.min.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="/TES/plugin/css/jquery.funnyText.css">
 <link rel="stylesheet" type="text/css"
 	href="/TES/plugin/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css"
@@ -21,7 +25,9 @@
 <link rel="stylesheet" type="text/css"
 	href="/TES/plugin/fonts/iconic/css/material-design-iconic-font.min.css">
 <link rel="stylesheet" type="text/css"
-	href="/TES/plugin/css/jquery.funnyText.css"> 
+	href="/TES/plugin/css/jasny-bootstrap.min.css">
+<link rel="stylesheet" type="text/css"
+	href="/TES/plugin/css/jquery.funnyText.css">
 
 <style>
 html, body {
@@ -41,6 +47,22 @@ html, body {
 
 .row-fluid {
 	position: relative;
+}
+
+#roleul li {
+	margin-bottom: 5px;
+	text-align: center;
+	cursor: pointer;
+	border: 1px solid #ffcccc;
+	border-radius: 1em;
+}
+
+#perul li {
+	margin-bottom: 5px;
+	text-align: center;
+	cursor: pointer;
+	border: 1px solid #ffcccc;
+	border-radius: 1em;
 }
 </style>
 
@@ -90,14 +112,7 @@ html, body {
 							$li[x] = $(" <li><a id='s_click' href='" + data[k].a_context + "'>" + data[k].context + "</a></li>")
 							$($li[x - 1]).after($li[x]);
 
-						}else if (data[k].context == "参与评价") {
-							$li[x] = $(" <li><a href='" + data[k].a_context+'<%=session.getAttribute("d_type")%>'+ "&eva_user="+'<%=session.getAttribute("user_number")%>'+"'>" + data[k].context + "</a></li>")
-							$($li[x - 1]).after($li[x]);
-						} else if (data[k].context == "同行评价") {
-							$li[x] = $(" <li><a href='" + data[k].a_context+'<%=session.getAttribute("d_type")%>'+"'>" + data[k].context + "</a></li>")
-							$($li[x - 1]).after($li[x]);
-						} 
-						else if (data[k].context == "教师信息导入") {
+						} else if (data[k].context == "教师信息导入") {
 							$li[x] = $(" <li><a id='t_click' href='" + data[k].a_context + "'>" + data[k].context + "</a></li>")
 							$($li[x - 1]).after($li[x]);
 						} else {
@@ -134,6 +149,7 @@ html, body {
 		default:
 			break;
 		}
+
 		$('#ver').funnyText();
 		/*--------------iMissYou----------------*/
 		$.iMissYou({
@@ -149,21 +165,183 @@ html, body {
 		})
 
 		$("#l_nav").on("click", "#t_click", function() {
+
 			$.cookie('insert_type', 't');
 		})
+		/************************************************************************************/
+		var myChart = echarts.init(document.getElementById('main'));
+
+		// 指定图表的配置项和数据
+		var dataAxis = [];
+		//dataAxis.push("测试一");
+		var data = [ "2" ];
+		var data22;
+		$.ajax({
+			type : "POST",
+			url : "/TES/get_Lead_Check",
+			dataType : "json",
+			data : {
+			},
+			success : function(data2) {
+				data22 = data2;
+				console.log(data2);
+				var sx = 1;
+				$("#hidden1").val(bmp(data2))
+				$.each(data2, function(i, v) {
+
+					var os = data2[i].user_name;
+					os = JSON.stringify(os);
+					os = os.replace('"', "")
+					os = os.replace('"', "")
+
+					dataAxis.push(os);
+
+					data.push(parseFloat(parseFloat(data2[i].avg).toFixed(2)))
+					$("#td1").text(data2[1].scount)
+					$("#td2").text(data2[1].evacount)
+					$("#td3").text((data2[1].evacount / data2[1].scount).toFixed(2) * 100 + "%")
+					$("#ttd").append("<tr><td>" + sx + "</td><td>" + data2[i].user_name + "</td><td>" + parseFloat(parseFloat(data2[i].avg).toFixed(2)) + "</td></tr>")
+					sx++;
+				})
+
+			}
+		})
+ 
+		var yMax = 10;
+		var dataShadow = [];
+
+
+		option = {
+			title : {
+				text : '按班级统计',
+			},
+			xAxis : {
+				data : dataAxis,
+				axisLabel : {
+					inside : true,
+					textStyle : {
+						color : '#fff'
+					}
+				},
+				axisTick : {
+					show : false
+				},
+				axisLine : {
+					show : false
+				},
+				z : 10
+			},
+			yAxis : {
+				axisLine : {
+					show : false
+				},
+				axisTick : {
+					show : false
+				},
+				axisLabel : {
+					textStyle : {
+						color : '#999'
+					}
+				}
+			},
+			dataZoom : [
+				{
+					type : 'inside'
+				}
+			],
+			series : [
+				{ // For shadow
+					type : 'bar',
+					itemStyle : {
+						normal : {
+							color : 'rgba(0,0,0,0.05)'
+						}
+					},
+					barGap : '-100%',
+					barCategoryGap : '40%',
+					data : dataShadow,
+					animation : false
+				},
+				{
+					type : 'bar',
+					itemStyle : {
+						normal : {
+							color : new echarts.graphic.LinearGradient(
+								0, 0, 0, 1,
+								[
+									{
+										offset : 0,
+										color : '#83bff6'
+									},
+									{
+										offset : 0.5,
+										color : '#188df0'
+									},
+									{
+										offset : 1,
+										color : '#188df0'
+									}
+								]
+							)
+						},
+						emphasis : {
+							color : new echarts.graphic.LinearGradient(
+								0, 0, 0, 1,
+								[
+									{
+										offset : 0,
+										color : '#2378f7'
+									},
+									{
+										offset : 0.7,
+										color : '#2378f7'
+									},
+									{
+										offset : 1,
+										color : '#83bff6'
+									}
+								]
+							)
+						}
+					},
+					data : data
+				}
+			]
+		};
+
+
+
+		// 使用刚指定的配置项和数据显示图表。
+		setTimeout(function() {
+			myChart.setOption(option);
+		}, 1000); 
+		
+
+
+
 	})
+	function bmp(json) {
+		var hmp;
+		$.each(json, function(i, v) {
+			if (i == json.length - 1) {
+				hmp = hmp + json[i].user_name;
+			} else {
+				hmp = hmp + json[i].user_name + ",";
+			}
+
+		})
+		return hmp;
+	}
 </script>
 
 </head>
 <body>
-
 	<div class="container-fluid"
 		style="background-color: #333;height:100%;">
 		<div id="particles-js"
 			style="width: 100%; height: 100%;position: absolute;"></div>
 		<div class="row-fluid column">
 			<div class="span12">
-
 				<h1 id="ver" style="display:inline-block">教师评价系统 &nbsp;</h1>
 				<i class="fa fa-sign-out"
 					style="font-size:80px;display:inline-block; float:right"></i>
@@ -180,113 +358,58 @@ html, body {
 			</div>
 
 			<div class="span10 column">
-
-				<center>
-					<table border="1" style="text-align:center;">
-					<strong>按工号搜索：</strong>
-						<form action="initt.do" method="get" class="form-search"> 
-							<input class="input-medium search-query" name="queryCondition"
-								value="${page.queryCondition}" id="condition" type="text">
-							<button class="btn" type="submit">查询</button>
-						</form>
-					
-					</table> 
- 
-				</center>
+				<fieldset>
+					<legend>
+						查看学生评教&nbsp;&nbsp;<i class="fa fa-folder-open"></i>
+					</legend>
+				</fieldset>
 
 
-
-<div style="max-height:280px;overflow:scroll;overflow-x: hidden;overflow-y:auto;">
-				<table class="table table-hover" >
+				<table class="table">
 					<thead>
 						<tr>
-							<th>编号</th>
-							<th>姓名</th>
-							<th>工号</th>
-							<th>院系</th>
-							<th>操作</th>
+
+							<th>学生总数</th>
+							<th>参评人数</th>
+							<th>参评率</th>
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${teachers}" var="t">
-							<tr>
-								<td>${t.id}</td>
-								<td>${t.user_name}</td>
-								<td>${t.user_number}</td>
-								<td>${t.ministry_id}</td>
-								<td><a href="passresett?id=${t.id}&user_number=${t.user_number}">重置密码</a>/
-								<a href="deleteTea?id=${t.id}">删除教师</a></td>
-							</tr>
-						</c:forEach>
+						<tr>
+							<td id="td1">120</td>
+							<td id="td2">130</td>
+							<td id="td3">参评人数</td>
+						</tr>
 					</tbody>
-				</table> 
-				</div>
-				<div class="pagination pagination-centered">
-					<center>  
-						<label>第${page.currentPage}/${page.totalPage}页
-							共${page.totalRows}条</label> <a href="initt.do?currentPage=0">首页</a> <a
-							href="initt.do?currentPage=${page.currentPage-1}" 
-							onclick="return checkFirst()">上一页</a> <a 
-							href="initt.do?currentPage=${page.currentPage+1}"
-							onclick="return checkNext()">下一页</a> <a
-							href="initt.do?currentPage=${page.totalPage}">尾页</a> 跳转到: <input
-							type="text" style="width:30px" id="turnPage" />页 <button
-							class="btn"  onclick="startTurn()">跳转</button>
-					</center>
-				</div>
+				</table>
+				<div id="main" style="width: 40%;height: 600px;display:inline-block"></div>
+
+				<table class="table"
+					style="float: right;width: 40%;height:50%;overflow: scroll;">
+					<thead>
+						<tr>
+
+							<th>排名</th>
+							<th>教师姓名</th>
+							<th>分数</th>
+						</tr>
+					</thead>
+					<tbody id="ttd">
+
+					</tbody>
+				</table>
+				<input type="hidden" id="hidden1" />
+
+
+
+
 
 			</div>
 		</div>
-	</div> 
-
-
-
+	</div>
 	<script src="/TES/plugin/script/particles.min.js"></script>
 	<script src="/TES/plugin/script/app.js"></script>
-	<script src="/TES/plugin/script/jquery.funnyText.min.js"></script>
-	<script type="text/javascript">
-    
-    function checkFirst(){
-         if(${page.currentPage>1}){
-         
-           return true;
-         
-         }
-         alert("已到页首,无法加载更多");
-        
-       return false;
-    }
-    
-    function checkNext(){
-    
-    if(${page.currentPage<page.totalPage}){
-    
-      return true;
-    
-    }
-    alert("已到页尾，无法加载更多页");
-    return false;
-    
-    }
-     
-    
-    function startTurn(){
-    
-    var turnPage=document.getElementById("turnPage").value;
-    
-    if(turnPage>${page.totalPage}){
-    
-      alert("对不起已超过最大页数");
-     
-      return false;
-    
-    }
-    
-    var shref="initt.do?currentPage="+turnPage;
-    
-    window.location.href=shref;
-}
-</script>
+
 
 </body>
 </html>

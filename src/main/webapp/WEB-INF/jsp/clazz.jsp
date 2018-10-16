@@ -399,7 +399,7 @@ position: relative;
     
     }
     
-    var shref="init.do?currentPage="+turnPage;
+    var shref="clazztable?currentPage="+turnPage;
     
     window.location.href=shref;
 }

@@ -46,6 +46,7 @@ public class LoginController {
 				session.setAttribute("user_type", usertype);
 				session.setAttribute("role_id", role_id);
 				session.setAttribute("user_number", user_number);
+				session.setAttribute("d_type", d_type);
 				return "教师登录成功";
 			}
 			if (usertype == 0) {

@@ -10,6 +10,8 @@ import teavs.entity.EvaCheck;
 import teavs.entity.EvaDetail;
 import teavs.entity.EvaManage;
 import teavs.entity.Indicator;
+import teavs.entity.LeaderCheck;
+import teavs.entity.teacher;
 
 @Service
 public class IndicatorService {
@@ -51,5 +53,17 @@ public class IndicatorService {
 	}
 	public List<EvaDetail> getTEva(String teacher_id){
 		return indicatorDao.getTEva(teacher_id);
+	}
+	public List<teacher> getTM(String ministry){
+		return indicatorDao.getTM(ministry);
+	}
+	public int getSCount(){
+		return indicatorDao.getSCount();
+	}
+	public int getEvaCount(){
+		return indicatorDao.getEvaCount();
+	}
+	public List<LeaderCheck> getLeaderChecks(){
+		return indicatorDao.getLeaderChecks();
 	}
 }

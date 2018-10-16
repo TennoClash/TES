@@ -17,7 +17,9 @@ import teavs.entity.EvaCheck;
 import teavs.entity.EvaDetail;
 import teavs.entity.EvaManage;
 import teavs.entity.Indicator;
+import teavs.entity.LeaderCheck;
 import teavs.entity.Page;
+import teavs.entity.teacher;
 import teavs.service.IndicatorService;
 import teavs.service.PagingService;
 import teavs.util.TreeBuilderIndicator;
@@ -63,9 +65,17 @@ public class IndicatorController {
 	public String evacheck() {
 		return "evacheck";
 	}
+	@RequestMapping("/evacheckt")
+	public String evacheckt() {
+		return "evacheckt";
+	}
 	@RequestMapping("/teachercheck")
 	public String teachercheck() {
 		return "teachercheck";
+	}
+	@RequestMapping("/leadercheck")
+	public String leadercheck() {
+		return "/leadercheck";
 	}
 
 	@RequestMapping(value = "/evaluatex", produces = "text/html;charset=UTF-8")
@@ -254,5 +264,50 @@ public class IndicatorController {
 		return evaDetails;
 	}
 	
+	@RequestMapping(value = "/eva_check_t")
+	public String eva_check_t(String ministry, HttpServletRequest request) {
+		System.out.println(ministry);
+		List<teacher> teachers = indicatorService.getTM(ministry);
+		request.setAttribute("teachers", teachers);
+		return "evacheckt";
+	}
 	
+	@RequestMapping(value = "/eva_check_t.do")
+	public String eva_check_t_DO(String teacher_id, String semester, int eva_type, String eva_user, HttpServletRequest request) {
+		request.setAttribute("teacher_id", teacher_id);
+		request.setAttribute("semester", semester);
+		request.setAttribute("eva_user", eva_user);
+		request.setAttribute("eva_type", eva_type);
+		return "evaluate";
+	}
+	
+	@RequestMapping(value = "/eva_sub_t", produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String eva_sub_t(String teacher_id, String semester ,int eva_type, String eva_user,
+			String score) {
+		EvaDetail evaDetail = new EvaDetail();
+		evaDetail.setTeacher_id(teacher_id);
+		evaDetail.setSemester(semester);
+		evaDetail.setEva_user(eva_user);
+		evaDetail.setEva_type(eva_type);
+		evaDetail.setScore(score);
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		System.out.println(df.format(new Date()));
+		evaDetail.setEva_time(df.format(new Date()));
+		int i = indicatorService.eva_Sub(evaDetail);
+		return "1";
+	}
+	
+	@RequestMapping(value = "/get_Lead_Check", produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public List<LeaderCheck> get_Lead_Check(String teacher_id) {
+		int i=indicatorService.getSCount();
+		int ii=indicatorService.getEvaCount();
+		List<LeaderCheck> leaderChecks =indicatorService.getLeaderChecks();
+		for(int k=0;k<leaderChecks.size();k++){
+			leaderChecks.get(k).setScount(i);
+			leaderChecks.get(k).setEvacount(ii);
+		}
+		return leaderChecks;
+	}
 }

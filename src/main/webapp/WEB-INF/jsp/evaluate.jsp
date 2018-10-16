@@ -101,6 +101,12 @@ li {
 							$li[x] = $(" <li><a id='s_click' href='" + data[k].a_context + "'>" + data[k].context + "</a></li>")
 							$($li[x - 1]).after($li[x]);
 
+						} else if (data[k].context == "参与评价") {
+							$li[x] = $(" <li><a href='" + data[k].a_context + '<%=session.getAttribute("d_type")%>' + "&eva_user=" + '<%=session.getAttribute("user_number")%>' + "'>" + data[k].context + "</a></li>")
+							$($li[x - 1]).after($li[x]);
+						} else if (data[k].context == "同行评价") {
+							$li[x] = $(" <li><a href='" + data[k].a_context + '<%=session.getAttribute("d_type")%>' + "'>" + data[k].context + "</a></li>")
+							$($li[x - 1]).after($li[x]);
 						} else if (data[k].context == "教师信息导入") {
 							$li[x] = $(" <li><a id='t_click' href='" + data[k].a_context + "'>" + data[k].context + "</a></li>")
 							$($li[x - 1]).after($li[x]);
@@ -258,33 +264,52 @@ li {
 				}
 			});
 			console.log(total);
-			
+
 			var teacher_id = $("#teacher_id").val();
 			var semester = $("#semester").val();
 			var course_id = $("#course_id").val();
 			var eva_type = $("#eva_type").val();
 			var eva_user = $("#eva_user").val();
 			var eid = $("#eid").val();
-			
-			$.ajax({
-				type : "POST",
-				url : "/TES/eva_sub",
-				data : {
-					teacher_id : teacher_id,
-					semester : semester,
-					course_id:course_id,
-					eva_type : eva_type,
-					eva_user : eva_user,
-					score : total*10,
-					eid : eid
-				},
-				success : function(data) {
-					
-				}
-			})
-			
-			
-			
+
+			if (eva_type == 1) {
+
+				$.ajax({
+					type : "POST",
+					url : "/TES/eva_sub",
+					data : {
+						teacher_id : teacher_id,
+						semester : semester,
+						course_id : course_id,
+						eva_type : eva_type,
+						eva_user : eva_user,
+						score : total * 10,
+						eid : eid
+					},
+					success : function(data) {
+					       window.location.href=document.referrer;
+					}
+				})
+			}
+			if (eva_type == 2) {
+				$.ajax({
+					type : "POST",
+					url : "/TES/eva_sub_t",
+					data : {
+						teacher_id : teacher_id,
+						semester : semester,
+						eva_type : eva_type,
+						eva_user : eva_user,
+						score : total * 10,
+					},
+					success : function(data) {}
+				})
+
+			}
+
+
+
+
 		})
 
 
@@ -355,13 +380,17 @@ li {
 				</ul>
 
 			</div>
-			<input type="hidden" id="teacher_id" value="${teacher_id}">
-			<input type="hidden" id="semester" value="${semester}">
+			<input type="hidden" id="teacher_id" value="${teacher_id}"> <input
+				type="hidden" id="semester" value="${semester}"> <input
+				type="hidden" id="eva_user" value="${eva_user}"> <input
+				type="hidden" id="eva_type" value="${eva_type}">
+			<c:if test="${eva_type == 1 }">
 			<input type="hidden" id="course_id" value="${course_id}">
-			<input type="hidden" id="eva_user" value="${eva_user}">
-			<input type="hidden" id="eva_type" value="${eva_type}">
 			<input type="hidden" id="eid" value="${eid}">
+			</c:if>
+			<c:if test="${eva_type == 1 }">
 			
+			</c:if>
 
 			<div class="span10 column"
 				style="max-height:600px;overflow:scroll;overflow-x: hidden;overflow-y:auto;"
