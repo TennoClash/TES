@@ -140,7 +140,7 @@
 					<include>**/*.xml</include>
 					<include>**/*.properties</include>
 				</includes>
-				<filtering>true</filtering>
+				<filtering>false</filtering>
 			</resource>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -148,8 +148,39 @@
 					<include>**/*.xml</include>
 					<include>**/*.properties</include>
 				</includes>
-				<filtering>true</filtering>
+				<filtering>false</filtering>
 			</resource>
 		</resources>
+		 <plugins>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.0.0</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>2.5.2</version>
+            </plugin>
+
+            <!-- 这里配置自动发布到tomcat下的关键插件 -->
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <!-- 配置tomcat的上传地址，管理员的用户名和密码，需跟tomcat-user.xml里一致 -->
+                <configuration>
+                    <server>tomcat-7.0.68</server>
+                    <!-- 注意这个url适用于tomcat7,其他版本可能不同，请自行网上查资料 -->
+                    <url>http://10.254.1.11/manager/text</url>
+                    <!-- 设置Tomcat的访问uri的编码解决get请求中文乱码问题 -->
+                    <uriEncoding>UTF-8</uriEncoding>
+                    <username>admin</username>
+                    <password>java03</password>
+                </configuration>
+            </plugin>
+        </plugins>
 	</build>
 </project>

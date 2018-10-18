@@ -174,8 +174,8 @@ html, body {
 		// 指定图表的配置项和数据
 		var dataAxis = [];
 		//dataAxis.push("测试一");
-		var data = [ "2" ];
-		var data22;
+		var data=[];  
+		var data22; 
 		$.ajax({
 			type : "POST",
 			url : "/TES/get_Lead_Check",

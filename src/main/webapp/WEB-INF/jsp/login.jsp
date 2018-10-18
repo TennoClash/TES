@@ -129,10 +129,6 @@
 							<button type="button" class="login100-form-btn">登 录</button>
 						</div>
 					</div>
-
-					<div class="flex-col-c p-t-25">
-						<a href="javascript:" class="txt2">立即注册</a>
-					</div>
 				</form>
 			</div>
 
